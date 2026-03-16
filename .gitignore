@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 artifacts/screens/*.png
 artifacts/logs/*.jsonl
+.venv-computer-use/

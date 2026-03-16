@@ -1,0 +1,3 @@
+[console_scripts]
+advanced-vision-diagnostics = advanced_vision.diagnostics:main
+advanced-vision-server = advanced_vision.server:run
