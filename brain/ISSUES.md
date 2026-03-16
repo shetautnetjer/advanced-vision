@@ -105,8 +105,14 @@ Observed runtime error:
 - repo can partially run, but not full computer-use actuation yet
 
 **Recommended fix:**
-- install system packages: `python3-tk` and `python3-dev`
+- first try installing system packages: `python3-tk`, `python3-dev`, and `scrot`
 - re-run input-tool smoke tests after install
+- if that fails, treat the active interpreter itself as the likely culprit
+- this host is using Linuxbrew Python 3.14, so system Tk packages may not fully solve tkinter for the active venv
+- likely fallback options:
+  - create a dedicated env on a Python build with working Tk support
+  - use system Python instead of Linuxbrew Python for the input-capable env
+  - or swap to a different Linux input backend
 - add diagnostics and capability reporting
 - clearly distinguish import success from live backend success
 

@@ -45,4 +45,12 @@ The repo is now partially proven runnable in this environment:
 - MCP dependencies install cleanly
 
 Remaining blocker for full computer-use tool use:
-- system packages needed for input stack (`python3-tk`, likely `python3-dev`)
+- system packages needed for input stack (`python3-tk`, likely `python3-dev`, and probably `scrot`)
+- and possibly an interpreter mismatch, because this repo is currently running under Linuxbrew Python 3.14 rather than distro system Python
+
+## External research conclusion
+
+- Perplexity-backed search confirmed that the observed tkinter/MouseInfo failure is a common Linux PyAutoGUI issue.
+- Upstream guidance matches the first-line fix (`python3-tk`, `python3-dev`, often `scrot`).
+- Research also supports a second possibility: when using pyenv/Linuxbrew/custom Python builds, distro Tk packages may not fully solve tkinter for the active interpreter.
+- This makes a dedicated environment on a different Python build a reasonable next strategy if package install alone does not solve the input path.

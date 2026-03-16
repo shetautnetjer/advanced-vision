@@ -38,7 +38,14 @@ Purpose:
 - separate dependency/setup failures from code failures quickly
 - report Python path, package-import status, and GUI environment hints
 
+#### Research conclusion captured
+- Upstream docs/issues support the current diagnosis:
+  - PyAutoGUI on Linux commonly needs `python3-tk`, `python3-dev`, and often `scrot`
+  - however, non-system Python builds (for example Linuxbrew/pyenv/custom Python) may still fail even after installing distro Tk packages
+- This means the host interpreter choice may be part of the blocker, not just repo dependencies
+
 #### Planned next repo-side fixes
 - add setup notes for GUI/backend behavior
+- document preferred interpreter strategy for Linux input-capable environments
 - validate MCP server startup after dependencies are installed
 - validate screenshot/input behavior after environment bootstrapping
