@@ -42,7 +42,7 @@ def type_text(text: str) -> ActionResult:
         result = ActionResult(ok=True, action_type="type_text", message=f"Typed {len(text)} chars")
     except Exception as exc:
         result = ActionResult(ok=False, action_type="type_text", message=f"Failed to type text: {exc}")
-    append_jsonl("actions", {**result.model_dump(), "text": text})
+    append_jsonl("actions", {**result.model_dump(), "text_length": len(text), "text_redacted": True})
     return result
 
 

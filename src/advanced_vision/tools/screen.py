@@ -24,10 +24,15 @@ def _save_image(image: Image.Image, prefix: str) -> ScreenshotArtifact:
     return artifact
 
 
-def _safe_grab(bbox: tuple[int, int, int, int] | None = None) -> Image.Image:
+def _safe_grab(bbox: tuple[int, int, int, int] | None = None, retry_fullscreen: bool = False) -> Image.Image:
     try:
         return ImageGrab.grab(bbox=bbox)
     except Exception:
+        if retry_fullscreen and bbox is not None:
+            try:
+                return ImageGrab.grab()
+            except Exception:
+                pass
         # Best-effort fallback for headless environments.
         return Image.new("RGB", (1280, 720), color=(40, 40, 40))
 
@@ -58,5 +63,5 @@ def _active_window_bbox() -> tuple[int, int, int, int] | None:
 def screenshot_active_window() -> ScreenshotArtifact:
     """Capture active window when possible, otherwise fallback to full screenshot."""
     bbox = _active_window_bbox()
-    image = _safe_grab(bbox=bbox)
+    image = _safe_grab(bbox=bbox, retry_fullscreen=True)
     return _save_image(image, "active")
