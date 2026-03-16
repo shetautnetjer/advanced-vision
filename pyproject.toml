@@ -23,6 +23,7 @@ dev = [
 
 [project.scripts]
 advanced-vision-server = "advanced_vision.server:run"
+advanced-vision-diagnostics = "advanced_vision.diagnostics:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

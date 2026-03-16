@@ -47,9 +47,9 @@ Stubbed/minimal by design:
 ## Install
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -e .[dev]
+python3 -m pip install -e .[dev]
 ```
 
 ## Run MCP server
@@ -61,13 +61,27 @@ advanced-vision-server
 ## Quick flow demo
 
 ```bash
-python -c "from advanced_vision.flow import run_single_cycle; print(run_single_cycle('Open address bar', execute=False))"
+python3 -c "from advanced_vision.flow import run_single_cycle; print(run_single_cycle('Open address bar', execute=False))"
+```
+
+## Diagnostics
+
+Before debugging runtime issues, check host readiness:
+
+```bash
+python3 -m advanced_vision.diagnostics
+```
+
+After installation, the console script is also available:
+
+```bash
+advanced-vision-diagnostics
 ```
 
 ## Run tests
 
 ```bash
-pytest -q
+python3 -m pytest -q
 ```
 
 ## Repository layout
