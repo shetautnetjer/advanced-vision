@@ -14,15 +14,29 @@ def _compare_images(previous_path: str, current_path: str, threshold: float) -> 
     curr = Image.open(current_path).convert("RGB")
     if prev.size != curr.size:
         curr = curr.resize(prev.size)
+
     diff = ImageChops.difference(prev, curr)
+
+    # Global similarity keeps backward-compatible behavior.
     stat = ImageStat.Stat(diff)
     mean = sum(stat.mean) / len(stat.mean)
     similarity = max(0.0, min(1.0, 1 - (mean / 255.0)))
-    changed = similarity < threshold
+
+    # Localized-change metric: threshold per-pixel luminance diff and count changed pixels.
+    binary_diff = diff.convert("L").point(lambda p: 255 if p >= 16 else 0)
+    changed_pixels = binary_diff.histogram()[255]
+    total_pixels = prev.size[0] * prev.size[1]
+    changed_ratio = changed_pixels / total_pixels if total_pixels else 0.0
+
+    # Keep public API unchanged: use original threshold + small localized-change trigger.
+    changed = similarity < threshold or changed_ratio >= 0.0005
     return VerificationResult(
         changed=changed,
         similarity=similarity,
-        message=f"Similarity={similarity:.4f}, threshold={threshold}",
+        message=(
+            f"Similarity={similarity:.4f}, threshold={threshold}, "
+            f"changed_ratio={changed_ratio:.6f}, changed_pixels={changed_pixels}"
+        ),
     )
 
 
