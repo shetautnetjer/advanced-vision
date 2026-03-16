@@ -24,7 +24,25 @@
   - GUI hint is present (`DISPLAY=:1`, X11)
   - but all required Python modules are still missing in the current environment
 
+## Additional validation after dependency install
+
+- Created `.venv` and installed package with dev dependencies successfully.
+- Ran test suite: `6 passed`.
+- Ran screenshot and flow smoke checks successfully.
+- Confirmed:
+  - `screenshot_full()` works
+  - `screenshot_active_window()` works (fell back to full-screen-sized capture here)
+  - `run_single_cycle(execute=False)` works
+  - artifacts and JSONL logs are being written
+- Confirmed `list_windows()` currently returns `0` windows on this host.
+- Confirmed input actions are still blocked because `pyautogui` imports `mouseinfo`, which requires `tkinter` on Linux.
+
 ## Current status
 
-The repo is structurally promising but not yet proven runnable in this environment.
-The next hard gate is dependency installation inside an isolated virtualenv.
+The repo is now partially proven runnable in this environment:
+- tests pass
+- screenshot and verification path works
+- MCP dependencies install cleanly
+
+Remaining blocker for full computer-use tool use:
+- system packages needed for input stack (`python3-tk`, likely `python3-dev`)

@@ -17,12 +17,13 @@
 
 ## Runtime validation
 
-- [ ] Validate `screenshot_full`
-- [ ] Validate `screenshot_active_window`
-- [ ] Validate `list_windows`
-- [ ] Validate `verify_screen_change`
-- [ ] Validate `run_single_cycle(execute=False)`
+- [x] Validate `screenshot_full`
+- [x] Validate `screenshot_active_window`
+- [x] Validate `list_windows` (currently returns 0 windows on this host)
+- [x] Validate `verify_screen_change`
+- [x] Validate `run_single_cycle(execute=False)`
 - [ ] Validate controlled input tools in safe context
+- [ ] Install `python3-tk` / `python3-dev` and re-test input tools
 
 ## Governance improvements
 

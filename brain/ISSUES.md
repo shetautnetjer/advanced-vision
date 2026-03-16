@@ -85,16 +85,28 @@ There is no quick command to answer:
 ---
 
 ### 5. Input tools may fail in headless or restricted GUI sessions
-**Status:** known  
+**Status:** confirmed on this host  
 **Severity:** medium
 
 `pyautogui` and screenshot/window tooling depend on actual GUI availability and backend compatibility.
 
+Confirmed here:
+- screenshot capture works on X11 (`DISPLAY=:1`)
+- verification works
+- tests pass
+- input actions fail when `pyautogui` imports `mouseinfo`, which requires `tkinter`
+
+Observed runtime error:
+- `NOTE: You must install tkinter on Linux to use MouseInfo. Run the following: sudo apt-get install python3-tk python3-dev`
+
 **Impact:**
-- code may import successfully but real actions can still fail
-- Linux Wayland/X11 differences may affect runtime behavior
+- capture path works
+- input path is not yet operational on this host
+- repo can partially run, but not full computer-use actuation yet
 
 **Recommended fix:**
+- install system packages: `python3-tk` and `python3-dev`
+- re-run input-tool smoke tests after install
 - add diagnostics and capability reporting
 - clearly distinguish import success from live backend success
 
