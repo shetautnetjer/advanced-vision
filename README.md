@@ -2,9 +2,27 @@
 
 **Status:** Phases 1-4 Complete ✅ (Environment, MCP Server, Screenshots, Dry-Run)  
 **Agent:** Aya (Kimi K2.5)  
-**Last Updated:** 2026-03-16
+**Last Updated:** 2026-03-17
 
 A **standalone**, minimal local computer-use capability layer for AI systems. Exposes GUI automation primitives (screenshots, mouse, keyboard) via MCP (Model Context Protocol) for integration with OpenClaw and other orchestrators.
+
+---
+
+## Recent Changes
+
+### 2026-03-17: Research Synthesis & Documentation
+- **Model Inventory**: Comprehensive research on 14+ vision models for trading pipeline (see `research/raw/vision/`)
+- **NVFP4 Quantized Models**: Added Qwen3.5-2B/4B-NVFP4 variants for VRAM-efficient inference
+- **VRAM Allocation Maps**: RTX 5070 Ti 16GB configuration strategies
+- **Workflow Substrate Decision**: LangGraph for watcher, Lobster for OpenClaw boundary
+- **Seven-Layer Role Architecture**: Reflex → Tripwire → Tracking → Parser → Scout → Reviewer → Governor
+
+### 2026-03-17: Linux Window Backend Improvements
+- **Dual backend support**: PyWinCtl (primary) + PyGetWindow (fallback)
+- **New `get_active_window_bbox()`**: Unified active window detection
+- **Enhanced diagnostics**: Reports preferred backend and Linux-specific notes
+- **Improved `verify_screen_change()`**: Now accepts explicit current screenshot path
+- **Better fallback handling**: `screenshot_active_window()` logs when falling back to fullscreen
 
 ---
 
@@ -56,8 +74,32 @@ move_mouse(100, 200, dry_run=True)
 | `type_text(text)` | Type text | ✅ With dry-run |
 | `press_keys(keys)` | Key combos | ✅ With dry-run |
 | `scroll(v, h)` | Scroll | ✅ With dry-run |
-| `verify_screen_change()` | Compare screenshots | ✅ Working |
+| `verify_screen_change()` | Compare screenshots | ✅ Enhanced (see below) |
 | `analyze_screenshot()` | Vision analysis | ⚠️ Stub (noop) |
+
+---
+
+## Enhanced Verification
+
+The `verify_screen_change()` tool now supports **explicit screenshot comparison**:
+
+```python
+from advanced_vision.tools.screen import screenshot_full
+from advanced_vision.tools.verify import verify_screen_change
+
+# Method 1: Compare with fresh screenshot (original behavior)
+first = screenshot_full()
+# ... perform action ...
+result = verify_screen_change(first.path, threshold=0.95)
+
+# Method 2: Compare two existing screenshots (NEW)
+before = screenshot_full()
+after = screenshot_full()
+result = verify_screen_change(before.path, after.path, threshold=0.95)
+# result: VerificationResult(changed=True, similarity=0.9823, message="...")
+```
+
+**Backward compatible**: Old signature `verify_screen_change(path, threshold)` still works.
 
 ---
 
@@ -152,8 +194,32 @@ print(f"Saved to: {screenshot['path']}")
 ### Linux X11
 - ✅ Full functionality
 - ✅ Screenshots via `scrot` or PIL
-- ✅ PyWinCtl for window management (replaces pygetwindow)
+- ✅ **Dual window backend**: PyWinCtl (primary) + PyGetWindow (fallback)
+- ✅ **Active window detection** with automatic bbox extraction
 - ⚠️ `list_windows()` may return empty in terminal-only sessions
+
+### Window Backend Details
+
+The system uses a **dual-backend approach** for cross-platform window management:
+
+| Backend | Platform | Priority | Notes |
+|---------|----------|----------|-------|
+| **PyWinCtl** | Linux/macOS/Windows | Primary | Better Linux support, window app names |
+| **PyGetWindow** | Windows/Linux | Fallback | Legacy support, basic functionality |
+
+**Active window capture** automatically tries both backends:
+```python
+from advanced_vision.tools.windows import get_active_window_bbox
+
+bbox = get_active_window_bbox()  # Returns (left, top, right, bottom) or None
+# Used internally by screenshot_active_window()
+```
+
+**Diagnostics** show which backend is active:
+```bash
+advanced-vision-diagnostics
+# Output: "window_backend_preference": "pywinctl"
+```
 
 ### Linux Wayland
 - ⚠️ Limited support
