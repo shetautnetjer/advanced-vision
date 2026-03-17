@@ -88,3 +88,33 @@ Following Dad's recommendation:
 | Mouse control | ✅ | PyAutoGUI |
 | Keyboard control | ✅ | PyAutoGUI |
 | Window management | ✅ | PyGetWindow |
+
+## Update: Window Management Solved
+
+**Problem:** pygetwindow fails on Linux with NotImplementedError
+
+**Solution:** PyWinCtl (cross-platform fork with Linux/X11 support)
+
+```bash
+pip install pywinctl
+```
+
+**Tested:**
+- ✅ pywinctl 0.4.1 installed
+- ✅ getAllWindows() finds 4 windows
+- ✅ X11 backend working
+
+**Linux Note:**
+- Works on X11 (your system)
+- Limited on Wayland (getActiveWindow/getAllWindows may fail)
+
+**Migration:**
+Replace pygetwindow imports with pywinctl:
+```python
+# Old (fails on Linux)
+import pygetwindow
+
+# New (works on Linux)
+import pywinctl as pwc
+windows = pwc.getAllWindows()
+```
