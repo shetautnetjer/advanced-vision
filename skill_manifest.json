@@ -1,0 +1,170 @@
+{
+  "name": "advanced-vision",
+  "version": "0.1.0",
+  "description": "Computer-use capability layer for AI systems - screenshots, mouse/keyboard control, and verification",
+  "tools": [
+    {
+      "name": "screenshot_full",
+      "description": "Capture full desktop screenshot and save as artifact",
+      "parameters": {},
+      "returns": {
+        "path": "string - Path to saved screenshot",
+        "width": "integer - Image width in pixels",
+        "height": "integer - Image height in pixels",
+        "timestamp": "string - ISO timestamp"
+      }
+    },
+    {
+      "name": "screenshot_active_window",
+      "description": "Capture active window screenshot (falls back to full screen if window detection fails)",
+      "parameters": {},
+      "returns": {
+        "path": "string - Path to saved screenshot",
+        "width": "integer - Image width",
+        "height": "integer - Image height",
+        "timestamp": "string - ISO timestamp"
+      }
+    },
+    {
+      "name": "move_mouse",
+      "description": "Move mouse cursor to specified coordinates",
+      "parameters": {
+        "x": "integer - X coordinate (0-1920)",
+        "y": "integer - Y coordinate (0-1080)",
+        "dry_run": "boolean - If true, don't actually move (default: false)"
+      },
+      "returns": {
+        "ok": "boolean - Success status",
+        "action_type": "string - 'move_mouse'",
+        "message": "string - Human-readable result"
+      }
+    },
+    {
+      "name": "click",
+      "description": "Click at specified coordinates",
+      "parameters": {
+        "x": "integer - X coordinate",
+        "y": "integer - Y coordinate",
+        "button": "string - 'left', 'right', or 'middle' (default: 'left')",
+        "dry_run": "boolean - If true, don't actually click (default: false)"
+      },
+      "returns": {
+        "ok": "boolean - Success status",
+        "action_type": "string - 'click'",
+        "message": "string - Human-readable result"
+      }
+    },
+    {
+      "name": "type_text",
+      "description": "Type text at current cursor position",
+      "parameters": {
+        "text": "string - Text to type",
+        "dry_run": "boolean - If true, don't actually type (default: false)"
+      },
+      "returns": {
+        "ok": "boolean - Success status",
+        "action_type": "string - 'type_text'",
+        "message": "string - Human-readable result"
+      }
+    },
+    {
+      "name": "press_keys",
+      "description": "Press keyboard keys or key combinations",
+      "parameters": {
+        "keys": "array of strings - Keys to press (e.g., ['ctrl', 'c'] for copy)",
+        "dry_run": "boolean - If true, don't actually press (default: false)"
+      },
+      "returns": {
+        "ok": "boolean - Success status",
+        "action_type": "string - 'press_keys'",
+        "message": "string - Human-readable result"
+      }
+    },
+    {
+      "name": "scroll",
+      "description": "Scroll at current mouse position",
+      "parameters": {
+        "vertical": "integer - Vertical scroll amount (positive=up, negative=down)",
+        "horizontal": "integer - Horizontal scroll amount (default: 0)",
+        "dry_run": "boolean - If true, don't actually scroll (default: false)"
+      },
+      "returns": {
+        "ok": "boolean - Success status",
+        "action_type": "string - 'scroll'",
+        "message": "string - Human-readable result"
+      }
+    },
+    {
+      "name": "verify_screen_change",
+      "description": "Compare screenshots to detect visual changes",
+      "parameters": {
+        "previous_screenshot_path": "string - Path to before screenshot",
+        "current_screenshot_path": "string or number - Path to after screenshot, or threshold (optional)",
+        "threshold": "number - Similarity threshold 0-1 (default: 0.99)"
+      },
+      "returns": {
+        "changed": "boolean - True if screen changed significantly",
+        "similarity": "number - Similarity score 0-1",
+        "message": "string - Detailed comparison info"
+      }
+    },
+    {
+      "name": "list_windows",
+      "description": "List visible top-level windows",
+      "parameters": {},
+      "returns": {
+        "windows": "array - Window info with title, app_name, is_active"
+      }
+    },
+    {
+      "name": "execute_and_verify",
+      "description": "Execute action, wait, capture after screenshot, verify change (Phase E3)",
+      "parameters": {
+        "action_type": "string - 'move_mouse', 'click', 'type_text', 'press_keys', 'scroll'",
+        "x": "integer - X coordinate (for mouse actions)",
+        "y": "integer - Y coordinate (for mouse actions)",
+        "text": "string - Text to type",
+        "keys": "array - Keys to press",
+        "button": "string - Mouse button (default: 'left')",
+        "delay_seconds": "number - Wait time after action (default: 0.5)",
+        "dry_run": "boolean - If true, don't execute (default: false)"
+      },
+      "returns": {
+        "before_screenshot": "object - Artifact before action",
+        "action_result": "object - Action execution result",
+        "after_screenshot": "object - Artifact after action",
+        "verification": "object - Change detection result"
+      }
+    },
+    {
+      "name": "record_screen_video",
+      "description": "Record screen as MP4 video (Phase E4)",
+      "parameters": {
+        "duration": "integer - Recording duration in seconds (default: 10)",
+        "fps": "integer - Frames per second (default: 5)"
+      },
+      "returns": {
+        "path": "string - Path to MP4 file",
+        "duration": "integer - Actual duration",
+        "fps": "integer - Frame rate",
+        "width": "integer - Video width",
+        "height": "integer - Video height",
+        "file_size": "integer - File size in bytes"
+      }
+    }
+  ],
+  "environment": {
+    "python_version": "3.11+",
+    "dependencies": ["pyautogui", "Pillow", "pydantic", "mcp"],
+    "system_requirements": {
+      "linux": "X11 display server (not Wayland)",
+      "optional": "ffmpeg for video recording"
+    }
+  },
+  "safety": {
+    "dry_run_default": true,
+    "live_tests_require_env": "ADVANCED_VISION_LIVE_TESTS=1",
+    "proposal_before_execution": true,
+    "audit_logging": "All actions logged to artifacts/logs/"
+  }
+}
