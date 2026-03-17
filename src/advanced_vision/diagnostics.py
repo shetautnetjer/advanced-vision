@@ -14,13 +14,17 @@ import shutil
 import sys
 from typing import Any
 
-REQUIRED_MODULES = [
+CORE_MODULES = [
     "PIL",
     "pydantic",
     "mcp",
     "pyautogui",
+]
+WINDOW_BACKENDS = [
+    "pywinctl",
     "pygetwindow",
 ]
+ALL_MODULES = CORE_MODULES + WINDOW_BACKENDS
 
 
 def _module_status(name: str) -> dict[str, Any]:
@@ -42,8 +46,16 @@ def _module_status(name: str) -> dict[str, Any]:
 
 
 def collect_diagnostics() -> dict[str, Any]:
-    module_results = [_module_status(name) for name in REQUIRED_MODULES]
-    all_modules_ok = all(item["ok"] for item in module_results)
+    module_results = [_module_status(name) for name in ALL_MODULES]
+    module_map = {item["name"]: item for item in module_results}
+    core_modules_ok = all(module_map[name]["ok"] for name in CORE_MODULES)
+    any_window_backend_ok = any(module_map[name]["ok"] for name in WINDOW_BACKENDS)
+
+    preferred_backend = None
+    if module_map.get("pywinctl", {}).get("ok"):
+        preferred_backend = "pywinctl"
+    elif module_map.get("pygetwindow", {}).get("ok"):
+        preferred_backend = "pygetwindow"
 
     return {
         "python": {
@@ -66,8 +78,16 @@ def collect_diagnostics() -> dict[str, Any]:
         },
         "modules": module_results,
         "summary": {
-            "all_required_modules_ok": all_modules_ok,
+            "core_modules_ok": core_modules_ok,
+            "any_window_backend_ok": any_window_backend_ok,
+            "environment_ready": core_modules_ok and any_window_backend_ok,
             "gui_hint": bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")),
+            "window_backend_preference": preferred_backend,
+            "linux_window_note": (
+                "pygetwindow may import but still not support Linux window enumeration; pywinctl is preferred on Linux."
+                if platform.system() == "Linux"
+                else None
+            ),
         },
     }
 

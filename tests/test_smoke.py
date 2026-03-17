@@ -34,6 +34,13 @@ def test_verification_between_executes() -> None:
     assert verification.similarity is None or 0 <= verification.similarity <= 1
 
 
+def test_verification_accepts_explicit_current_path() -> None:
+    first = screenshot_full()
+    second = screenshot_full()
+    verification = verify_screen_change(first.path, second.path)
+    assert verification.similarity is None or 0 <= verification.similarity <= 1
+
+
 def test_verification_detects_localized_change(tmp_path: Path) -> None:
     before = tmp_path / "before.png"
     after = tmp_path / "after.png"

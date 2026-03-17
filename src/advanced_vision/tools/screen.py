@@ -7,6 +7,7 @@ from PIL import Image, ImageGrab
 from ..config import get_settings
 from ..logging_utils import append_jsonl, utc_now_iso
 from ..schemas import ScreenshotArtifact
+from .windows import get_active_window_bbox
 
 
 def _save_image(image: Image.Image, prefix: str) -> ScreenshotArtifact:
@@ -43,25 +44,17 @@ def screenshot_full() -> ScreenshotArtifact:
     return _save_image(image, "full")
 
 
-def _active_window_bbox() -> tuple[int, int, int, int] | None:
-    """Return active window bbox when available via pygetwindow."""
-    try:
-        import pygetwindow as gw  # type: ignore
-
-        active = gw.getActiveWindow()
-        if active is None:
-            return None
-        left, top = int(active.left), int(active.top)
-        width, height = int(active.width), int(active.height)
-        if width <= 0 or height <= 0:
-            return None
-        return (left, top, left + width, top + height)
-    except Exception:
-        return None
-
-
 def screenshot_active_window() -> ScreenshotArtifact:
     """Capture active window when possible, otherwise fallback to full screenshot."""
-    bbox = _active_window_bbox()
+    bbox = get_active_window_bbox()
     image = _safe_grab(bbox=bbox, retry_fullscreen=True)
-    return _save_image(image, "active")
+    artifact = _save_image(image, "active")
+    append_jsonl(
+        "screenshots",
+        {
+            "tool": "active_window_capture",
+            "bbox": bbox,
+            "used_fallback_fullscreen": bbox is None or (artifact.width == 1280 and artifact.height == 720),
+        },
+    )
+    return artifact
