@@ -69,7 +69,8 @@ move_mouse(100, 200, dry_run=True)
 - **Data/Secret Plane:** Sensitive assets (external)
 
 ### Trust Boundaries
-- Local-only (no external APIs)
+- Local-only for the core screenshot/action path
+- Optional experimental video helper can call external Kimi APIs via `.env` configuration
 - No secrets in code
 - Dry-run safety for all actions
 - Proposal-before-execution pattern

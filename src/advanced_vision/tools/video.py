@@ -1,319 +1,282 @@
 #!/usr/bin/env python3
-"""
-Video Recording and Kimi API Integration
-Records screen as video and analyzes with Kimi K2.5 video understanding
+"""Video recording and Kimi analysis helpers.
+
+Phase-1/2 implementation note:
+- Direct video upload is not implemented yet.
+- The current real path is: record video -> extract keyframes -> send frames as images.
+- This module intentionally avoids third-party HTTP dependencies so it can run in the
+  existing repo environments without requiring `requests`.
 """
 
-import os
+from __future__ import annotations
+
+import base64
 import json
+import os
 import subprocess
-import tempfile
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
-import requests
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
+from ..config import get_settings
 from ..logging_utils import append_jsonl
 from ..schemas import VideoArtifact, VideoAnalysisResult
 
-# Load API key from environment
-KIMI_API_KEY = os.environ.get("KIMI_API_KEY")
-# API endpoint - moonshot.cn for most keys, kimi-code.com for IDE keys
-KIMI_BASE_URL = os.environ.get("KIMI_BASE_URL", "https://api.moonshot.cn/v1")
-# Model to use - text models: moonshot-v1-*, vision models: kimi-vl, k2.5-latest (if available)
-KIMI_MODEL = os.environ.get("KIMI_MODEL", "moonshot-v1-8k")  # Default to text-only
-
-SCREENSHOT_DIR = Path.home() / ".openclaw/workspace/plane-a/projects/advanced-vision/artifacts/screens"
-VIDEO_DIR = Path.home() / ".openclaw/workspace/plane-a/projects/advanced-vision/artifacts/videos"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+ENV_FILE = REPO_ROOT / ".env"
+DEFAULT_BASE_URL = "https://api.moonshot.cn/v1"
+DEFAULT_MODEL = "kimi-k2-5"
 
 
-def ensure_directories():
-    """Ensure artifact directories exist"""
-    SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
-    VIDEO_DIR.mkdir(parents=True, exist_ok=True)
+def _load_env_file(env_file: Path = ENV_FILE) -> None:
+    """Load simple KEY=VALUE pairs into os.environ if not already present."""
+    if not env_file.exists():
+        return
+
+    for raw_line in env_file.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        os.environ.setdefault(key, value)
+
+
+def _get_kimi_config() -> tuple[str | None, str, str]:
+    _load_env_file()
+    api_key = os.environ.get("KIMI_API_KEY")
+    base_url = os.environ.get("KIMI_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+    model = os.environ.get("KIMI_MODEL", DEFAULT_MODEL)
+    return api_key, base_url, model
+
+
+def _artifacts_dirs() -> tuple[Path, Path]:
+    settings = get_settings()
+    screenshot_dir = settings.screens_dir
+    video_dir = settings.artifacts_dir / "videos"
+    screenshot_dir.mkdir(parents=True, exist_ok=True)
+    video_dir.mkdir(parents=True, exist_ok=True)
+    return screenshot_dir, video_dir
+
+
+def _post_json(url: str, headers: dict[str, str], payload: dict, timeout: int = 60) -> dict:
+    data = json.dumps(payload).encode("utf-8")
+    req = Request(url, data=data, headers=headers, method="POST")
+    try:
+        with urlopen(req, timeout=timeout) as response:
+            body = response.read().decode("utf-8")
+            return json.loads(body)
+    except HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"Kimi API HTTP {exc.code}: {body[:1000]}") from exc
+    except URLError as exc:
+        raise RuntimeError(f"Kimi API connection failed: {exc}") from exc
+
+
+def _probe_video_duration(video_path: Path) -> float | None:
+    cmd = [
+        "ffprobe",
+        "-v",
+        "error",
+        "-show_entries",
+        "format=duration",
+        "-of",
+        "default=noprint_wrappers=1:nokey=1",
+        str(video_path),
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        value = result.stdout.strip()
+        return float(value) if value else None
+    except Exception:
+        return None
 
 
 def record_screen_video(
     duration: int = 10,
     fps: int = 5,
-    output_path: Optional[Path] = None
+    output_path: Optional[Path] = None,
 ) -> VideoArtifact:
-    """
-    Record screen as MP4 video using ffmpeg
-    
-    Args:
-        duration: Recording duration in seconds
-        fps: Frames per second
-        output_path: Optional custom output path
-    
-    Returns:
-        VideoArtifact with path and metadata
-    """
-    ensure_directories()
-    
+    """Record screen as MP4 video using ffmpeg."""
+    _, video_dir = _artifacts_dirs()
+
     if output_path is None:
         timestamp = datetime.utcnow().isoformat().replace(":", "-")
-        output_path = VIDEO_DIR / f"screen_{timestamp}.mp4"
+        output_path = video_dir / f"screen_{timestamp}.mp4"
     else:
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    # Display from environment (default :1 for X11)
+
     display = os.environ.get("DISPLAY", ":1")
-    
-    # ffmpeg command to record screen
     cmd = [
         "ffmpeg",
-        "-f", "x11grab",           # X11 screen capture
-        "-video_size", "1920x1080", # Screen resolution
-        "-i", display,              # Display to capture
-        "-framerate", str(fps),     # FPS
-        "-t", str(duration),        # Duration
-        "-pix_fmt", "yuv420p",      # Pixel format for compatibility
-        "-y",                       # Overwrite if exists
-        str(output_path)
+        "-f",
+        "x11grab",
+        "-video_size",
+        "1920x1080",
+        "-framerate",
+        str(fps),
+        "-i",
+        display,
+        "-t",
+        str(duration),
+        "-pix_fmt",
+        "yuv420p",
+        "-y",
+        str(output_path),
     ]
-    
+
     try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=duration + 10
-        )
-        
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=duration + 10)
         if result.returncode != 0:
             raise RuntimeError(f"ffmpeg failed: {result.stderr}")
-        
-        # Get video info
-        file_size = output_path.stat().st_size
-        
+
         artifact = VideoArtifact(
             path=str(output_path),
             duration=duration,
             fps=fps,
             width=1920,
             height=1080,
-            file_size=file_size,
-            timestamp=datetime.utcnow().isoformat() + "Z"
+            file_size=output_path.stat().st_size,
+            timestamp=datetime.utcnow().isoformat() + "Z",
         )
-        
-        # Log action
         append_jsonl("video_recordings", artifact.model_dump())
-        
         return artifact
-        
-    except subprocess.TimeoutExpired:
-        raise RuntimeError("ffmpeg timed out")
-    except FileNotFoundError:
-        raise RuntimeError("ffmpeg not found. Install with: sudo apt install ffmpeg")
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError("ffmpeg timed out") from exc
+    except FileNotFoundError as exc:
+        raise RuntimeError("ffmpeg not found. Install with: sudo apt install ffmpeg") from exc
 
 
-def extract_keyframes(
-    video_path: Path,
-    n: int = 5
-) -> list[Path]:
-    """
-    Extract n keyframes from video for image-based analysis
-    
-    Args:
-        video_path: Path to video file
-        n: Number of keyframes to extract
-    
-    Returns:
-        List of paths to extracted frame images
-    """
+def extract_keyframes(video_path: Path, n: int = 5) -> list[Path]:
+    """Extract approximately evenly spaced keyframes from a video."""
     video_path = Path(video_path)
     if not video_path.exists():
         raise FileNotFoundError(f"Video not found: {video_path}")
-    
-    frames_dir = SCREENSHOT_DIR / f"frames_{video_path.stem}"
+
+    screenshot_dir, _ = _artifacts_dirs()
+    frames_dir = screenshot_dir / f"frames_{video_path.stem}"
     frames_dir.mkdir(exist_ok=True)
-    
-    # Extract frames at regular intervals
+
+    duration = _probe_video_duration(video_path) or max(float(n), 1.0)
+    fps_filter = max(n / duration, 0.2)
+
     cmd = [
         "ffmpeg",
-        "-i", str(video_path),
-        "-vf", f"select='not(mod(n,{int(30/n)}))',scale=1920:1080",
-        "-vframes", str(n),
+        "-i",
+        str(video_path),
+        "-vf",
+        f"fps={fps_filter},scale=1920:1080",
+        "-frames:v",
+        str(n),
         "-y",
-        str(frames_dir / "frame_%03d.png")
+        str(frames_dir / "frame_%03d.png"),
     ]
-    
-    subprocess.run(cmd, capture_output=True, check=True)
-    
-    # Return list of extracted frames
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"ffmpeg frame extraction failed: {result.stderr}")
+
     return sorted(frames_dir.glob("frame_*.png"))
 
 
 def analyze_video_with_kimi(
     video_path: Path,
     question: str = "What is happening in this screen recording?",
-    use_frames_fallback: bool = True
+    use_frames_fallback: bool = True,
 ) -> VideoAnalysisResult:
+    """Analyze a video using Kimi.
+
+    Current implemented path: extract frames and send them as images.
     """
-    Analyze video using Kimi K2.5 API
-    
-    Args:
-        video_path: Path to video file
-        question: Question to ask about the video
-        use_frames_fallback: If video API fails, extract frames and use image API
-    
-    Returns:
-        VideoAnalysisResult with answer and metadata
-    """
-    if not KIMI_API_KEY:
+    api_key, _, _ = _get_kimi_config()
+    if not api_key:
         raise RuntimeError("KIMI_API_KEY not set. Check .env file.")
-    
+
     video_path = Path(video_path)
     if not video_path.exists():
         raise FileNotFoundError(f"Video not found: {video_path}")
-    
-    # Try video API first (if Moonshot supports direct video)
-    # For now, use frame-based approach as fallback
+
     if use_frames_fallback:
         return _analyze_with_frames(video_path, question)
-    else:
-        return _analyze_with_video_api(video_path, question)
+    return _analyze_with_video_api(video_path, question)
 
 
-def _analyze_with_frames(
-    video_path: Path,
-    question: str
-) -> VideoAnalysisResult:
-    """
-    Analyze video by extracting keyframes and sending to Kimi as images
-    """
-    # Extract keyframes
+def _analyze_with_frames(video_path: Path, question: str) -> VideoAnalysisResult:
     frames = extract_keyframes(video_path, n=5)
-    
     if not frames:
         raise RuntimeError("Could not extract frames from video")
-    
-    # Build message with frames
+
+    api_key, base_url, model = _get_kimi_config()
+    if not api_key:
+        raise RuntimeError("KIMI_API_KEY not set. Check .env file.")
+
     content = [{"type": "text", "text": f"Analyze this screen recording. {question}"}]
-    
     for frame in frames:
-        # Read image and convert to base64
-        import base64
         with open(frame, "rb") as f:
             image_data = base64.b64encode(f.read()).decode()
-        
-        content.append({
-            "type": "image_url",
-            "image_url": {
-                "url": f"data:image/png;base64,{image_data}"
+        content.append(
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:image/png;base64,{image_data}"},
             }
-        })
-    
-    # Call Kimi API
-    headers = {
-        "Authorization": f"Bearer {KIMI_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    
+        )
+
     payload = {
-        "model": KIMI_MODEL,
-        "messages": [{
-            "role": "user",
-            "content": content
-        }],
-        "temperature": 0.2
+        "model": model,
+        "messages": [{"role": "user", "content": content}],
+        "temperature": 0.2,
     }
-    
-    response = requests.post(
-        f"{KIMI_BASE_URL}/chat/completions",
-        headers=headers,
-        json=payload,
-        timeout=60
-    )
-    
-    response.raise_for_status()
-    result = response.json()
-    
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    result = _post_json(f"{base_url}/chat/completions", headers=headers, payload=payload, timeout=60)
     answer = result["choices"][0]["message"]["content"]
-    
-    # Log analysis
+
     analysis_result = VideoAnalysisResult(
         video_path=str(video_path),
         question=question,
         answer=answer,
-        model=KIMI_MODEL,
+        model=model,
         frames_used=len(frames),
-        timestamp=datetime.utcnow().isoformat() + "Z"
+        timestamp=datetime.utcnow().isoformat() + "Z",
     )
-    
     append_jsonl("video_analyses", analysis_result.model_dump())
-    
     return analysis_result
 
 
-def _analyze_with_video_api(
-    video_path: Path,
-    question: str
-) -> VideoAnalysisResult:
-    """
-    Analyze video using direct video API (if supported)
-    NOTE: This is a placeholder for when Moonshot adds native video API
-    """
-    # TODO: Implement when Kimi API supports direct video upload
+def _analyze_with_video_api(video_path: Path, question: str) -> VideoAnalysisResult:
+    """Placeholder for future native video upload path."""
     raise NotImplementedError(
-        "Direct video API not yet implemented. "
-        "Use use_frames_fallback=True for now."
+        "Direct video API not yet implemented. Use use_frames_fallback=True for now."
     )
 
 
-def verify_action_with_video(
-    action_description: str,
-    video_path: Path,
-    expected_result: str
-) -> dict:
-    """
-    Verify an action by analyzing the video recording
-    
-    Args:
-        action_description: What action was performed
-        video_path: Path to recording of the action
-        expected_result: What should have happened
-    
-    Returns:
-        dict with verification result and confidence
-    """
+def verify_action_with_video(action_description: str, video_path: Path, expected_result: str) -> dict:
+    """Verify an action by analyzing a recording of the action."""
     question = (
         f"I performed this action: {action_description}. "
         f"I expected: {expected_result}. "
-        f"Did the expected result happen? Explain what you see."
+        "Did the expected result happen? Explain what you see."
     )
-    
     analysis = analyze_video_with_kimi(video_path, question)
-    
-    # Parse result for yes/no
     answer_lower = analysis.answer.lower()
-    success = "yes" in answer_lower or "success" in answer_lower or "happened" in answer_lower
-    
+    success = any(token in answer_lower for token in ["yes", "success", "happened"])
     return {
         "success": success,
         "explanation": analysis.answer,
         "confidence": "high" if success else "uncertain",
         "video_path": str(video_path),
-        "timestamp": analysis.timestamp
+        "timestamp": analysis.timestamp,
     }
 
 
-# Convenience function for quick recording + analysis
-def record_and_analyze(
-    duration: int = 10,
-    question: str = "What is happening on screen?"
-) -> VideoAnalysisResult:
-    """
-    Record screen for N seconds and immediately analyze with Kimi
-    
-    Args:
-        duration: How long to record
-        question: What to ask about the recording
-    
-    Returns:
-        VideoAnalysisResult with answer
-    """
+def record_and_analyze(duration: int = 10, question: str = "What is happening on screen?") -> VideoAnalysisResult:
+    """Record screen for N seconds and immediately analyze with Kimi."""
     video = record_screen_video(duration=duration)
     return analyze_video_with_kimi(Path(video.path), question)
