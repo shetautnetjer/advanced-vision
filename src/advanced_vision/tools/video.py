@@ -18,8 +18,10 @@ from ..schemas import VideoArtifact, VideoAnalysisResult
 
 # Load API key from environment
 KIMI_API_KEY = os.environ.get("KIMI_API_KEY")
+# API endpoint - moonshot.cn for most keys, kimi-code.com for IDE keys
 KIMI_BASE_URL = os.environ.get("KIMI_BASE_URL", "https://api.moonshot.cn/v1")
-KIMI_MODEL = os.environ.get("KIMI_MODEL", "kimi-k2-5")
+# Model to use - text models: moonshot-v1-*, vision models: kimi-vl, k2.5-latest (if available)
+KIMI_MODEL = os.environ.get("KIMI_MODEL", "moonshot-v1-8k")  # Default to text-only
 
 SCREENSHOT_DIR = Path.home() / ".openclaw/workspace/plane-a/projects/advanced-vision/artifacts/screens"
 VIDEO_DIR = Path.home() / ".openclaw/workspace/plane-a/projects/advanced-vision/artifacts/videos"
