@@ -189,3 +189,65 @@ This log documents the implementation of Phase 1-4 of the advanced-vision comput
 *Reported by: Aya*
 *Orchestrator: Kimi K2.5 Agent Swarm*
 *Guidance: Dad (Arbiter)*
+
+
+## Phase 5: Prove Action Path — PARTIAL ⏸️
+
+**Goal:** Show that simple action tools actually work.
+
+**Status:** Not started — awaiting safe test environment
+
+---
+
+## Phase 6: Tighten Linux Truth — DOCUMENTED ✅
+
+**Completed:**
+- Documented pygetwindow → PyWinCtl replacement
+- Marked window management as unreliable on Linux
+- Emphasized screenshot-based workflows
+
+---
+
+## Phase 7: Integration Guidance — COMPLETE ✅
+
+**Completed:**
+- mcporter registration
+- Command examples in README
+- Tested: mcporter call advanced-vision.screenshot_full
+
+---
+
+## Phase 8: Governance Seeds — COMPLETE ✅
+
+**Screenshot Retention Policy:**
+- 76 hours (~3.2 days) for regular screenshots
+- Tag-based preservation: 'error', 'issue', 'data', 'debug', 'evidence'
+- Cleanup script: src/advanced_vision/cleanup.py
+- Usage: python src/advanced_vision/cleanup.py --execute
+
+**Commit:** e458a99 — "Add screenshot retention policy: 76 hours"
+
+---
+
+## Episode Cards Found 📇
+
+**Location:** ~/.openclaw/workspace/plane-a/library/kimi/
+
+**Files:**
+- kimi__EPISODE_CARD_SCHEMA_v1.md
+- kimi__episode_card_example_coding.json
+- kimi__episode_card_example_trading.json
+- kimi__KIMI_EPISODE_CARD_PROMPT_v1.md
+
+**Purpose:** Record work units with timeline, steps, outcomes, evidence
+
+---
+
+## Updated Git Commits
+
+- 671f5c6 — Computer-use environment operational
+- a0bb697 — Add PyWinCtl for Linux
+- 9338618 — Add dry_run support
+- 0541015 — Update README and ISSUES
+- 221eee7 — Document Phases 1-4
+- e458a99 — Screenshot retention policy (76 hours)
