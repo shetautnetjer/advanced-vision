@@ -5,3 +5,7 @@ __pycache__/
 artifacts/screens/*.png
 artifacts/logs/*.jsonl
 .venv-computer-use/
+
+# Environment variables (API keys)
+.env
+.env.local
