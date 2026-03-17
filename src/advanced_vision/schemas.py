@@ -39,3 +39,24 @@ class VerificationResult(BaseModel):
     changed: bool
     similarity: float | None = None
     message: str
+
+
+class VideoArtifact(BaseModel):
+    """Schema for screen recording video"""
+    path: str
+    duration: int
+    fps: int
+    width: int
+    height: int
+    file_size: int
+    timestamp: str
+
+
+class VideoAnalysisResult(BaseModel):
+    """Schema for Kimi video analysis response"""
+    video_path: str
+    question: str
+    answer: str
+    model: str
+    frames_used: int
+    timestamp: str
