@@ -9,3 +9,7 @@ artifacts/logs/*.jsonl
 # Environment variables (API keys)
 .env
 .env.local
+artifacts/
+models/*/frame_*
+models/*/*.png
+models/*/*.jpg

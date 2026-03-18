@@ -1,0 +1,205 @@
+# vLLM Configuration for Advanced Vision Trading Pipeline
+# Optimized for RTX 5070 Ti 16GB with NVFP4 quantized models
+
+# =============================================================================
+# Server Configuration
+# =============================================================================
+server:
+  host: "0.0.0.0"
+  port: 8000
+  # Enable OpenAI-compatible API
+  api_version: "v1"
+
+# =============================================================================
+# Model Registry - NVFP4 Quantized Models for VRAM Efficiency
+# =============================================================================
+# Target Hardware: RTX 5070 Ti 16GB
+# VRAM Budget: ~14GB for models (leaving 2GB for system/OS overhead)
+
+models:
+  # -----------------------------------------------------------------------------
+  # Scout Model - Lightweight reviewer for quick analysis
+  # -----------------------------------------------------------------------------
+  qwen3.5-2b-nvfp4:
+    name: "Qwen3.5-2B-NVFP4"
+    path: "models/Qwen3.5-2B-NVFP4"
+    repo_id: "AxionML/Qwen3.5-2B-NVFP4"
+    type: "vision-language"
+    quantization: "nvfp4"
+    parameters: "2B"
+    vram_usage_gb: 2.5
+    max_batch_size: 16
+    max_model_len: 32768
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.70
+    dtype: "auto"
+    # vLLM-specific settings for NVFP4
+    quantization_config:
+      type: "modelopt"
+      format: "nvfp4"
+      group_size: 16
+    # Role in pipeline
+    role: "scout"
+    purpose: "Quick screen analysis, pattern detection, lightweight review"
+    enable_thinking: true
+    
+  # -----------------------------------------------------------------------------
+  # Full Reviewer Model - Deeper analysis when needed
+  # -----------------------------------------------------------------------------
+  qwen3.5-4b-nvfp4:
+    name: "Qwen3.5-4B-NVFP4"
+    path: "models/Qwen3.5-4B-NVFP4"
+    repo_id: "AxionML/Qwen3.5-4B-NVFP4"
+    type: "vision-language"
+    quantization: "nvfp4"
+    parameters: "4B"
+    vram_usage_gb: 4.0
+    max_batch_size: 8
+    max_model_len: 32768
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.75
+    dtype: "auto"
+    # vLLM-specific settings for NVFP4
+    quantization_config:
+      type: "modelopt"
+      format: "nvfp4"
+      group_size: 16
+    # Role in pipeline
+    role: "reviewer"
+    purpose: "Detailed chart analysis, trading signal validation, deep reasoning"
+    enable_thinking: true
+
+  # -----------------------------------------------------------------------------
+  # Future: 7B model for maximum quality (requires single model loading)
+  # -----------------------------------------------------------------------------
+  qwen3.5-7b-nvfp4:
+    name: "Qwen3.5-7B-NVFP4"
+    path: "models/Qwen3.5-7B-NVFP4"
+    repo_id: "AxionML/Qwen3.5-7B-NVFP4"
+    type: "vision-language"
+    quantization: "nvfp4"
+    parameters: "7B"
+    vram_usage_gb: 7.0
+    max_batch_size: 4
+    max_model_len: 16384
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.80
+    dtype: "auto"
+    quantization_config:
+      type: "modelopt"
+      format: "nvfp4"
+      group_size: 16
+    role: "expert"
+    purpose: "High-stakes decisions, complex multi-chart analysis"
+    enable_thinking: true
+    # Note: 7B model not downloaded yet - requires ~7GB VRAM
+
+# =============================================================================
+# VRAM Management Strategy
+# =============================================================================
+vram_management:
+  # Total available VRAM on RTX 5070 Ti
+  total_vram_gb: 16
+  # Reserve for system/OS
+  system_reserve_gb: 2
+  # Available for models
+  available_vram_gb: 14
+  
+  # Loading strategy
+  strategy: "sequential"  # Options: sequential, hot_swap, parallel (limited)
+  
+  # Model residency settings
+  default_resident: "qwen3.5-2b-nvfp4"  # Always keep scout loaded
+  
+  # Thresholds for automatic model swapping
+  swap_thresholds:
+    # When VRAM usage exceeds this, unload non-resident models
+    high_watermark: 0.85
+    # Safe level to load additional models
+    low_watermark: 0.60
+  
+  # Timeout for keeping models in VRAM (seconds)
+  residency_timeout: 300  # 5 minutes
+
+# =============================================================================
+# TensorRT-LLM Configuration (for optimized inference)
+# =============================================================================
+tensorrt_llm:
+  enabled: true
+  # Build configuration
+  build:
+    max_batch_size: 16
+    max_input_len: 4096
+    max_output_len: 2048
+    max_beam_width: 1
+  # Plugin settings
+  plugins:
+    use_gpt_attention: true
+    use_gemm_plugin: true
+    use_layernorm_plugin: false
+  # Precision settings for NVFP4
+  precision:
+    fp4: true
+    fp8: true
+    bf16: false
+
+# =============================================================================
+# Serving Configuration
+# =============================================================================
+serving:
+  # Worker settings
+  workers: 1
+  # Request timeout (seconds)
+  timeout: 120
+  # Maximum concurrent requests
+  max_concurrent_requests: 32
+  
+  # Chat template
+  chat_template: "qwen3"  # vLLM built-in support for Qwen3 series
+  
+  # Reasoning parser for thinking mode
+  reasoning_parser: "qwen3"
+  
+  # Speculative decoding (MTP - Multi-Token Prediction)
+  speculative:
+    enabled: false  # Enable for 4B+ models with MTP head
+    num_speculative_tokens: 1
+    method: "mtp"
+
+# =============================================================================
+# Trading Pipeline Integration
+# =============================================================================
+trading:
+  # Model selection by task
+  task_mapping:
+    screen_analysis: "qwen3.5-2b-nvfp4"
+    pattern_detection: "qwen3.5-2b-nvfp4"
+    signal_validation: "qwen3.5-4b-nvfp4"
+    chart_reasoning: "qwen3.5-4b-nvfp4"
+    multi_chart_analysis: "qwen3.5-4b-nvfp4"
+    trade_review: "qwen3.5-4b-nvfp4"
+  
+  # Automatic model upgrade based on complexity
+  auto_upgrade:
+    enabled: true
+    # Keywords that trigger reviewer model
+    complexity_triggers:
+      - "multi-timeframe"
+      - "correlation"
+      - "divergence"
+      - "confirm"
+      - "validate"
+      - "detailed"
+      - "explain"
+
+# =============================================================================
+# Dry Run / Testing Mode
+# =============================================================================
+dry_run:
+  enabled: false
+  # Simulate VRAM constraints
+  simulated_vram_gb: 16
+  # Log model loading/unloading without actual GPU operations
+  log_only: true
+  # Mock inference responses
+  mock_inference: false
