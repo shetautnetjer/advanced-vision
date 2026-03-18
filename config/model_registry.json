@@ -1,6 +1,6 @@
 {
-  "registry_version": "1.1.0",
-  "last_updated": "2026-03-17T18:45:00Z",
+  "registry_version": "1.2.0",
+  "last_updated": "2026-03-17T19:45:00Z",
   "hardware_target": {
     "gpu": "NVIDIA RTX 5070 Ti",
     "vram_total_gb": 16,
@@ -19,8 +19,8 @@
       "residency": "resident",
       "priority": 1,
       "files": {
-        "checkpoint": "models/yolov8/yolov8n.pt",
-        "tensorrt": "models/yolov8/yolov8n.engine"
+        "checkpoint": "models/yolov8n.pt",
+        "tensorrt": "models/yolov8n.engine"
       },
       "size_on_disk_mb": 6.2,
       "vram": {
@@ -41,8 +41,8 @@
       "residency": "resident",
       "priority": 2,
       "files": {
-        "checkpoint": "models/mobilesam",
-        "tensorrt": "models/mobilesam/tensorrt"
+        "checkpoint": "models/MobileSAM",
+        "tensorrt": "models/MobileSAM/tensorrt"
       },
       "size_on_disk_mb": 10,
       "vram": {
@@ -55,27 +55,53 @@
       "optimization_notes": "⭐ KEEP RESIDENT - only 0.5GB VRAM, 12ms inference. Full SAM compatibility with TinyViT encoder",
       "sam_compatible": true
     },
-    "qwen2.5-vl-2b": {
-      "id": "qwen2.5-vl-2b",
-      "name": "Qwen2.5-VL-2B",
-      "repo": "https://huggingface.co/Qwen/Qwen2.5-VL-2B-Instruct",
+    "qwen3.5-2b-nvfp4": {
+      "id": "qwen3.5-2b-nvfp4",
+      "name": "Qwen3.5-2B-NVFP4",
+      "repo": "https://huggingface.co/AxionML/Qwen3.5-2B-NVFP4",
       "type": "vision_language",
       "status": "available",
-      "loaded": true,
+      "loaded": false,
       "residency": "resident",
       "priority": 3,
       "files": {
-        "checkpoint": "models/Qwen2.5-VL-2B-Instruct",
-        "tensorrt": "models/Qwen2.5-VL-2B-Instruct/tensorrt"
+        "checkpoint": "models/Qwen3.5-2B-NVFP4",
+        "tensorrt": "models/Qwen3.5-2B-NVFP4/tensorrt"
       },
-      "size_on_disk_gb": 4.5,
+      "size_on_disk_gb": 2.5,
       "vram": {
         "fp16_gb": 4.5,
-        "int8_gb": 2.8,
+        "nvfp4_gb": 2.5,
         "tensorrt_gb": 2.2
       },
-      "purpose": "Primary reviewer model for detailed analysis",
-      "optimization_notes": "Already integrated in pipeline. TensorRT saves 2.3GB VRAM"
+      "purpose": "Primary scout model for quick screen analysis",
+      "role": "scout",
+      "optimization_notes": "NVFP4 quantized - 2.5GB VRAM, fast inference",
+      "quantization": "nvfp4"
+    },
+    "qwen3.5-4b-nvfp4": {
+      "id": "qwen3.5-4b-nvfp4",
+      "name": "Qwen3.5-4B-NVFP4",
+      "repo": "https://huggingface.co/AxionML/Qwen3.5-4B-NVFP4",
+      "type": "vision_language",
+      "status": "available",
+      "loaded": false,
+      "residency": "resident",
+      "priority": 4,
+      "files": {
+        "checkpoint": "models/Qwen3.5-4B-NVFP4",
+        "tensorrt": "models/Qwen3.5-4B-NVFP4/tensorrt"
+      },
+      "size_on_disk_gb": 4.0,
+      "vram": {
+        "fp16_gb": 8.0,
+        "nvfp4_gb": 4.0,
+        "tensorrt_gb": 3.5
+      },
+      "purpose": "Deep reviewer model for detailed chart analysis",
+      "role": "reviewer",
+      "optimization_notes": "NVFP4 quantized - 4GB VRAM, detailed reasoning",
+      "quantization": "nvfp4"
     },
     "eagle2-2b": {
       "id": "eagle2-2b",
@@ -84,8 +110,8 @@
       "type": "vision_language",
       "status": "available",
       "loaded": false,
-      "residency": "resident",
-      "priority": 4,
+      "residency": "on_demand",
+      "priority": 5,
       "files": {
         "checkpoint": "models/Eagle2-2B",
         "tensorrt": "models/Eagle2-2B/tensorrt"
@@ -108,10 +134,10 @@
       "status": "available",
       "loaded": false,
       "residency": "on_demand",
-      "priority": 5,
+      "priority": 6,
       "files": {
-        "checkpoint": "models/yolov8/yolov8s.pt",
-        "tensorrt": "models/yolov8/yolov8s.engine"
+        "checkpoint": "models/yolov8s.pt",
+        "tensorrt": "models/yolov8s.engine"
       },
       "size_on_disk_mb": 22.5,
       "vram": {
@@ -127,10 +153,10 @@
       "name": "Stock Pattern YOLOv8",
       "repo": "https://huggingface.co/foduucom/stockmarket-pattern-detection-yolov8",
       "type": "detection",
-      "status": "available",
+      "status": "unavailable",
       "loaded": false,
-      "residency": "resident",
-      "priority": 6,
+      "residency": "on_demand",
+      "priority": 7,
       "files": {
         "checkpoint": "models/stock-pattern-yolo",
         "tensorrt": "models/stock-pattern-yolo/model.engine"
@@ -152,36 +178,38 @@
       ],
       "optimization_notes": "Keep resident during active chart analysis"
     },
-    "eagle3": {
-      "id": "eagle3",
-      "name": "Eagle3",
-      "repo": "https://huggingface.co/nvidia/Eagle3",
+    "qwen3.5-7b-nvfp4": {
+      "id": "qwen3.5-7b-nvfp4",
+      "name": "Qwen3.5-7B-NVFP4",
+      "repo": "https://huggingface.co/AxionML/Qwen3.5-7B-NVFP4",
       "type": "vision_language",
       "status": "unavailable",
       "loaded": false,
-      "residency": "alternative",
-      "priority": 7,
+      "residency": "on_demand",
+      "priority": 8,
       "files": {
-        "checkpoint": "models/Eagle3",
-        "tensorrt": "models/Eagle3/tensorrt"
+        "checkpoint": "models/Qwen3.5-7B-NVFP4",
+        "tensorrt": "models/Qwen3.5-7B-NVFP4/tensorrt"
       },
-      "size_on_disk_gb": 1.5,
+      "size_on_disk_gb": 7.0,
       "vram": {
-        "fp16_gb": 2.0,
-        "tensorrt_gb": 1.2
+        "nvfp4_gb": 7.0,
+        "tensorrt_gb": 6.0
       },
-      "purpose": "Faster alternative to Eagle2-2B with 0.26B head",
-      "optimization_notes": "3-4x faster than Eagle2, slight accuracy trade-off"
+      "purpose": "Expert model for complex multi-chart analysis",
+      "role": "expert",
+      "optimization_notes": "Load on-demand only - requires 7GB VRAM",
+      "quantization": "nvfp4"
     },
     "sam2-tiny": {
       "id": "sam2-tiny",
       "name": "SAM2-Tiny",
       "repo": "https://huggingface.co/facebook/sam2-hiera-tiny",
       "type": "segmentation",
-      "status": "available",
+      "status": "unavailable",
       "loaded": false,
       "residency": "on_demand",
-      "priority": 8,
+      "priority": 9,
       "files": {
         "checkpoint": "models/sam2-tiny",
         "tensorrt": "models/sam2-tiny/tensorrt"
@@ -224,40 +252,40 @@
   "loading_strategies": {
     "standard_trading": {
       "name": "Standard Trading Session",
-      "description": "Full pipeline for active trading with MobileSAM resident",
-      "load_order": ["yolov8n", "mobilesam", "qwen2.5-vl-2b", "eagle2-2b", "stock-pattern-yolo"],
-      "total_vram_tensorrt_gb": 7.2,
-      "on_demand_available_gb": 5.5
+      "description": "Full pipeline for active trading with NVFP4 models",
+      "load_order": ["yolov8n", "mobilesam", "qwen3.5-2b-nvfp4", "qwen3.5-4b-nvfp4", "eagle2-2b"],
+      "total_vram_nvfp4_gb": 10.6,
+      "on_demand_available_gb": 3.4
     },
     "fast_scout": {
       "name": "Fast Scout Mode",
       "description": "Minimal resident set for quick ROI identification",
-      "load_order": ["yolov8n", "mobilesam", "qwen2.5-vl-2b"],
-      "total_vram_tensorrt_gb": 3.1,
-      "on_demand_available_gb": 10.4
+      "load_order": ["yolov8n", "mobilesam", "qwen3.5-2b-nvfp4"],
+      "total_vram_nvfp4_gb": 3.4,
+      "on_demand_available_gb": 10.6
     },
     "deep_analysis": {
       "name": "Deep Analysis Mode",
-      "description": "Full accuracy with SAM3 segmentation fallback",
-      "load_order": ["yolov8n", "mobilesam", "qwen2.5-vl-2b", "eagle2-2b", "stock-pattern-yolo"],
-      "on_demand": ["sam3"],
-      "total_vram_tensorrt_gb": 7.2,
-      "on_demand_available_gb": 5.5
+      "description": "Full accuracy with 4B reviewer active",
+      "load_order": ["yolov8n", "mobilesam", "qwen3.5-2b-nvfp4", "qwen3.5-4b-nvfp4"],
+      "on_demand": ["eagle2-2b"],
+      "total_vram_nvfp4_gb": 7.4,
+      "on_demand_available_gb": 6.6
     },
     "minimal": {
       "name": "Minimal Mode",
       "description": "Ultra-low VRAM for background monitoring",
       "load_order": ["yolov8n", "mobilesam"],
-      "total_vram_tensorrt_gb": 0.9,
-      "on_demand_available_gb": 12.6
+      "total_vram_nvfp4_gb": 0.9,
+      "on_demand_available_gb": 13.1
     }
   },
   "current_session": {
-    "strategy": "standard_trading",
-    "loaded_models": ["qwen2.5-vl-2b"],
-    "available_models": ["yolov8n", "yolov8s", "mobilesam", "eagle2-2b", "stock-pattern-yolo", "sam2-tiny"],
-    "unavailable_models": ["eagle3", "sam3"],
-    "vram_used_gb": 2.2,
-    "vram_available_gb": 11.8
+    "strategy": "fast_scout",
+    "loaded_models": [],
+    "available_models": ["yolov8n", "yolov8s", "mobilesam", "qwen3.5-2b-nvfp4", "qwen3.5-4b-nvfp4", "eagle2-2b"],
+    "unavailable_models": ["qwen3.5-7b-nvfp4", "stock-pattern-yolo", "sam2-tiny", "sam3"],
+    "vram_used_gb": 0.0,
+    "vram_available_gb": 14.0
   }
 }

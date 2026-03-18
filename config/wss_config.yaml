@@ -1,0 +1,104 @@
+# WebSocket Server Configuration for Advanced Vision
+# Distributed Architecture Pipeline:
+#   Screen Capture → WSS Server (Port 8001) → Raw Frames
+#   YOLO Detector → WSS Server (Port 8002) → Boxes + Classes  
+#   MobileSAM → WSS Server (Port 8003) → Segmentations
+#   Eagle Vision → WSS Server (Port 8004) → Classifications
+#   Reviewers → WSS Server (Port 8005) → Analysis Results
+
+# Feed configurations
+feeds:
+  - port: 8001
+    name: capture
+    description: "Screen Capture - Raw Frames"
+    binary_support: true
+    json_support: true
+    max_clients: 50
+    
+  - port: 8002
+    name: yolo
+    description: "YOLO Detector - Boxes + Classes"
+    binary_support: true
+    json_support: true
+    max_clients: 50
+    
+  - port: 8003
+    name: mobilesam
+    description: "MobileSAM - Segmentations"
+    binary_support: true
+    json_support: true
+    max_clients: 50
+    
+  - port: 8004
+    name: eagle
+    description: "Eagle Vision - Classifications"
+    binary_support: false
+    json_support: true
+    max_clients: 100
+    
+  - port: 8005
+    name: reviewers
+    description: "Reviewers - Analysis Results"
+    binary_support: false
+    json_support: true
+    max_clients: 100
+
+# Schema routing configuration
+schemas:
+  ui:
+    enabled: true
+    feeds:
+      - capture
+      - eagle
+    keywords:
+      - button
+      - form
+      - navigation
+      - input
+      - click
+      - ui
+      - interface
+      
+  trading:
+    enabled: true
+    feeds:
+      - reviewers
+    keywords:
+      - signal
+      - trend
+      - pattern
+      - breakout
+      - support
+      - resistance
+      - entry
+      - stop
+      - target
+      - risk
+      - reward
+      - price
+      - chart
+
+# Logging configuration
+logging:
+  text_log: "wss-feed-text.log"
+  json_log: "wss-feed-classifications.json"
+  image_dir: "frames"
+  log_level: "INFO"
+  max_file_size_mb: 100
+  max_backup_files: 5
+
+# Server settings
+server:
+  host: "0.0.0.0"
+  ping_interval: 20
+  ping_timeout: 10
+  close_timeout: 5
+  compression: true
+  
+# Client defaults
+client:
+  auto_reconnect: true
+  reconnect_delay: 1.0
+  max_reconnect_delay: 30.0
+  reconnect_backoff: 2.0
+  max_retries: 0  # 0 = unlimited

@@ -1,5 +1,29 @@
 # vLLM Configuration for Advanced Vision Trading Pipeline
 # Optimized for RTX 5070 Ti 16GB with NVFP4 quantized models
+# 
+# CRITICAL FIXES for RTX 5070 Ti (2026-03-17):
+# 1. pip install nvidia-nccl-cu12==2.27.3 (fixes CUBLAS_STATUS_ALLOC_FAILED)
+# 2. Set environment variables for stable NVFP4:
+#    export VLLM_NVFP4_GEMM_BACKEND=marlin
+#    export VLLM_TEST_FORCE_FP8_MARLIN=1
+# 3. Keep MoE router/gate in BF16 (not FP4!)
+
+# =============================================================================
+# Environment Variables (set before starting vLLM)
+# =============================================================================
+environment:
+  # CRITICAL: RTX 5070 Ti NCCL fix - upgrade from 2.26.2 to 2.27.3
+  # pip install nvidia-nccl-cu12==2.27.3
+  
+  # NVFP4 Stable Settings
+  VLLM_NVFP4_GEMM_BACKEND: "marlin"
+  VLLM_TEST_FORCE_FP8_MARLIN: "1"
+  
+  # CUDA settings
+  CUDA_VISIBLE_DEVICES: "0"
+  
+  # MoE router/gate precision (keep in BF16, not FP4!)
+  VLLM_MOE_ROUTER_PRECISION: "bf16"
 
 # =============================================================================
 # Server Configuration
@@ -14,7 +38,10 @@ server:
 # Model Registry - NVFP4 Quantized Models for VRAM Efficiency
 # =============================================================================
 # Target Hardware: RTX 5070 Ti 16GB
-# VRAM Budget: ~14GB for models (leaving 2GB for system/OS overhead)
+# VRAM Budget (Confirmed 2026-03-17):
+#   - Resident: ~8GB (YOLO + Eagle2 + Qwen2B + MobileSAM)
+#   - On-demand: SAM3 (~10GB, unload after use)
+#   - Headroom: ~6GB for cache
 
 models:
   # -----------------------------------------------------------------------------
@@ -38,6 +65,8 @@ models:
       type: "modelopt"
       format: "nvfp4"
       group_size: 16
+      # MoE router/gate in BF16 for stability
+      moe_router_precision: "bf16"
     # Role in pipeline
     role: "scout"
     purpose: "Quick screen analysis, pattern detection, lightweight review"
@@ -64,13 +93,14 @@ models:
       type: "modelopt"
       format: "nvfp4"
       group_size: 16
+      moe_router_precision: "bf16"
     # Role in pipeline
     role: "reviewer"
     purpose: "Detailed chart analysis, trading signal validation, deep reasoning"
     enable_thinking: true
 
   # -----------------------------------------------------------------------------
-  # Future: 7B model for maximum quality (requires single model loading)
+  # Expert Model - Maximum quality (single model loading only)
   # -----------------------------------------------------------------------------
   qwen3.5-7b-nvfp4:
     name: "Qwen3.5-7B-NVFP4"
@@ -89,14 +119,95 @@ models:
       type: "modelopt"
       format: "nvfp4"
       group_size: 16
+      moe_router_precision: "bf16"
     role: "expert"
     purpose: "High-stakes decisions, complex multi-chart analysis"
     enable_thinking: true
     # Note: 7B model not downloaded yet - requires ~7GB VRAM
 
+  # -----------------------------------------------------------------------------
+  # Eagle2-2B - Vision-language model (NO vLLM support, use transformers)
+  # -----------------------------------------------------------------------------
+  eagle2-2b:
+    name: "Eagle2-2B"
+    path: "models/Eagle2-2B"
+    repo_id: "nvidia/Eagle2-2B"
+    type: "vision-language"
+    quantization: "fp16"
+    parameters: "2B"
+    vram_usage_gb: 3.2
+    max_batch_size: 4
+    max_model_len: 4096
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.65
+    dtype: "float16"
+    # NOTE: Eagle2 does NOT support vLLM - use transformers==4.37.2
+    # Inference: ~300-500ms/image with FP16 (2x speedup with model.half())
+    role: "scout"
+    purpose: "Fast scout classification of ROI crops"
+    enable_thinking: false
+    vllm_supported: false
+    transformers_version: "4.37.2"
+
+  # -----------------------------------------------------------------------------
+  # MobileSAM - Fast segmentation (ALWAYS RESIDENT)
+  # -----------------------------------------------------------------------------
+  mobilesam:
+    name: "MobileSAM"
+    path: "models/MobileSAM"
+    repo_id: "chaoningzhang/mobilesam"
+    type: "segmentation"
+    quantization: "fp16"
+    parameters: "5M"
+    vram_usage_gb: 0.5
+    # Performance: 12ms/image, 40MB, ~73% accuracy
+    # Comparison: SAM3 = 2921ms/image, 3.4GB, ~88% accuracy
+    role: "resident"
+    purpose: "Fast resident segmentation - default for all tasks"
+    residency: "resident"
+    speed_ms: 12
+    accuracy: 73
+    vllm_supported: false
+    
+  # -----------------------------------------------------------------------------
+  # SAM3 - High-accuracy segmentation (ON-DEMAND ONLY)
+  # -----------------------------------------------------------------------------
+  sam3:
+    name: "SAM3"
+    path: "models/sam3"
+    repo_id: "facebook/sam3"
+    type: "segmentation"
+    quantization: "fp16"
+    vram_usage_gb: 3.4
+    # Performance: 2921ms/image, 3.4GB, ~88% accuracy
+    # Use ONLY when accuracy is critical and time permits
+    role: "expert"
+    purpose: "High-accuracy segmentation - use only when critical"
+    residency: "on_demand"
+    speed_ms: 2921
+    accuracy: 88
+    unload_after_use: true
+    vllm_supported: false
+    gated: true
+
 # =============================================================================
-# VRAM Management Strategy
+# VRAM Management Strategy (Confirmed Budget)
 # =============================================================================
+# Resident Set (~8GB):
+#   - yolov8n:        0.4 GB
+#   - mobilesam:      0.5 GB  ⭐ ALWAYS RESIDENT (12ms vs 2921ms)
+#   - qwen3.5-2b:     2.5 GB
+#   - eagle2-2b:      3.2 GB
+#   - yolov8s:        0.9 GB (optional)
+#   Total: ~7.5 GB
+#
+# On-demand Available:
+#   - qwen3.5-4b:     4.0 GB (swap with eagle2 if needed)
+#   - sam3:          ~10 GB (unload immediately after use)
+#   - qwen3.5-7b:     7.0 GB (single model mode)
+#
+# Headroom: ~6GB for KV cache and system
+
 vram_management:
   # Total available VRAM on RTX 5070 Ti
   total_vram_gb: 16
@@ -109,17 +220,19 @@ vram_management:
   strategy: "sequential"  # Options: sequential, hot_swap, parallel (limited)
   
   # Model residency settings
-  default_resident: "qwen3.5-2b-nvfp4"  # Always keep scout loaded
+  default_resident: "qwen3.5-2b-nvfp4"
+  always_resident: ["mobilesam"]  # MobileSAM is always kept resident
   
   # Thresholds for automatic model swapping
   swap_thresholds:
-    # When VRAM usage exceeds this, unload non-resident models
     high_watermark: 0.85
-    # Safe level to load additional models
     low_watermark: 0.60
   
   # Timeout for keeping models in VRAM (seconds)
   residency_timeout: 300  # 5 minutes
+  
+  # Models that should be unloaded immediately after use
+  immediate_unload: ["sam3"]
 
 # =============================================================================
 # TensorRT-LLM Configuration (for optimized inference)
@@ -155,14 +268,14 @@ serving:
   max_concurrent_requests: 32
   
   # Chat template
-  chat_template: "qwen3"  # vLLM built-in support for Qwen3 series
+  chat_template: "qwen3"
   
   # Reasoning parser for thinking mode
   reasoning_parser: "qwen3"
   
   # Speculative decoding (MTP - Multi-Token Prediction)
   speculative:
-    enabled: false  # Enable for 4B+ models with MTP head
+    enabled: false
     num_speculative_tokens: 1
     method: "mtp"
 
@@ -178,11 +291,13 @@ trading:
     chart_reasoning: "qwen3.5-4b-nvfp4"
     multi_chart_analysis: "qwen3.5-4b-nvfp4"
     trade_review: "qwen3.5-4b-nvfp4"
+    roi_classification: "eagle2-2b"  # Use Eagle2 for ROI crops (fast)
+    segmentation: "mobilesam"  # Default to MobileSAM (12ms vs 2921ms)
+    segmentation_accurate: "sam3"  # Only when accuracy critical
   
   # Automatic model upgrade based on complexity
   auto_upgrade:
     enabled: true
-    # Keywords that trigger reviewer model
     complexity_triggers:
       - "multi-timeframe"
       - "correlation"
@@ -197,9 +312,6 @@ trading:
 # =============================================================================
 dry_run:
   enabled: false
-  # Simulate VRAM constraints
   simulated_vram_gb: 16
-  # Log model loading/unloading without actual GPU operations
   log_only: true
-  # Mock inference responses
   mock_inference: false

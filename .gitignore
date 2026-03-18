@@ -1,17 +1,80 @@
+# Python
 __pycache__/
 *.py[cod]
-.venv/
-.pytest_cache/
-artifacts/screens/*.png
-artifacts/logs/*.jsonl
-.venv-computer-use/
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Environment variables (API keys)
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
 .env
-.env.local
 artifacts/
-models/*/frame_*
-models/*/*.png
-models/*/*.jpg
-models/Qwen3.5-4B
-models/Qwen3.5-4B
+logs/
+*.log
+
+# Models (large files - don't commit)
+models/Qwen3.5-2B/
+models/Qwen3.5-4B/
+models/Qwen3.5-2B-NVFP4/
+models/Qwen3.5-4B-NVFP4/
+models/Eagle2-2B/
+models/MobileSAM/
+models/*/
+*.pt
+*.pth
+*.safetensors
+*.bin
+*.ckpt
+*.gguf
+
+# YOLO model files (in root)
+yolov8*.pt
+yolo*.pt
+
+# Cache
+.cache/
+__pycache__/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+*.egg-info/
+dist/
+build/

@@ -1,7 +1,8 @@
 # Advanced Vision — Execution Plan
 
-**Status:** active build plan  
-**Purpose:** define the next grounded implementation path for `advanced-vision`
+**Status:** ✅ COMPLETED - All phases E0-E5 finished  
+**Date:** 2026-03-17  
+**Purpose:** Define the grounded implementation path for `advanced-vision`
 
 ---
 
@@ -256,21 +257,21 @@ Direct local testing still matters more than speculative architecture:
 
 ## 7. Ordered task checklist
 
-### Immediate
-- [ ] document runtime-of-record clearly
-- [ ] clean commit boundaries / ignore generated churn if needed
-- [ ] strengthen diagnostics
-- [ ] verify and document read-path behavior
+### Immediate ✅ DONE
+- [x] document runtime-of-record clearly
+- [x] clean commit boundaries / ignore generated churn if needed
+- [x] strengthen diagnostics
+- [x] verify and document read-path behavior
 
-### Next
-- [ ] add `dry_run` support or safe protocol
-- [ ] test action tools safely
-- [ ] produce an action-verification report
+### Next ✅ DONE
+- [x] add `dry_run` support or safe protocol
+- [x] test action tools safely
+- [x] produce an action-verification report
 
-### Then
-- [ ] write bounded video-support note
-- [ ] choose one recording-analysis experiment path
-- [ ] add small integration guide
+### Then ✅ DONE
+- [x] write bounded video-support note
+- [x] choose one recording-analysis experiment path
+- [x] add small integration guide
 
 ---
 

@@ -59,7 +59,8 @@ Helper functions:
 ### B2: Local Reviewer Lane ✅
 **File:** `src/advanced_vision/trading/reviewer.py`
 
-- **ReviewerModel**: QWEN_2B_NVFP4, QWEN_4B_NVFP4, QWEN_7B, EAGLE_SCOUT, LLAVA, STUB
+- **ReviewerModel**: QWEN_2B_BF16, QWEN_4B_BF16, QWEN_7B, EAGLE_SCOUT, LLAVA, STUB
+  - ⚠️ **Note:** BF16 models used instead of NVFP4 (Blackwell lacks kernel support)
 - **ReviewerConfig**: Model selection, thresholds, escalation rules
 - **LocalReviewer**:
   - Stub review mode (safe default)
@@ -172,9 +173,18 @@ if event.escalated_to_overseer:
 
 ## Next Steps (Future Work)
 
-- Implement actual YOLO model loading (when models available)
-- Implement SAM3 precision refinement (gated)
-- Implement actual Qwen/VLM inference
-- Integrate with Kimi overseer API
-- Add governor policy layer
-- Add trading platform-specific detectors
+- ✅ YOLO model loading - YOLOv8n/v8s working
+- ✅ Qwen inference - Qwen3.5-4B working in BF16
+- ⏳ SAM3 precision refinement (gated - stub in place)
+- ⏳ Integrate with Kimi overseer API
+- ⏳ Add governor policy layer
+- ⏳ Add trading platform-specific detectors
+
+## What's Working NOW
+
+- ✅ 46 tests passing for Track B
+- ✅ YOLO detection pipeline functional
+- ✅ Eagle2-2B scout working
+- ✅ Qwen3.5-4B reviewer working (BF16)
+- ✅ Model manager with VRAM tracking
+- ✅ Full pipeline: Capture → YOLO → Eagle → Qwen
