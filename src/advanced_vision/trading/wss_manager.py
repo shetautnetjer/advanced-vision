@@ -5,6 +5,13 @@ for coordinated real-time streaming of vision model outputs.
 
 Uses WSS v2 architecture - single port (8000) with topic routing.
 
+With Governor Integration (v2.1):
+- Imports ExecutionGate for verdict validation
+- Before publishing to WSS: runs ExecutionGate.check()
+- Attaches verdict to packet envelope
+- If verdict is block/recheck: doesn't publish, logs to TruthWriter
+- If verdict is require_approval: publishes with approval_pending flag
+
 Usage:
     manager = WSSPublisherManager()
     manager.start_all()
@@ -18,8 +25,14 @@ Usage:
     # After Eagle classification:
     manager.publish_eagle_classification(roi_id, frame_id, event_type, confidence)
     
-    # After analysis:
-    manager.publish_analysis(frame_id, analysis, risk_level, recommendation)
+    # After analysis with Governor:
+    manager.publish_governed_analysis(
+        frame_id=frame_id,
+        analysis=analysis,
+        risk_level=risk_level,
+        recommendation=recommendation,
+        verdict=verdict,  # GovernorVerdict required
+    )
     
     manager.stop_all()
 """
@@ -30,6 +43,7 @@ import logging
 import warnings
 from pathlib import Path
 from typing import Any, Optional
+from uuid import uuid4
 
 import numpy as np
 
@@ -48,6 +62,12 @@ from advanced_vision.trading.events import (
     TradingEventType,
 )
 
+# Governor integration imports
+from advanced_vision.core.execution_gate import ExecutionGate, GateDecision
+from advanced_vision.core.execution_precondition import ExecutionPrecondition
+from advanced_vision.core.governor_verdict import GovernorVerdict, Decision
+from advanced_vision.core.truth_writer import TruthWriter
+
 logger = logging.getLogger(__name__)
 
 
@@ -60,6 +80,12 @@ class WSSPublisherManager:
     3. Eagle Vision (ws://localhost:8000, topic: vision.classification.eagle)
     4. Analysis (ws://localhost:8000, topic: vision.analysis.qwen)
     
+    Governor Integration (v2.1):
+    - ExecutionGate validates verdicts before WSS publishing
+    - TruthWriter logs blocked/recheck packets before suppression
+    - WSS only receives approved packets (or approval_pending flagged)
+    - Maintains backward compatibility with v2 API
+    
     Features:
     - Unified start/stop for all publishers
     - Per-publisher enable/disable
@@ -67,6 +93,7 @@ class WSSPublisherManager:
     - Unified statistics
     - Schema configuration ("ui" or "trading")
     - Distributed tracing support
+    - Governor verdict validation (new in v2.1)
     """
     
     def __init__(
@@ -78,6 +105,12 @@ class WSSPublisherManager:
         enable_sam: bool = True,
         enable_eagle: bool = True,
         enable_analysis: bool = True,
+        # Governor integration parameters (new in v2.1)
+        enable_governor: bool = True,
+        execution_gate: ExecutionGate | None = None,
+        truth_writer: TruthWriter | None = None,
+        suppress_blocked_packets: bool = True,
+        publish_approval_pending: bool = True,
     ):
         self.base_dir = Path(base_dir)
         self.schema = schema
@@ -102,6 +135,38 @@ class WSSPublisherManager:
         
         # Config
         self._yolo_fps = yolo_fps
+        
+        # Governor integration (v2.1)
+        self._enable_governor = enable_governor
+        self._suppress_blocked_packets = suppress_blocked_packets
+        self._publish_approval_pending = publish_approval_pending
+        
+        # ExecutionGate for verdict validation
+        if execution_gate:
+            self._execution_gate = execution_gate
+        elif enable_governor:
+            self._execution_gate = ExecutionGate()
+        else:
+            self._execution_gate = None
+        
+        # TruthWriter for logging blocked packets
+        if truth_writer:
+            self._truth_writer = truth_writer
+        elif enable_governor:
+            truth_dir = self.base_dir / "truth"
+            truth_dir.mkdir(parents=True, exist_ok=True)
+            self._truth_writer = TruthWriter(truth_dir)
+        else:
+            self._truth_writer = None
+        
+        # Statistics for governor integration
+        self._governor_stats = {
+            "packets_checked": 0,
+            "packets_blocked": 0,
+            "packets_recheck": 0,
+            "packets_approval_pending": 0,
+            "packets_allowed": 0,
+        }
         
         self._started = False
     
@@ -399,6 +464,333 @@ class WSSPublisherManager:
                 risk_level=risk_level,
                 analysis=analysis,
             )
+    
+    # =========================================================================
+    # Governor Integration Methods (v2.1)
+    # =========================================================================
+    
+    def publish_governed_analysis(
+        self,
+        frame_id: str,
+        analysis: str,
+        risk_level: RiskLevel | str,
+        recommendation: ActionRecommendation | str,
+        verdict: GovernorVerdict | dict[str, Any],
+        confidence: float | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Publish analysis result with Governor verdict validation.
+        
+        This method validates the verdict through ExecutionGate before publishing.
+        It is the primary entry point for governed WSS publishing.
+        
+        Args:
+            frame_id: Frame identifier
+            analysis: Analysis text
+            risk_level: Risk assessment
+            recommendation: Recommended action
+            verdict: GovernorVerdict (required) or dict representation
+            confidence: Optional confidence
+            metadata: Optional metadata
+            
+        Returns:
+            Dict with publishing result:
+            - published: Whether the packet was published to WSS
+            - suppressed: Whether the packet was suppressed (blocked/recheck)
+            - approval_pending: Whether published with approval_pending flag
+            - reason: Human-readable reason for the decision
+            - gate_decision: GateDecision from ExecutionGate
+        """
+        if not self._analysis or not self._enable_analysis:
+            return {
+                "published": False,
+                "suppressed": True,
+                "approval_pending": False,
+                "reason": "Analysis publisher not enabled",
+                "gate_decision": None,
+            }
+        
+        # Convert dict to GovernorVerdict if needed
+        if isinstance(verdict, dict):
+            try:
+                verdict = GovernorVerdict.from_dict(verdict)
+            except Exception as e:
+                logger.error(f"Failed to parse verdict dict: {e}")
+                return {
+                    "published": False,
+                    "suppressed": True,
+                    "approval_pending": False,
+                    "reason": f"Invalid verdict format: {e}",
+                    "gate_decision": None,
+                }
+        
+        # Build packet for ExecutionGate
+        packet = {
+            "frame_id": frame_id,
+            "analysis": analysis,
+            "risk_level": risk_level.value if hasattr(risk_level, 'value') else risk_level,
+            "recommendation": recommendation.value if hasattr(recommendation, 'value') else recommendation,
+            "execution_candidate": True,
+            "mode": self.schema,
+            "governor_verdict": verdict.to_dict(),
+        }
+        
+        if confidence is not None:
+            packet["confidence"] = confidence
+        
+        if metadata:
+            packet.update(metadata)
+        
+        # Run ExecutionGate validation
+        gate_decision = self._check_execution_gate(packet, verdict)
+        
+        result = {
+            "published": False,
+            "suppressed": False,
+            "approval_pending": False,
+            "reason": "",
+            "gate_decision": gate_decision,
+        }
+        
+        # Handle verdict decision
+        if verdict.decision == Decision.BLOCK:
+            result["suppressed"] = True
+            result["reason"] = f"Packet blocked by Governor: {verdict.rationale[:100]}..."
+            
+            if self._suppress_blocked_packets:
+                # Log to TruthWriter instead of publishing
+                self._log_suppressed_packet(packet, verdict, "blocked")
+                logger.warning(
+                    "WSS publish BLOCKED for frame %s: verdict=%s",
+                    frame_id,
+                    verdict.verdict_id[:8]
+                )
+                return result
+        
+        elif verdict.decision == Decision.RECHECK:
+            result["suppressed"] = True
+            result["reason"] = f"Packet routed to recheck: {verdict.rationale[:100]}..."
+            
+            if self._suppress_blocked_packets:
+                # Log to TruthWriter instead of publishing
+                self._log_suppressed_packet(packet, verdict, "recheck")
+                logger.warning(
+                    "WSS publish RECHECK for frame %s: verdict=%s",
+                    frame_id,
+                    verdict.verdict_id[:8]
+                )
+                return result
+        
+        elif verdict.decision == Decision.REQUIRE_APPROVAL:
+            result["approval_pending"] = True
+            result["reason"] = f"Packet requires approval: {verdict.rationale[:100]}..."
+            
+            if self._publish_approval_pending:
+                # Publish with approval_pending flag
+                enriched_metadata = metadata or {}
+                enriched_metadata["governor_verdict"] = verdict.to_dict()
+                enriched_metadata["approval_pending"] = True
+                enriched_metadata["verdict_id"] = verdict.verdict_id
+                
+                self._analysis.publish_analysis(
+                    frame_id=frame_id,
+                    analysis=analysis,
+                    risk_level=risk_level,
+                    recommendation=recommendation,
+                    confidence=confidence,
+                    metadata=enriched_metadata,
+                )
+                result["published"] = True
+                
+                logger.info(
+                    "WSS publish APPROVAL_PENDING for frame %s: verdict=%s",
+                    frame_id,
+                    verdict.verdict_id[:8]
+                )
+                return result
+            else:
+                # Don't publish approval-pending packets
+                self._log_suppressed_packet(packet, verdict, "approval_pending")
+                return result
+        
+        # Decision is CONTINUE or WARN - publish normally
+        enriched_metadata = metadata or {}
+        enriched_metadata["governor_verdict"] = verdict.to_dict()
+        enriched_metadata["verdict_id"] = verdict.verdict_id
+        enriched_metadata["decision"] = verdict.decision.value
+        
+        self._analysis.publish_analysis(
+            frame_id=frame_id,
+            analysis=analysis,
+            risk_level=risk_level,
+            recommendation=recommendation,
+            confidence=confidence,
+            metadata=enriched_metadata,
+        )
+        
+        result["published"] = True
+        result["reason"] = f"Published with verdict: {verdict.decision.value}"
+        
+        logger.debug(
+            "WSS publish ALLOWED for frame %s: decision=%s verdict=%s",
+            frame_id,
+            verdict.decision.value,
+            verdict.verdict_id[:8]
+        )
+        
+        return result
+    
+    def _check_execution_gate(
+        self,
+        packet: dict[str, Any],
+        verdict: GovernorVerdict,
+    ) -> GateDecision | None:
+        """Check packet through ExecutionGate.
+        
+        Args:
+            packet: Packet to validate
+            verdict: GovernorVerdict to validate
+            
+        Returns:
+            GateDecision or None if governor not enabled
+        """
+        if not self._enable_governor or not self._execution_gate:
+            return None
+        
+        self._governor_stats["packets_checked"] += 1
+        
+        gate_decision = self._execution_gate.process_with_verdict(packet, verdict)
+        
+        if gate_decision.can_execute:
+            self._governor_stats["packets_allowed"] += 1
+        elif gate_decision.requires_recheck:
+            self._governor_stats["packets_recheck"] += 1
+        elif gate_decision.requires_approval:
+            self._governor_stats["packets_approval_pending"] += 1
+        else:
+            self._governor_stats["packets_blocked"] += 1
+        
+        return gate_decision
+    
+    def _log_suppressed_packet(
+        self,
+        packet: dict[str, Any],
+        verdict: GovernorVerdict,
+        suppression_reason: str,
+    ) -> None:
+        """Log suppressed packet to TruthWriter.
+        
+        Args:
+            packet: The suppressed packet
+            verdict: GovernorVerdict that caused suppression
+            suppression_reason: Reason for suppression (blocked, recheck, etc.)
+        """
+        if not self._truth_writer:
+            return
+        
+        event = {
+            "event_type": "wss_packet_suppressed",
+            "event_id": str(uuid4()),
+            "frame_id": packet.get("frame_id"),
+            "suppression_reason": suppression_reason,
+            "verdict_id": verdict.verdict_id,
+            "decision": verdict.decision.value,
+            "policy_class": verdict.policy_class.value,
+            "rationale": verdict.rationale,
+            "packet_summary": {
+                "analysis_preview": packet.get("analysis", "")[:200],
+                "risk_level": packet.get("risk_level"),
+                "recommendation": packet.get("recommendation"),
+            },
+        }
+        
+        try:
+            self._truth_writer.write_event(event)
+        except Exception as e:
+            logger.error(f"Failed to log suppressed packet: {e}")
+    
+    def check_verdict_before_publish(
+        self,
+        verdict: GovernorVerdict | dict[str, Any],
+        packet_type: str = "analysis",
+    ) -> dict[str, Any]:
+        """Check if a verdict allows WSS publishing without actually publishing.
+        
+        This is a dry-run method to check what would happen with a given verdict.
+        
+        Args:
+            verdict: GovernorVerdict to check
+            packet_type: Type of packet being checked
+            
+        Returns:
+            Dict with check results:
+            - can_publish: Whether publishing would be allowed
+            - decision: The verdict decision
+            - action: Recommended action (publish, suppress, approval_pending)
+            - reason: Explanation
+        """
+        # Convert dict to GovernorVerdict if needed
+        if isinstance(verdict, dict):
+            try:
+                verdict = GovernorVerdict.from_dict(verdict)
+            except Exception as e:
+                return {
+                    "can_publish": False,
+                    "decision": "invalid",
+                    "action": "suppress",
+                    "reason": f"Invalid verdict: {e}",
+                }
+        
+        result = {
+            "can_publish": False,
+            "decision": verdict.decision.value,
+            "action": "suppress",
+            "reason": verdict.rationale,
+        }
+        
+        if verdict.decision in (Decision.CONTINUE, Decision.WARN):
+            result["can_publish"] = True
+            result["action"] = "publish"
+        elif verdict.decision == Decision.REQUIRE_APPROVAL:
+            if self._publish_approval_pending:
+                result["can_publish"] = True
+                result["action"] = "approval_pending"
+            else:
+                result["action"] = "suppress"
+        elif verdict.decision == Decision.RECHECK:
+            result["action"] = "recheck"
+        elif verdict.decision == Decision.BLOCK:
+            result["action"] = "block"
+        
+        return result
+    
+    @property
+    def governor_stats(self) -> dict[str, Any]:
+        """Get governor integration statistics."""
+        return {
+            "enabled": self._enable_governor,
+            "packets_checked": self._governor_stats["packets_checked"],
+            "packets_allowed": self._governor_stats["packets_allowed"],
+            "packets_blocked": self._governor_stats["packets_blocked"],
+            "packets_recheck": self._governor_stats["packets_recheck"],
+            "packets_approval_pending": self._governor_stats["packets_approval_pending"],
+            "suppress_blocked": self._suppress_blocked_packets,
+            "publish_approval_pending": self._publish_approval_pending,
+        }
+    
+    def reset_governor_stats(self) -> None:
+        """Reset governor integration statistics."""
+        self._governor_stats = {
+            "packets_checked": 0,
+            "packets_blocked": 0,
+            "packets_recheck": 0,
+            "packets_approval_pending": 0,
+            "packets_allowed": 0,
+        }
+    
+    # =========================================================================
+    # End Governor Integration Methods
+    # =========================================================================
     
     def set_trace_id(self, trace_id: str) -> None:
         """Set trace ID for distributed tracing across all publishers."""

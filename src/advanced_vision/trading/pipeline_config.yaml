@@ -1,0 +1,349 @@
+# Pipeline Configuration for Governed Vision Pipeline
+# 
+# This file configures the pipeline stages, policy classes, and routing rules.
+# It is used by GovernedPipeline to determine behavior at each stage.
+
+# =============================================================================
+# Pipeline Metadata
+# =============================================================================
+pipeline:
+  name: "advanced_vision_governed_pipeline"
+  version: "1.0.0"
+  description: "Governor-enforced vision pipeline for trading and UI analysis"
+
+# =============================================================================
+# Stage Configuration
+# =============================================================================
+stages:
+  # Stage 1: Frame Capture
+  capture:
+    enabled: true
+    # Frame format configuration
+    default_format: "png"
+    quality: 95
+    # Metadata to capture
+    capture_timestamp: true
+    capture_source: true
+    
+  # Stage 2: YOLO Detection
+  detection:
+    enabled: true
+    # Detection configuration
+    dry_run: true  # Set to false when YOLO model is available
+    confidence_threshold: 0.35
+    iou_threshold: 0.45
+    # Motion gating
+    motion_gating_enabled: true
+    motion_threshold: 0.02
+    # Cursor suppression
+    cursor_suppression: true
+    # Classes to detect
+    enabled_classes:
+      - chart_panel
+      - order_ticket_panel
+      - confirm_modal
+      - warning_modal
+      - error_modal
+      - position_panel
+      - pnl_widget
+    # Classes to ignore
+    ignored_classes:
+      - mouse_cursor
+      - tooltip
+      - cursor_highlight
+    
+  # Stage 3: Eagle Scout Classification
+  scout:
+    enabled: true
+    # Scout model version
+    scout_version: "eagle2-2b-v1.0"
+    # Classification thresholds
+    confidence_threshold: 0.7
+    # Risk mapping for element types
+    risk_mapping:
+      error_modal: critical
+      warning_modal: high
+      confirm_modal: medium
+      order_ticket_panel: medium
+      position_panel: medium
+      chart_panel: low
+      pnl_widget: low
+      order_book: low
+      default: none
+    # Escalation triggers
+    escalation_triggers:
+      - error_modal
+      - warning_modal
+      - confirm_modal
+      
+  # Stage 4: Governor Evaluation
+  governance:
+    enabled: true
+    # Default policy class
+    default_policy_class: "trading_analysis"
+    # Policy class mappings by mode
+    policy_class_mappings:
+      trading:
+        default: "trading_analysis"
+        execution_candidate: "trading_execution_candidate"
+        ui_interaction: "ui_interaction_candidate"
+      ui:
+        default: "external_review"
+        execution_candidate: "ui_interaction_candidate"
+        sensitive_data: "sensitive_data_access"
+    # Override conditions
+    override_conditions:
+      external_side_effects: true
+      trading_implications: true
+      unclear_trust_boundary: true
+    
+  # Stage 5: Execution Gate
+  execution:
+    enabled: true
+    # Freshness window for verdicts (seconds)
+    freshness_seconds: 30
+    # Decision handling
+    require_verdict_for_execution: true
+    block_on_missing_verdict: true
+    block_on_stale_verdict: true
+
+# =============================================================================
+# Mode Configuration
+# =============================================================================
+modes:
+  # Trading Mode: High sensitivity for trading-specific events
+  trading:
+    description: "Trading watch mode with high sensitivity"
+    # Policy settings
+    default_policy_class: "trading_analysis"
+    # Risk sensitivity
+    risk_sensitivity: "high"
+    # Auto-escalation settings
+    auto_escalate_high_risk: true
+    auto_escalate_uncertain: true
+    # Execution settings
+    require_approval_for_execution: true
+    block_unknown_symbols: true
+    # Detection focus
+    focus_classes:
+      - chart_panel
+      - order_ticket_panel
+      - confirm_modal
+      - warning_modal
+      - error_modal
+      - position_panel
+      - pnl_widget
+      
+  # UI Mode: Lower sensitivity for general UI interaction
+  ui:
+    description: "General UI interaction mode"
+    # Policy settings
+    default_policy_class: "external_review"
+    # Risk sensitivity
+    risk_sensitivity: "medium"
+    # Auto-escalation settings
+    auto_escalate_high_risk: false
+    auto_escalate_uncertain: true
+    # Execution settings
+    require_approval_for_execution: false
+    # Detection focus
+    focus_classes:
+      - button
+      - text_field
+      - dropdown
+      - modal
+
+# =============================================================================
+# Policy Class Configuration
+# =============================================================================
+policy_classes:
+  # Trading Analysis: Chart/ticket analysis - no execution
+  trading_analysis:
+    description: "Chart/ticket analysis - no execution"
+    default_max: "recheck"
+    minimum_gate: null
+    freshness_seconds: 30
+    
+  # Trading Execution Candidate: Trading execution - NEVER auto-execute
+  trading_execution_candidate:
+    description: "Trading execution - NEVER auto-execute"
+    default_max: "require_approval"
+    minimum_gate: "require_approval"
+    freshness_seconds: 10
+    
+  # UI Interaction Candidate: UI interaction - escalate if side effects
+  ui_interaction_candidate:
+    description: "UI interaction - escalate if side effects"
+    default_max: "recheck"
+    minimum_gate: "recheck"
+    freshness_seconds: 30
+    
+  # Sensitive Data Access: Sensitive data - block if trust boundary unclear
+  sensitive_data_access:
+    description: "Sensitive data - block if trust boundary unclear"
+    default_max: "recheck"
+    minimum_gate: "recheck"
+    freshness_seconds: 60
+    
+  # External Review: Aya/Claude review - allow continuation
+  external_review:
+    description: "External review - allow continuation"
+    default_max: "warn"
+    minimum_gate: "continue"
+    freshness_seconds: 60
+    
+  # Observe: Passive monitoring - notifications only
+  observe:
+    description: "Passive monitoring - notifications only"
+    default_max: "warn"
+    minimum_gate: null
+    freshness_seconds: 300
+
+# =============================================================================
+# Routing Rules
+# =============================================================================
+routing:
+  # Recheck routing
+  recheck:
+    enabled: true
+    # Maximum recheck depth (prevent infinite loops)
+    max_recheck_depth: 3
+    # Recheck triggers
+    triggers:
+      - verdict_decision: "recheck"
+      - precondition_violation: "recheck_required"
+      - stale_verdict: true
+    # Recheck handlers
+    handlers:
+      - type: "external_review"
+        target: "qwen"
+      - type: "escalation"
+        target: "kimi"
+        
+  # Approval queue routing
+  approval_queue:
+    enabled: true
+    # Approval triggers
+    triggers:
+      - verdict_decision: "require_approval"
+      - precondition_violation: "approval_required"
+      - policy_class: "trading_execution_candidate"
+    # Approval timeout
+    timeout_seconds: 300
+    # Auto-reject on timeout
+    auto_reject_on_timeout: true
+    
+  # Block routing
+  block:
+    enabled: true
+    # Block triggers
+    triggers:
+      - verdict_decision: "block"
+      - precondition_violation: "blocked_decision"
+      - missing_verdict: true
+      - malformed_verdict: true
+    # Block logging
+    log_blocked_attempts: true
+
+# =============================================================================
+# Freshness Windows
+# =============================================================================
+freshness:
+  # Default freshness window (seconds)
+  default_seconds: 30
+  
+  # Per-policy-class freshness windows
+  by_policy_class:
+    trading_analysis: 30
+    trading_execution_candidate: 10
+    ui_interaction_candidate: 30
+    sensitive_data_access: 60
+    external_review: 60
+    observe: 300
+    
+  # Per-mode freshness windows
+  by_mode:
+    trading: 30
+    ui: 60
+
+# =============================================================================
+# Truth Writer Configuration
+# =============================================================================
+truth_writer:
+  # Base directory for truth logs
+  base_dir: "/tmp/advanced_vision/truth"
+  
+  # Write settings
+  fsync: true
+  utc_timestamps: true
+  
+  # Rotation settings
+  rotation:
+    enabled: true
+    max_file_size_mb: 100
+    max_files: 10
+    
+  # Event types to log
+  log_event_types:
+    - pipeline_stage_complete
+    - pipeline_complete
+    - pipeline_error
+    - pipeline_recheck
+    - governor_verdict
+    - execution_gate_decision
+
+# =============================================================================
+# WSS Publishing Configuration
+# =============================================================================
+wss:
+  # Enable/disable WSS publishing
+  enabled: true
+  
+  # Connection settings
+  host: "localhost"
+  port: 8000
+  
+  # Publishing rules
+  publishing:
+    # Only publish packets that pass execution gate
+    require_execution_gate_approval: true
+    
+    # Include verdict in published packets
+    attach_verdict: true
+    
+    # Publish approval-pending packets with flag
+    publish_approval_pending: true
+    
+    # Don't publish blocked/recheck packets
+    suppress_blocked: true
+    suppress_recheck: true
+    
+  # Topic routing
+  topics:
+    detection: "vision.detection.yolo"
+    segmentation: "vision.segmentation.sam"
+    classification: "vision.classification.eagle"
+    analysis: "vision.analysis.qwen"
+    governor: "vision.governance.verdict"
+
+# =============================================================================
+# Performance Targets
+# =============================================================================
+performance:
+  # Target total pipeline latency
+  target_latency_ms: 5000
+  
+  # Per-stage targets
+  stage_targets_ms:
+    capture: 50
+    detection: 100
+    scout: 500
+    governance: 100
+    execution: 50
+    
+  # Timeout settings
+  timeouts:
+    detection: 5000
+    scout: 10000
+    governance: 5000
+    execution: 1000
