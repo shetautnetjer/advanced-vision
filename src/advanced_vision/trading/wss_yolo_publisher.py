@@ -2,6 +2,8 @@
 
 Publishes YOLO detection results to ws://localhost:8002 at 10-30 FPS.
 Supports batching, frame persistence, and schema tagging.
+
+DEPRECATED: Use wss_yolo_publisher_v2.py instead (v2 uses single port 8000 with topic routing)
 """
 
 from __future__ import annotations
@@ -12,12 +14,21 @@ import json
 import logging
 import threading
 import time
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import websockets
 from PIL.Image import Image
+
+# Deprecation warning
+warnings.warn(
+    "wss_yolo_publisher.py (v1) is deprecated. Use wss_yolo_publisher_v2.py instead. "
+    "v2 uses single port 8000 with topic routing (vision.detection.yolo).",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 from advanced_vision.trading.detector import DetectionResult, YOLODetector
 from advanced_vision.trading.events import BoundingBox, UIElement

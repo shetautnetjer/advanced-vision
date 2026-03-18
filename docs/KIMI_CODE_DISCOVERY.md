@@ -7,7 +7,7 @@
 
 ## Key Finding
 
-The API key (`sk-kimi-2WE2zm7...`) is from **Kimi Code** (kimi.com/code), NOT Moonshot!
+The API key (`REDACTED`) is from **Kimi Code** (kimi.com/code), NOT Moonshot!
 
 **Screenshot Evidence:**
 - URL: `kimi.com/code/console`

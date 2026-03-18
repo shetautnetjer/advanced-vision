@@ -2,6 +2,8 @@
 
 Publishes analysis results from Chronos/Kimi to ws://localhost:8005.
 Supports risk assessment, recommendations, and trading signals.
+
+DEPRECATED: Use wss_analysis_publisher_v2.py instead (v2 uses single port 8000 with topic routing)
 """
 
 from __future__ import annotations
@@ -11,11 +13,20 @@ import json
 import logging
 import threading
 import time
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import websockets
+
+# Deprecation warning
+warnings.warn(
+    "wss_analysis_publisher.py (v1) is deprecated. Use wss_analysis_publisher_v2.py instead. "
+    "v2 uses single port 8000 with topic routing (vision.analysis.qwen).",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 from advanced_vision.trading.events import (
     ActionRecommendation,

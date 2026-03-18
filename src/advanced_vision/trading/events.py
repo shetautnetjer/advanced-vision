@@ -239,7 +239,7 @@ class TradingEvent(BaseModel):
 
 class ReviewerAssessment(BaseModel):
     """Local reviewer (Qwen) judgment on a trading event."""
-    reviewer_model: str = "qwen3.5-2b-nvfp4"  # Default per Dad's findings
+    reviewer_model: str = "qwen3.5-4b-nvfp4"  # Deep reviewer model
     timestamp: str
     
     # Judgment

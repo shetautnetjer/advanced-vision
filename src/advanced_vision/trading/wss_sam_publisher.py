@@ -2,6 +2,8 @@
 
 Publishes MobileSAM segmentation results to ws://localhost:8003 on-demand.
 Supports mask persistence, ROI tracking, and schema tagging.
+
+DEPRECATED: Use wss_sam_publisher_v2.py instead (v2 uses single port 8000 with topic routing)
 """
 
 from __future__ import annotations
@@ -11,6 +13,7 @@ import json
 import logging
 import threading
 import time
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -18,6 +21,14 @@ from typing import Any
 import numpy as np
 import websockets
 from PIL.Image import Image
+
+# Deprecation warning
+warnings.warn(
+    "wss_sam_publisher.py (v1) is deprecated. Use wss_sam_publisher_v2.py instead. "
+    "v2 uses single port 8000 with topic routing (vision.segmentation.sam).",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 from advanced_vision.trading.events import ROI, BoundingBox
 

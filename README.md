@@ -1,67 +1,86 @@
 # Advanced Vision - WebSocket Server Architecture
 
+> **WSS v2 Active | 2.5GB VRAM Saved | 38 Tests Passing**
+
 Distributed computer vision processing pipeline using WebSocket servers.
 
 ## Architecture
 
 ```
-Screen Capture → WSS Server (Port 8001) → Raw Frames
-YOLO Detector → WSS Server (Port 8002) → Boxes + Classes
-MobileSAM → WSS Server (Port 8003) → Segmentations
-Eagle Vision → WSS Server (Port 8004) → Classifications
-Reviewers → WSS Server (Port 8005) → Analysis Results
+Single Port 8000 with Typed Topics:
+- vision.detection.yolo       → YOLO Detection - Boxes + Classes
+- vision.segmentation.sam     → MobileSAM - Segmentations
+- vision.classification.eagle → Eagle Vision - Classifications
+- vision.analysis.qwen        → Qwen Analysis - Deep Reasoning
+- system.*                    → Heartbeat, Error, Metrics
 ```
+
+## Model Roles
+
+| Model | Role | Speed | Memory | Notes |
+|-------|------|-------|--------|-------|
+| **Eagle2-2B** | Scout | ~400ms | Resident | Fast preliminary classification |
+| **Qwen3.5-4B** | Reviewer | On-demand | On-demand | Deep analysis when needed |
+
+**VRAM Savings:** ~2.5GB by consolidating to single-port architecture with on-demand model loading.
 
 ## Quick Start
 
 ### Start the Server
 
 ```bash
-# Start all feeds
+# Start WSS v2 server (single port 8000)
 ./scripts/start_wss_server.sh
 
-# Start specific feeds only
-./scripts/start_wss_server.sh -p 8001 -p 8004
-
 # With custom config
-./scripts/start_wss_server.sh -c /path/to/config.yaml
+./scripts/start_wss_server.sh -c /path/to/wss_config.yaml
 ```
+
+The `wss_config.yaml` uses topic-based configuration for routing messages between vision components.
 
 ### Python API
 
 ```python
 from advanced_vision import WSSServer, WSSPublisher, WSSSubscriber
 
-# Start server
+# Start server with topic-based config
 server = WSSServer("config/wss_config.yaml")
 await server.start()
 
-# Publish to a feed
-publisher = WSSPublisher(feed_port=8001)
+# Publish to a topic
+publisher = WSSPublisher(topic="vision.classification.eagle")
 await publisher.connect()
-await publisher.publish_classification("button", 0.95)
+await publisher.publish({"class": "button", "confidence": 0.95})
 
-# Subscribe to a feed
-subscriber = WSSSubscriber(feed_port=8004)
+# Subscribe to a topic
+subscriber = WSSSubscriber(topic="vision.detection.yolo")
 subscriber.on_json = lambda data: print(data)
 await subscriber.connect()
 ```
 
-## Feed Ports
+## Topics
 
-| Port | Feed | Description |
-|------|------|-------------|
-| 8001 | capture | Screen Capture - Raw Frames |
-| 8002 | yolo | YOLO Detector - Boxes + Classes |
-| 8003 | mobilesam | MobileSAM - Segmentations |
-| 8004 | eagle | Eagle Vision - Classifications |
-| 8005 | reviewers | Reviewers - Analysis Results |
+| Topic | Type | Description |
+|-------|------|-------------|
+| `vision.detection.yolo` | Detection | YOLO - Boxes + Classes |
+| `vision.segmentation.sam` | Segmentation | MobileSAM - Object Masks |
+| `vision.classification.eagle` | Classification | Eagle2-2B - Fast Classifications |
+| `vision.analysis.qwen` | Analysis | Qwen3.5-4B - Deep Reasoning |
+| `system.heartbeat` | System | Health checks |
+| `system.error` | System | Error reporting |
+| `system.metrics` | System | Performance metrics |
 
 ## Logs
 
 - Text log: `logs/wss-feed-text.log`
 - JSON log: `logs/wss-feed-classifications.json`
 - Frame images: `logs/frames/`
+
+## Documentation
+
+- [Architecture Principles](docs/ARCHITECTURE_PRINCIPLES.md) - Core design decisions
+- [Trading Watcher Stack](docs/TRADING_WATCHER_STACK.md) - Trading-specific vision pipeline
+- [Computer Use Integration](docs/COMPUTER_USE_INTEGRATION.md) - GUI automation integration
 
 ## Dependencies
 

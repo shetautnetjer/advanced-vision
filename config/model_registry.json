@@ -62,7 +62,7 @@
       "type": "vision_language",
       "status": "available",
       "loaded": false,
-      "residency": "resident",
+      "residency": "on_demand",
       "priority": 3,
       "files": {
         "checkpoint": "models/Qwen3.5-2B-NVFP4",
@@ -74,9 +74,9 @@
         "nvfp4_gb": 2.5,
         "tensorrt_gb": 2.2
       },
-      "purpose": "Primary scout model for quick screen analysis",
-      "role": "scout",
-      "optimization_notes": "NVFP4 quantized - 2.5GB VRAM, fast inference",
+      "purpose": "Backup light analysis (replaced by Eagle2 as scout)",
+      "role": "expert",
+      "optimization_notes": "NVFP4 quantized - 2.5GB VRAM. Now on-demand (Eagle2 is primary scout)",
       "quantization": "nvfp4"
     },
     "qwen3.5-4b-nvfp4": {
@@ -86,7 +86,7 @@
       "type": "vision_language",
       "status": "available",
       "loaded": false,
-      "residency": "resident",
+      "residency": "on_demand",
       "priority": 4,
       "files": {
         "checkpoint": "models/Qwen3.5-4B-NVFP4",
@@ -100,7 +100,7 @@
       },
       "purpose": "Deep reviewer model for detailed chart analysis",
       "role": "reviewer",
-      "optimization_notes": "NVFP4 quantized - 4GB VRAM, detailed reasoning",
+      "optimization_notes": "NVFP4 quantized - 4GB VRAM. Loaded on-demand as primary reviewer",
       "quantization": "nvfp4"
     },
     "eagle2-2b": {
@@ -110,8 +110,8 @@
       "type": "vision_language",
       "status": "available",
       "loaded": false,
-      "residency": "on_demand",
-      "priority": 5,
+      "residency": "resident",
+      "priority": 3,
       "files": {
         "checkpoint": "models/Eagle2-2B",
         "tensorrt": "models/Eagle2-2B/tensorrt"
@@ -123,8 +123,9 @@
         "int8_gb": 2.4,
         "tensorrt_gb": 3.2
       },
-      "purpose": "Fast scout classification of ROI crops",
-      "optimization_notes": "TensorRT FP16 recommended. Alternative: Eagle3 for faster inference"
+      "purpose": "Primary scout model - fast ROI crop classification",
+      "role": "scout",
+      "optimization_notes": "TensorRT FP16 recommended. Now PRIMARY SCOUT (was on-demand). Fast ~300-500ms/image"
     },
     "yolov8s": {
       "id": "yolov8s",
@@ -252,31 +253,33 @@
   "loading_strategies": {
     "standard_trading": {
       "name": "Standard Trading Session",
-      "description": "Full pipeline for active trading with NVFP4 models",
-      "load_order": ["yolov8n", "mobilesam", "qwen3.5-2b-nvfp4", "qwen3.5-4b-nvfp4", "eagle2-2b"],
-      "total_vram_nvfp4_gb": 10.6,
-      "on_demand_available_gb": 3.4
+      "description": "Full pipeline with Eagle2 as scout, Qwen4B as reviewer (on-demand)",
+      "load_order": ["yolov8n", "mobilesam", "eagle2-2b"],
+      "on_demand": ["qwen3.5-4b-nvfp4", "qwen3.5-2b-nvfp4"],
+      "total_vram_resident_gb": 4.1,
+      "total_vram_on_demand_gb": 6.5,
+      "vram_savings_gb": 2.5
     },
     "fast_scout": {
       "name": "Fast Scout Mode",
-      "description": "Minimal resident set for quick ROI identification",
-      "load_order": ["yolov8n", "mobilesam", "qwen3.5-2b-nvfp4"],
-      "total_vram_nvfp4_gb": 3.4,
-      "on_demand_available_gb": 10.6
+      "description": "Minimal resident set with Eagle2 as primary scout",
+      "load_order": ["yolov8n", "mobilesam", "eagle2-2b"],
+      "total_vram_resident_gb": 4.1,
+      "on_demand_available_gb": 9.9
     },
     "deep_analysis": {
       "name": "Deep Analysis Mode",
-      "description": "Full accuracy with 4B reviewer active",
-      "load_order": ["yolov8n", "mobilesam", "qwen3.5-2b-nvfp4", "qwen3.5-4b-nvfp4"],
-      "on_demand": ["eagle2-2b"],
-      "total_vram_nvfp4_gb": 7.4,
-      "on_demand_available_gb": 6.6
+      "description": "Full accuracy with Qwen4B reviewer loaded on-demand",
+      "load_order": ["yolov8n", "mobilesam", "eagle2-2b"],
+      "on_demand": ["qwen3.5-4b-nvfp4"],
+      "total_vram_resident_gb": 4.1,
+      "total_vram_with_reviewer_gb": 8.1
     },
     "minimal": {
       "name": "Minimal Mode",
       "description": "Ultra-low VRAM for background monitoring",
       "load_order": ["yolov8n", "mobilesam"],
-      "total_vram_nvfp4_gb": 0.9,
+      "total_vram_resident_gb": 0.9,
       "on_demand_available_gb": 13.1
     }
   },

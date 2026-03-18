@@ -3,15 +3,17 @@
 Orchestrates all WebSocket publishers (YOLO, MobileSAM, Eagle, Analysis)
 for coordinated real-time streaming of vision model outputs.
 
+Uses WSS v2 architecture - single port (8000) with topic routing.
+
 Usage:
     manager = WSSPublisherManager()
     manager.start_all()
     
     # In detection loop:
-    manager.publish_yolo_detection(result, frame, frame_id)
+    manager.publish_yolo_detection(result, frame_id)
     
     # When segmentation needed:
-    manager.publish_sam_segmentation(roi_id, mask, bbox, frame_id, frame)
+    manager.publish_sam_segmentation(roi_id, mask, bbox, frame_id)
     
     # After Eagle classification:
     manager.publish_eagle_classification(roi_id, frame_id, event_type, confidence)
@@ -25,16 +27,16 @@ Usage:
 from __future__ import annotations
 
 import logging
+import warnings
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import numpy as np
-from PIL.Image import Image
 
-from advanced_vision.trading.wss_yolo_publisher import YOLOWSSPublisher
-from advanced_vision.trading.wss_sam_publisher import MobileSAMWSSPublisher
-from advanced_vision.trading.wss_eagle_publisher import EagleWSSPublisher
-from advanced_vision.trading.wss_analysis_publisher import AnalysisWSSPublisher
+from advanced_vision.trading.wss_yolo_publisher_v2 import YOLOWSSPublisherV2
+from advanced_vision.trading.wss_sam_publisher_v2 import MobileSAMWSSPublisherV2
+from advanced_vision.trading.wss_eagle_publisher_v2 import EagleWSSPublisherV2
+from advanced_vision.trading.wss_analysis_publisher_v2 import AnalysisWSSPublisherV2
 from advanced_vision.trading.detector import DetectionResult
 from advanced_vision.trading.events import (
     BoundingBox,
@@ -50,13 +52,13 @@ logger = logging.getLogger(__name__)
 
 
 class WSSPublisherManager:
-    """Manager for all vision model WebSocket publishers.
+    """Manager for all vision model WebSocket publishers (v2).
     
-    Coordinates four publishers:
-    1. YOLO Detector (ws://localhost:8002) - 10-30 FPS detection feed
-    2. MobileSAM (ws://localhost:8003) - On-demand segmentation feed
-    3. Eagle Vision (ws://localhost:8004) - Classification feed (~300-500ms)
-    4. Analysis (ws://localhost:8005) - Chronos/Kimi analysis results
+    Coordinates four publishers on single port with topic routing:
+    1. YOLO Detector (ws://localhost:8000, topic: vision.detection.yolo)
+    2. MobileSAM (ws://localhost:8000, topic: vision.segmentation.sam)
+    3. Eagle Vision (ws://localhost:8000, topic: vision.classification.eagle)
+    4. Analysis (ws://localhost:8000, topic: vision.analysis.qwen)
     
     Features:
     - Unified start/stop for all publishers
@@ -64,6 +66,7 @@ class WSSPublisherManager:
     - Shared frame storage directory
     - Unified statistics
     - Schema configuration ("ui" or "trading")
+    - Distributed tracing support
     """
     
     def __init__(
@@ -85,11 +88,11 @@ class WSSPublisherManager:
         self.frames_dir.mkdir(parents=True, exist_ok=True)
         self.masks_dir.mkdir(parents=True, exist_ok=True)
         
-        # Publisher instances
-        self._yolo: YOLOWSSPublisher | None = None
-        self._sam: MobileSAMWSSPublisher | None = None
-        self._eagle: EagleWSSPublisher | None = None
-        self._analysis: AnalysisWSSPublisher | None = None
+        # Publisher instances (v2)
+        self._yolo: Optional[YOLOWSSPublisherV2] = None
+        self._sam: Optional[MobileSAMWSSPublisherV2] = None
+        self._eagle: Optional[EagleWSSPublisherV2] = None
+        self._analysis: Optional[AnalysisWSSPublisherV2] = None
         
         # Enable flags
         self._enable_yolo = enable_yolo
@@ -108,87 +111,97 @@ class WSSPublisherManager:
             logger.warning("Publisher manager already started")
             return
         
-        logger.info("Starting WSS publishers...")
+        logger.info("Starting WSS v2 publishers...")
         
         if self._enable_yolo:
-            self._yolo = YOLOWSSPublisher(
+            self._yolo = YOLOWSSPublisherV2(
                 fps=self._yolo_fps,
                 frame_save_dir=self.frames_dir,
-                schema=self.schema,
             )
             self._yolo.start()
-            logger.info("  ✓ YOLO publisher started (ws://localhost:8002)")
+            logger.info("  ✓ YOLO v2 publisher started (topic: vision.detection.yolo)")
         
         if self._enable_sam:
-            self._sam = MobileSAMWSSPublisher(
+            self._sam = MobileSAMWSSPublisherV2(
                 mask_save_dir=self.masks_dir,
-                schema=self.schema,
             )
             self._sam.start()
-            logger.info("  ✓ MobileSAM publisher started (ws://localhost:8003)")
+            logger.info("  ✓ MobileSAM v2 publisher started (topic: vision.segmentation.sam)")
         
         if self._enable_eagle:
-            self._eagle = EagleWSSPublisher(
-                schema=self.schema,
-            )
+            self._eagle = EagleWSSPublisherV2()
             self._eagle.start()
-            logger.info("  ✓ Eagle publisher started (ws://localhost:8004)")
+            logger.info("  ✓ Eagle v2 publisher started (topic: vision.classification.eagle)")
         
         if self._enable_analysis:
-            self._analysis = AnalysisWSSPublisher(
-                schema=self.schema,
-            )
+            self._analysis = AnalysisWSSPublisherV2()
             self._analysis.start()
-            logger.info("  ✓ Analysis publisher started (ws://localhost:8005)")
+            logger.info("  ✓ Analysis v2 publisher started (topic: vision.analysis.qwen)")
         
         self._started = True
-        logger.info("All WSS publishers started")
+        logger.info("All WSS v2 publishers started on ws://localhost:8000")
     
     def stop_all(self) -> None:
         """Stop all publishers."""
         if not self._started:
             return
         
-        logger.info("Stopping WSS publishers...")
+        logger.info("Stopping WSS v2 publishers...")
         
         if self._yolo:
             self._yolo.stop()
             self._yolo = None
-            logger.info("  ✓ YOLO publisher stopped")
+            logger.info("  ✓ YOLO v2 publisher stopped")
         
         if self._sam:
             self._sam.stop()
             self._sam = None
-            logger.info("  ✓ MobileSAM publisher stopped")
+            logger.info("  ✓ MobileSAM v2 publisher stopped")
         
         if self._eagle:
             self._eagle.stop()
             self._eagle = None
-            logger.info("  ✓ Eagle publisher stopped")
+            logger.info("  ✓ Eagle v2 publisher stopped")
         
         if self._analysis:
             self._analysis.stop()
             self._analysis = None
-            logger.info("  ✓ Analysis publisher stopped")
+            logger.info("  ✓ Analysis v2 publisher stopped")
         
         self._started = False
-        logger.info("All WSS publishers stopped")
+        logger.info("All WSS v2 publishers stopped")
     
     def publish_yolo_detection(
         self,
         result: DetectionResult,
-        frame_image: Image | None = None,
         frame_id: str | None = None,
     ) -> None:
         """Publish YOLO detection result.
         
         Args:
             result: DetectionResult from YOLO
-            frame_image: Optional frame image
             frame_id: Optional frame identifier
         """
         if self._yolo and self._enable_yolo:
-            self._yolo.publish_detection(result, frame_image, frame_id)
+            # Convert DetectionResult to boxes format for v2
+            boxes = []
+            for elem in result.elements:
+                box = {
+                    "x": elem.bbox.x,
+                    "y": elem.bbox.y,
+                    "w": elem.bbox.width,
+                    "h": elem.bbox.height,
+                    "class": elem.element_type.value if hasattr(elem.element_type, 'value') else str(elem.element_type),
+                    "confidence": round(elem.confidence, 4),
+                    "element_id": elem.element_id,
+                }
+                boxes.append(box)
+            
+            self._yolo.publish_detection(
+                boxes=boxes,
+                frame_id=frame_id,
+                inference_time_ms=result.inference_time_ms,
+            )
     
     def publish_sam_segmentation(
         self,
@@ -196,7 +209,6 @@ class WSSPublisherManager:
         mask: np.ndarray,
         bbox: BoundingBox,
         frame_id: str,
-        frame_image: Image | None = None,
         confidence: float = 1.0,
     ) -> None:
         """Publish MobileSAM segmentation result.
@@ -206,29 +218,36 @@ class WSSPublisherManager:
             mask: Binary mask array
             bbox: Bounding box
             frame_id: Frame identifier
-            frame_image: Optional frame image
             confidence: Segmentation confidence
         """
         if self._sam and self._enable_sam:
             self._sam.publish_segmentation(
-                roi_id, mask, bbox, frame_id, frame_image, confidence
+                roi_id=roi_id,
+                mask=mask,
+                bbox=bbox,
+                frame_id=frame_id,
+                confidence=confidence,
             )
     
     def publish_roi_segmentation(
         self,
         roi: ROI,
         frame_id: str,
-        frame_image: Image | None = None,
     ) -> None:
         """Publish segmentation from ROI object.
         
         Args:
             roi: ROI with segmentation data
             frame_id: Frame identifier
-            frame_image: Optional frame image
         """
-        if self._sam and self._enable_sam:
-            self._sam.publish_roi_segmentation(roi, frame_id, frame_image)
+        if self._sam and self._enable_sam and roi.segmentation_mask is not None:
+            self._sam.publish_segmentation(
+                roi_id=roi.roi_id,
+                mask=roi.segmentation_mask,
+                bbox=roi.bbox,
+                frame_id=frame_id,
+                confidence=getattr(roi, 'confidence', 1.0),
+            )
     
     def publish_eagle_classification(
         self,
@@ -253,9 +272,17 @@ class WSSPublisherManager:
             True if published, False if cached
         """
         if self._eagle and self._enable_eagle:
+            # Convert TradingEventType to string if needed
+            if hasattr(classification, 'value'):
+                classification = classification.value
+            
             return self._eagle.publish_classification(
-                roi_id, frame_id, classification, confidence,
-                inference_time_ms, reasoning
+                roi_id=roi_id,
+                frame_id=frame_id,
+                classification=str(classification),
+                confidence=confidence,
+                inference_time_ms=inference_time_ms,
+                reasoning=reasoning,
             )
         return False
     
@@ -280,8 +307,12 @@ class WSSPublisherManager:
         """
         if self._analysis and self._enable_analysis:
             self._analysis.publish_analysis(
-                frame_id, analysis, risk_level, recommendation,
-                confidence, metadata
+                frame_id=frame_id,
+                analysis=analysis,
+                risk_level=risk_level,
+                recommendation=recommendation,
+                confidence=confidence,
+                metadata=metadata,
             )
     
     def publish_reviewer_assessment(
@@ -296,7 +327,18 @@ class WSSPublisherManager:
             frame_id: Frame identifier
         """
         if self._analysis and self._enable_analysis:
-            self._analysis.publish_reviewer_assessment(assessment, frame_id)
+            metadata = {
+                "assessment_id": getattr(assessment, 'assessment_id', None),
+                "reviewer_type": getattr(assessment, 'reviewer_type', 'local'),
+            }
+            self._analysis.publish_analysis(
+                frame_id=frame_id,
+                analysis=assessment.analysis,
+                risk_level=assessment.risk_level,
+                recommendation=assessment.recommendation,
+                confidence=getattr(assessment, 'confidence', None),
+                metadata=metadata,
+            )
     
     def publish_overseer_response(
         self,
@@ -312,7 +354,19 @@ class WSSPublisherManager:
             escalated_from: Original reviewer assessment if escalation
         """
         if self._analysis and self._enable_analysis:
-            self._analysis.publish_overseer_response(response, frame_id, escalated_from)
+            metadata = {
+                "response_id": getattr(response, 'response_id', None),
+                "overseer_type": getattr(response, 'overseer_type', 'cloud'),
+                "escalated": escalated_from is not None,
+            }
+            self._analysis.publish_analysis(
+                frame_id=frame_id,
+                analysis=response.analysis,
+                risk_level=response.risk_level,
+                recommendation=response.recommendation,
+                confidence=getattr(response, 'confidence', None),
+                metadata=metadata,
+            )
     
     def publish_trading_signal(
         self,
@@ -337,9 +391,36 @@ class WSSPublisherManager:
         """
         if self._analysis and self._enable_analysis:
             self._analysis.publish_trading_signal(
-                frame_id, signal_type, symbol, direction,
-                price, risk_level, analysis
+                frame_id=frame_id,
+                signal_type=signal_type,
+                symbol=symbol,
+                direction=direction,
+                price=price,
+                risk_level=risk_level,
+                analysis=analysis,
             )
+    
+    def set_trace_id(self, trace_id: str) -> None:
+        """Set trace ID for distributed tracing across all publishers."""
+        if self._yolo:
+            self._yolo.set_trace_id(trace_id)
+        if self._sam:
+            self._sam.set_trace_id(trace_id)
+        if self._eagle:
+            self._eagle.set_trace_id(trace_id)
+        if self._analysis:
+            self._analysis.set_trace_id(trace_id)
+    
+    def clear_trace_id(self) -> None:
+        """Clear trace ID across all publishers."""
+        if self._yolo:
+            self._yolo.clear_trace_id()
+        if self._sam:
+            self._sam.clear_trace_id()
+        if self._eagle:
+            self._eagle.clear_trace_id()
+        if self._analysis:
+            self._analysis.clear_trace_id()
     
     @property
     def is_started(self) -> bool:
@@ -386,6 +467,7 @@ class WSSPublisherManager:
         stats = {
             "started": self._started,
             "schema": self.schema,
+            "version": "v2",
             "publishers": {},
         }
         
@@ -419,7 +501,7 @@ def create_wss_manager(
     yolo_fps: int = 15,
     schema: str = "trading",
 ) -> WSSPublisherManager:
-    """Factory function to create WSS publisher manager."""
+    """Factory function to create WSS publisher manager (v2)."""
     return WSSPublisherManager(
         base_dir=base_dir,
         yolo_fps=yolo_fps,
@@ -433,7 +515,7 @@ def create_wss_manager(
 
 if __name__ == "__main__":
     import time
-    from datetime import timezone
+    from datetime import datetime, timezone
     
     logging.basicConfig(level=logging.INFO)
     
@@ -450,7 +532,6 @@ if __name__ == "__main__":
             from advanced_vision.trading.events import (
                 UIElement, UIElementType, DetectionSource
             )
-            from advanced_vision.trading.detector import DetectionResult
             
             elem = UIElement(
                 element_id=f"elem_{i}",

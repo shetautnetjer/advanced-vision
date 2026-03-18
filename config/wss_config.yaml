@@ -1,55 +1,71 @@
-# WebSocket Server Configuration for Advanced Vision
-# Distributed Architecture Pipeline:
-#   Screen Capture → WSS Server (Port 8001) → Raw Frames
-#   YOLO Detector → WSS Server (Port 8002) → Boxes + Classes  
-#   MobileSAM → WSS Server (Port 8003) → Segmentations
-#   Eagle Vision → WSS Server (Port 8004) → Classifications
-#   Reviewers → WSS Server (Port 8005) → Analysis Results
+# WebSocket Server Configuration for Advanced Vision (v2)
+# Topic-Based Architecture on Single Port 8000
+#
+# v2 Architecture:
+#   All feeds use single WebSocket server on port 8000
+#   Messages are routed by topic:
+#     - vision.capture.raw       - Screen Capture (Raw Frames)
+#     - vision.detection.yolo    - YOLO Detector (Boxes + Classes)
+#     - vision.segmentation.sam  - MobileSAM (Segmentations)
+#     - vision.classification.eagle - Eagle Vision (Classifications)
+#     - vision.analysis.qwen     - Chronos/Kimi (Analysis Results)
 
-# Feed configurations
-feeds:
-  - port: 8001
-    name: capture
+# Server configuration
+server:
+  host: "0.0.0.0"
+  port: 8000
+  ping_interval: 20
+  ping_timeout: 10
+  close_timeout: 5
+  compression: true
+  max_clients: 200
+
+# Topic configurations
+topics:
+  - name: "vision.capture.raw"
     description: "Screen Capture - Raw Frames"
     binary_support: true
     json_support: true
     max_clients: 50
     
-  - port: 8002
-    name: yolo
+  - name: "vision.detection.yolo"
     description: "YOLO Detector - Boxes + Classes"
-    binary_support: true
+    binary_support: false
     json_support: true
     max_clients: 50
     
-  - port: 8003
-    name: mobilesam
+  - name: "vision.segmentation.sam"
     description: "MobileSAM - Segmentations"
-    binary_support: true
+    binary_support: false
     json_support: true
     max_clients: 50
     
-  - port: 8004
-    name: eagle
+  - name: "vision.classification.eagle"
     description: "Eagle Vision - Classifications"
     binary_support: false
     json_support: true
     max_clients: 100
     
-  - port: 8005
-    name: reviewers
-    description: "Reviewers - Analysis Results"
+  - name: "vision.analysis.qwen"
+    description: "Chronos/Kimi - Analysis Results"
     binary_support: false
     json_support: true
     max_clients: 100
+
+# Legacy port mappings (for reference during migration)
+# Port 8001 → vision.capture.raw
+# Port 8002 → vision.detection.yolo
+# Port 8003 → vision.segmentation.sam
+# Port 8004 → vision.classification.eagle
+# Port 8005 → vision.analysis.qwen
 
 # Schema routing configuration
 schemas:
   ui:
     enabled: true
-    feeds:
-      - capture
-      - eagle
+    topics:
+      - "vision.capture.raw"
+      - "vision.classification.eagle"
     keywords:
       - button
       - form
@@ -61,8 +77,8 @@ schemas:
       
   trading:
     enabled: true
-    feeds:
-      - reviewers
+    topics:
+      - "vision.analysis.qwen"
     keywords:
       - signal
       - trend
@@ -87,14 +103,6 @@ logging:
   max_file_size_mb: 100
   max_backup_files: 5
 
-# Server settings
-server:
-  host: "0.0.0.0"
-  ping_interval: 20
-  ping_timeout: 10
-  close_timeout: 5
-  compression: true
-  
 # Client defaults
 client:
   auto_reconnect: true

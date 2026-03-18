@@ -532,12 +532,12 @@ class TestLocalReviewer:
     def test_reviewer_config(self):
         """B2.3: ReviewerConfig validates correctly."""
         config = ReviewerConfig(
-            model=ReviewerModel.QWEN_2B_NVFP4,
+            model=ReviewerModel.QWEN_4B_NVFP4,
             dry_run=True,
             min_confidence=0.6,
             high_confidence=0.85,
         )
-        assert config.model == ReviewerModel.QWEN_2B_NVFP4
+        assert config.model == ReviewerModel.QWEN_4B_NVFP4
         assert config.dry_run is True
     
     def test_reviewer_input_creation(self):
@@ -579,7 +579,7 @@ class TestLocalReviewer:
         assert output.assessment.risk_level in RiskLevel
         assert output.assessment.confidence >= 0.0
         assert output.assessment.confidence <= 1.0
-        assert output.model_used == ReviewerModel.QWEN_2B_NVFP4.value
+        assert output.model_used == ReviewerModel.QWEN_4B_NVFP4.value
     
     def test_rule_based_assessment_risk_levels(self):
         """B2.6: Rule-based assessment assigns correct risk levels."""

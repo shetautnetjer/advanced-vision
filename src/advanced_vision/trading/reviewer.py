@@ -56,7 +56,7 @@ class ReviewerConfig(BaseModel):
     """Configuration for local reviewer behavior."""
     
     # Model selection
-    model: ReviewerModel = ReviewerModel.QWEN_2B_NVFP4
+    model: ReviewerModel = ReviewerModel.QWEN_4B_NVFP4
     model_path: str | None = None  # Custom model path
     
     # Inference settings
@@ -486,7 +486,7 @@ class EscalationPreparer:
 # =============================================================================
 
 def create_reviewer(
-    model: ReviewerModel = ReviewerModel.QWEN_2B_NVFP4,
+    model: ReviewerModel = ReviewerModel.QWEN_4B_NVFP4,
     dry_run: bool = True,
 ) -> LocalReviewer:
     """Factory function to create configured reviewer."""
@@ -495,7 +495,7 @@ def create_reviewer(
 
 
 def create_reviewer_lane(
-    model: ReviewerModel = ReviewerModel.QWEN_2B_NVFP4,
+    model: ReviewerModel = ReviewerModel.QWEN_4B_NVFP4,
     dry_run: bool = True,
 ) -> ReviewerLane:
     """Factory function to create reviewer lane."""

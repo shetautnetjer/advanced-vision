@@ -38,14 +38,19 @@ server:
 # Model Registry - NVFP4 Quantized Models for VRAM Efficiency
 # =============================================================================
 # Target Hardware: RTX 5070 Ti 16GB
-# VRAM Budget (Confirmed 2026-03-17):
-#   - Resident: ~8GB (YOLO + Eagle2 + Qwen2B + MobileSAM)
-#   - On-demand: SAM3 (~10GB, unload after use)
+# VRAM Budget (Confirmed 2026-03-18):
+#   - Resident: ~8GB (YOLO + Eagle2 + Qwen4B + MobileSAM) - Qwen4B on-demand
+#   - On-demand: SAM3 (~10GB, unload after use), Qwen4B reviewer
 #   - Headroom: ~6GB for cache
+#
+# MODEL ROLES (Fixed 2026-03-18):
+#   - Eagle2-2B: Primary SCOUT (fast, always resident)
+#   - Qwen3.5-4B: REVIEWER (deep analysis, loaded on-demand)
+#   - Qwen3.5-2B: Backup/light tasks (on-demand)
 
 models:
   # -----------------------------------------------------------------------------
-  # Scout Model - Lightweight reviewer for quick analysis
+  # Backup/Light Model - Qwen2B (replaced by Eagle2 as primary scout)
   # -----------------------------------------------------------------------------
   qwen3.5-2b-nvfp4:
     name: "Qwen3.5-2B-NVFP4"
@@ -67,9 +72,9 @@ models:
       group_size: 16
       # MoE router/gate in BF16 for stability
       moe_router_precision: "bf16"
-    # Role in pipeline
-    role: "scout"
-    purpose: "Quick screen analysis, pattern detection, lightweight review"
+    # Role in pipeline - NOW BACKUP/ON-DEMAND (Eagle2 is primary scout)
+    role: "expert"
+    purpose: "Backup light analysis - Eagle2 is now primary scout"
     enable_thinking: true
     
   # -----------------------------------------------------------------------------
@@ -126,7 +131,7 @@ models:
     # Note: 7B model not downloaded yet - requires ~7GB VRAM
 
   # -----------------------------------------------------------------------------
-  # Eagle2-2B - Vision-language model (NO vLLM support, use transformers)
+  # Eagle2-2B - PRIMARY SCOUT (NO vLLM support, use transformers)
   # -----------------------------------------------------------------------------
   eagle2-2b:
     name: "Eagle2-2B"
@@ -143,8 +148,9 @@ models:
     dtype: "float16"
     # NOTE: Eagle2 does NOT support vLLM - use transformers==4.37.2
     # Inference: ~300-500ms/image with FP16 (2x speedup with model.half())
+    # NOW PRIMARY SCOUT - always resident for fast ROI classification
     role: "scout"
-    purpose: "Fast scout classification of ROI crops"
+    purpose: "PRIMARY SCOUT - Fast ROI crop classification (~300-500ms/image)"
     enable_thinking: false
     vllm_supported: false
     transformers_version: "4.37.2"
@@ -191,22 +197,24 @@ models:
     gated: true
 
 # =============================================================================
-# VRAM Management Strategy (Confirmed Budget)
+# VRAM Management Strategy (Updated 2026-03-18)
 # =============================================================================
-# Resident Set (~8GB):
+# Resident Set (~8GB) - FIXED MODEL ROLES:
 #   - yolov8n:        0.4 GB
 #   - mobilesam:      0.5 GB  ⭐ ALWAYS RESIDENT (12ms vs 2921ms)
-#   - qwen3.5-2b:     2.5 GB
-#   - eagle2-2b:      3.2 GB
+#   - eagle2-2b:      3.2 GB  ⭐ PRIMARY SCOUT (fast, always resident)
 #   - yolov8s:        0.9 GB (optional)
-#   Total: ~7.5 GB
+#   Total: ~5.0 GB (was 7.5 GB) - SAVES ~2.5GB!
 #
-# On-demand Available:
-#   - qwen3.5-4b:     4.0 GB (swap with eagle2 if needed)
+# On-demand Models:
+#   - qwen3.5-4b:     4.0 GB  ⭐ PRIMARY REVIEWER (deep analysis, load on-demand)
+#   - qwen3.5-2b:     2.5 GB  Backup/light tasks (was resident, now on-demand)
 #   - sam3:          ~10 GB (unload immediately after use)
 #   - qwen3.5-7b:     7.0 GB (single model mode)
 #
-# Headroom: ~6GB for KV cache and system
+# Headroom: ~9GB for KV cache and system (was ~6GB)
+#
+# VRAM SAVINGS: ~2.5GB freed by making Qwen2B on-demand instead of resident
 
 vram_management:
   # Total available VRAM on RTX 5070 Ti
@@ -220,7 +228,7 @@ vram_management:
   strategy: "sequential"  # Options: sequential, hot_swap, parallel (limited)
   
   # Model residency settings
-  default_resident: "qwen3.5-2b-nvfp4"
+  default_resident: "eagle2-2b"
   always_resident: ["mobilesam"]  # MobileSAM is always kept resident
   
   # Thresholds for automatic model swapping
@@ -280,20 +288,28 @@ serving:
     method: "mtp"
 
 # =============================================================================
-# Trading Pipeline Integration
+# Trading Pipeline Integration (Updated 2026-03-18)
 # =============================================================================
 trading:
-  # Model selection by task
+  # Model selection by task - FIXED ROLES
   task_mapping:
-    screen_analysis: "qwen3.5-2b-nvfp4"
-    pattern_detection: "qwen3.5-2b-nvfp4"
-    signal_validation: "qwen3.5-4b-nvfp4"
-    chart_reasoning: "qwen3.5-4b-nvfp4"
-    multi_chart_analysis: "qwen3.5-4b-nvfp4"
-    trade_review: "qwen3.5-4b-nvfp4"
-    roi_classification: "eagle2-2b"  # Use Eagle2 for ROI crops (fast)
-    segmentation: "mobilesam"  # Default to MobileSAM (12ms vs 2921ms)
-    segmentation_accurate: "sam3"  # Only when accuracy critical
+    # Scout tasks (fast, always resident)
+    screen_analysis: "eagle2-2b"       # PRIMARY SCOUT
+    pattern_detection: "eagle2-2b"     # PRIMARY SCOUT
+    roi_classification: "eagle2-2b"    # Fast ROI crop classification
+    
+    # Reviewer tasks (deep analysis, loaded on-demand)
+    signal_validation: "qwen3.5-4b-nvfp4"   # PRIMARY REVIEWER
+    chart_reasoning: "qwen3.5-4b-nvfp4"     # PRIMARY REVIEWER
+    multi_chart_analysis: "qwen3.5-4b-nvfp4" # PRIMARY REVIEWER
+    trade_review: "qwen3.5-4b-nvfp4"        # PRIMARY REVIEWER
+    
+    # Utility tasks
+    segmentation: "mobilesam"          # Default (12ms vs 2921ms)
+    segmentation_accurate: "sam3"      # Only when accuracy critical
+    
+    # Backup/light tasks (on-demand, was resident)
+    light_analysis: "qwen3.5-2b-nvfp4"
   
   # Automatic model upgrade based on complexity
   auto_upgrade:

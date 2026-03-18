@@ -1,6 +1,8 @@
 #!/bin/bash
-# Start WebSocket Server for Advanced Vision
+# Start WebSocket Server v2 for Advanced Vision
 # Usage: ./start_wss_server.sh [options]
+#
+# v2: Single port (8000) with topic-based routing
 
 set -e
 
@@ -12,7 +14,7 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 CONFIG_FILE="${PROJECT_DIR}/config/wss_config.yaml"
 PYTHON_CMD="${PYTHON_CMD:-python3}"
 HOST="0.0.0.0"
-PORTS=""
+PORT="8000"
 
 # Colors for output
 RED='\033[0;31m'
@@ -41,19 +43,19 @@ print_error() {
 # Show help
 show_help() {
     cat << EOF
-Advanced Vision WebSocket Server Launcher
+Advanced Vision WebSocket Server v2 Launcher
 
 Usage: $0 [OPTIONS]
 
 Options:
     -c, --config PATH       Path to config file (default: config/wss_config.yaml)
-    -p, --port PORT         Run only specific port (can use multiple times)
+    -p, --port PORT         Port to run on (default: 8000)
     -h, --help              Show this help message
     --install-deps          Install required dependencies
 
 Examples:
-    $0                      # Start all feeds
-    $0 -p 8001 -p 8002      # Start only capture and YOLO feeds
+    $0                      # Start v2 server on port 8000
+    $0 -p 9000              # Start v2 server on custom port
     $0 --install-deps       # Install dependencies first
 
 EOF
@@ -83,7 +85,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         -p|--port)
-            PORTS="${PORTS} --port $2"
+            PORT="$2"
             shift 2
             ;;
         --install-deps)
@@ -127,7 +129,7 @@ mkdir -p "${PROJECT_DIR}/logs"
 mkdir -p "${PROJECT_DIR}/logs/frames"
 
 # Check if server script exists
-SERVER_SCRIPT="${PROJECT_DIR}/src/advanced_vision/wss_server.py"
+SERVER_SCRIPT="${PROJECT_DIR}/src/advanced_vision/wss_server_v2.py"
 if [[ ! -f "$SERVER_SCRIPT" ]]; then
     print_error "Server script not found: $SERVER_SCRIPT"
     exit 1
@@ -136,26 +138,23 @@ fi
 # Export PYTHONPATH
 export PYTHONPATH="${PROJECT_DIR}/src:${PYTHONPATH}"
 
-print_info "Starting Advanced Vision WSS Server..."
+print_info "Starting Advanced Vision WSS v2 Server..."
 print_info "Project directory: $PROJECT_DIR"
 print_info "Logs directory: ${PROJECT_DIR}/logs"
-
-# Show feed ports
-if [[ -z "$PORTS" ]]; then
-    print_info "Starting all feeds on ports: 8001, 8002, 8003, 8004, 8005"
-else
-    print_info "Starting specific feeds: $PORTS"
-fi
+print_info "Port: $PORT"
 
 echo ""
 echo "╔════════════════════════════════════════════════════════╗"
-echo "║     Advanced Vision WebSocket Server                   ║"
+echo "║     Advanced Vision WebSocket Server v2                ║"
 echo "║                                                        ║"
-echo "║  Port 8001: Screen Capture (Raw Frames)               ║"
-echo "║  Port 8002: YOLO Detector (Boxes + Classes)           ║"
-echo "║  Port 8003: MobileSAM (Segmentations)                 ║"
-echo "║  Port 8004: Eagle Vision (Classifications)            ║"
-echo "║  Port 8005: Reviewers (Analysis Results)              ║"
+echo "║  Port: $PORT                                            "
+echo "║                                                        ║"
+echo "║  Topics:                                               ║"
+echo "║    vision.capture.raw       - Screen capture           ║"
+echo "║    vision.detection.yolo    - YOLO detections          ║"
+echo "║    vision.segmentation.sam  - MobileSAM masks          ║"
+echo "║    vision.classification.eagle - Eagle classifications ║"
+echo "║    vision.analysis.qwen     - Analysis results         ║"
 echo "║                                                        ║"
 echo "║  Press Ctrl+C to stop                                  ║"
 echo "╚════════════════════════════════════════════════════════╝"
@@ -166,4 +165,4 @@ trap 'print_info "Shutting down server..."; exit 0' INT TERM
 
 # Start the server
 cd "$PROJECT_DIR"
-exec $PYTHON_CMD -u "$SERVER_SCRIPT" $CONFIG_ARG $PORTS
+exec $PYTHON_CMD -u "$SERVER_SCRIPT" --port $PORT $CONFIG_ARG

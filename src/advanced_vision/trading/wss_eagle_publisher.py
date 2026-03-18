@@ -3,6 +3,8 @@
 Publishes Eagle2-2B classification results to ws://localhost:8004.
 Runs after Eagle inference (~300-500ms per image).
 Supports classification caching and schema tagging.
+
+DEPRECATED: Use wss_eagle_publisher_v2.py instead (v2 uses single port 8000 with topic routing)
 """
 
 from __future__ import annotations
@@ -13,11 +15,20 @@ import json
 import logging
 import threading
 import time
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import websockets
+
+# Deprecation warning
+warnings.warn(
+    "wss_eagle_publisher.py (v1) is deprecated. Use wss_eagle_publisher_v2.py instead. "
+    "v2 uses single port 8000 with topic routing (vision.classification.eagle).",
+    DeprecationWarning,
+    stacklevel=2
+)
 from PIL.Image import Image
 from pydantic import BaseModel
 

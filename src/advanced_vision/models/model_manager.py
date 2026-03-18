@@ -274,7 +274,7 @@ class ModelManager:
         dry_run: bool = False,
         simulated_vram_gb: float = 16.0,
         auto_swap: bool = True,
-        default_resident: str = "qwen3.5-2b-nvfp4",
+        default_resident: str = "eagle2-2b",
     ):
         """Initialize the model manager.
 

@@ -7,7 +7,7 @@
 
 ## API Key Source
 
-The API key (`sk-kimi-2WE2zm7...`) was **NOT obtained from Moonshot directly** by the user.
+The API key (`REDACTED`) was **NOT obtained from Moonshot directly** by the user.
 
 It works on Moonshot endpoints but has **limited access**.
 
