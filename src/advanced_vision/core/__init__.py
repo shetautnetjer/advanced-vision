@@ -6,6 +6,8 @@ This module provides the foundation for reliable packet processing:
 - SchemaRegistry: Centralized schema loading and caching
 - Governor: Constitutional gate between reviewers and execution
 - GovernorVerdict: Structured decision output from the Governor
+- ExecutionPrecondition: Validates verdicts before execution
+- ExecutionGate: Gate between reviewers and execution
 
 Key Pattern:
     # Truth-first write
@@ -18,7 +20,10 @@ Key Pattern:
 
     # Governor evaluates before execution
     verdict = governor.evaluate(recommendation, context, policy_class)
-    if verdict.is_execution_allowed():
+    
+    # ExecutionGate enforces preconditions
+    decision = execution_gate.process(reviewer_output, context)
+    if decision.can_execute:
         execute_action()
 
 Always write truth before fanout. No execution without a verdict.
@@ -50,6 +55,15 @@ from .governor import (
     quick_evaluate,
 )
 
+# Execution preconditions (AD-010 fix)
+from .precondition_result import PreconditionResult
+from .execution_precondition import (
+    ExecutionPrecondition,
+    ValidationResult,
+    GateResult,
+)
+from .execution_gate import ExecutionGate, GateDecision
+
 __all__ = [
     # New validation layer
     "PacketValidator",
@@ -73,4 +87,11 @@ __all__ = [
     "quick_evaluate",
     "validate_verdict_dict",
     "GOVERNOR_VERDICT_SCHEMA",
+    # Execution preconditions (AD-010 fix)
+    "ExecutionPrecondition",
+    "ExecutionGate",
+    "GateDecision",
+    "PreconditionResult",
+    "ValidationResult",
+    "GateResult",
 ]
