@@ -13,3 +13,5 @@ artifacts/
 models/*/frame_*
 models/*/*.png
 models/*/*.jpg
+models/Qwen3.5-4B
+models/Qwen3.5-4B
