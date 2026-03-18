@@ -1,0 +1,20 @@
+{
+  "//comment": "INVALID: UI Packet missing required field 'frame_ref' - This should fail validation",
+  "//expected_error": "ValidationError: 'frame_ref' is a required property",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440001",
+  "mode": "ui",
+  "event_type": "modal_appeared",
+  "summary": "Delete confirmation dialog appeared - frame_ref is intentionally missing to test validation",
+  "//missing_frame_ref": "artifacts/frames/ui_20260318_120145.png",
+  "roi_refs": [
+    {
+      "id": "roi_modal_001",
+      "path": "artifacts/rois/modal_dialog_001.png",
+      "bbox": [400, 300, 480, 240],
+      "label": "modal",
+      "confidence": 0.97
+    }
+  ],
+  "scout_note": "This packet is missing the required frame_ref field. Validation should reject this.",
+  "needs_external_review": true
+}

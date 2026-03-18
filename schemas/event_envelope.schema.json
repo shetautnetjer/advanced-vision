@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-vision.local/schemas/event_envelope.schema.json",
+  "title": "Event Envelope",
+  "description": "Common wrapper for all events in the advanced-vision substrate. Provides consistent identity, timing, sourcing, and artifact linkage.",
+  "type": "object",
+  "required": ["event_id", "timestamp", "source", "mode", "schema_version", "payload"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this event (UUID7 recommended for time-sortability)"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when event was generated"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["capture", "yolo", "mobilesam", "eagle", "qwen", "governor", "external_review", "system"],
+      "description": "Component that generated this event"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["ui", "trading", "system", "diagnostic"],
+      "description": "Operational mode this event belongs to"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Schema version in SemVer format (e.g., '1.0.0')"
+    },
+    "trace_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Distributed trace ID for correlating events across the pipeline"
+    },
+    "parent_event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to parent event that triggered this one"
+    },
+    "artifact_refs": {
+      "type": "array",
+      "description": "References to associated artifacts (frames, ROIs, clips)",
+      "items": {
+        "type": "object",
+        "required": ["type", "path"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["frame", "roi", "clip", "log", "manifest"]
+          },
+          "path": {
+            "type": "string",
+            "description": "Relative path to artifact"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "SHA256 checksum for integrity verification"
+          }
+        }
+      }
+    },
+    "work_item_id": {
+      "type": "string",
+      "description": "Reference to external work item (e.g., OpenClaw episode ID)"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific payload (schema defined by payload_type)"
+    },
+    "payload_type": {
+      "type": "string",
+      "enum": [
+        "ui_packet",
+        "trading_packet",
+        "scout_event",
+        "external_review_request",
+        "external_review_result",
+        "artifact_manifest",
+        "system_heartbeat",
+        "governor_decision"
+      ],
+      "description": "Discriminator for payload schema"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata (latency, model versions, etc.)",
+      "additionalProperties": true
+    }
+  }
+}

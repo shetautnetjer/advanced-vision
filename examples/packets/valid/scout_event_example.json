@@ -1,0 +1,25 @@
+{
+  "//comment": "Scout Event Example: Meaningful UI change detected - Eagle2-2B classification",
+  "event_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "timestamp": "2026-03-18T12:05:32.847Z",
+  "scout_version": "eagle2-2b-v1.0",
+  "inference_time_ms": 142,
+  "classification": "meaningful_ui_change",
+  "confidence": 0.89,
+  "roi_count": 3,
+  "motion_metrics": {
+    "cursor_only": false,
+    "motion_pixels": 45230,
+    "motion_percentage": 12.3
+  },
+  "escalation_recommended": true,
+  "escalation_reason": "high_confidence_change",
+  "artifact_refs": {
+    "input_frame": "artifacts/frames/scout_input_20260318_120532.png",
+    "output_rois": [
+      "artifacts/rois/roi_001_dialog.png",
+      "artifacts/rois/roi_002_button.png",
+      "artifacts/rois/roi_003_text.png"
+    ]
+  }
+}

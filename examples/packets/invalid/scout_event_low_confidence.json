@@ -1,0 +1,13 @@
+{
+  "//comment": "INVALID: Scout Event with confidence > 1.0 - violates maximum constraint",
+  "//expected_error": "ValidationError: 1.25 is greater than the maximum of 1",
+  "event_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+  "timestamp": "2026-03-18T12:05:32.847Z",
+  "scout_version": "eagle2-2b-v1.0",
+  "classification": "meaningful_ui_change",
+  "//invalid_confidence": "Confidence value exceeds maximum of 1.0",
+  "confidence": 1.25,
+  "roi_count": 3,
+  "escalation_recommended": true,
+  "escalation_reason": "high_confidence_change"
+}

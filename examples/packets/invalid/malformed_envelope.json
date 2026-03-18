@@ -1,0 +1,18 @@
+{
+  "//comment": "INVALID: Malformed event envelope missing required event_id - This should fail validation",
+  "//expected_error": "ValidationError: 'event_id' is a required property",
+  "//missing_event_id": "f47ac10b-58cc-4372-a567-0e02b2c3d480",
+  "timestamp": "2026-03-18T12:05:35.234Z",
+  "source": "eagle",
+  "mode": "ui",
+  "schema_version": "1.0.0",
+  "payload": {
+    "classification": "modal_dialog",
+    "confidence": 0.92
+  },
+  "payload_type": "scout_event",
+  "metadata": {
+    "scout_version": "eagle2-2b-v1.0",
+    "inference_time_ms": 142
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "//comment": "Artifact Manifest Example: Frame + ROI manifest for audit trail",
+  "manifest_id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+  "timestamp": "2026-03-18T12:05:32.847Z",
+  "artifact_type": "frame",
+  "path": "artifacts/frames/scout_input_20260318_120532.png",
+  "checksum": "a3f5c8d9e1b2f4a6c8d0e2f4a6b8c0d2e4f6a8b0c2d4e6f8a0b2c4d6e8f0a2b4",
+  "size_bytes": 1847293,
+  "related_event_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "trace_id": "trace_20260318_120532_847",
+  "metadata": {
+    "frame": {
+      "width": 1920,
+      "height": 1080,
+      "format": "png"
+    },
+    "roi": {
+      "parent_frame": "artifacts/frames/scout_input_20260318_120532.png",
+      "bbox": [400, 300, 480, 240],
+      "label": "modal_dialog"
+    }
+  },
+  "retention_policy": "long_term",
+  "access_log": [
+    {
+      "timestamp": "2026-03-18T12:05:33.100Z",
+      "accessor": "scout_eagle2_2b",
+      "purpose": "roi_extraction"
+    },
+    {
+      "timestamp": "2026-03-18T12:05:35.500Z",
+      "accessor": "reviewer_aya",
+      "purpose": "external_review"
+    }
+  ]
+}

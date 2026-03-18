@@ -1,0 +1,52 @@
+{
+  "//comment": "UI Packet Example: Confirmation dialog detected - User is about to perform a destructive action",
+  "packet_id": "550e8400-e29b-41d4-a716-446655440000",
+  "mode": "ui",
+  "event_type": "modal_appeared",
+  "summary": "Delete confirmation dialog appeared after clicking 'Remove Account'. Dialog asks 'Are you sure you want to permanently delete this account?'",
+  "frame_ref": "artifacts/frames/ui_20260318_120145.png",
+  "previous_frame_ref": "artifacts/frames/ui_20260318_120140.png",
+  "roi_refs": [
+    {
+      "id": "roi_modal_001",
+      "path": "artifacts/rois/modal_dialog_001.png",
+      "bbox": [400, 300, 480, 240],
+      "label": "modal",
+      "confidence": 0.97
+    },
+    {
+      "id": "roi_button_001",
+      "path": "artifacts/rois/confirm_button_001.png",
+      "bbox": [520, 480, 120, 40],
+      "label": "button",
+      "confidence": 0.95
+    }
+  ],
+  "targets": [
+    {
+      "id": "btn_confirm_delete",
+      "bbox": [520, 480, 120, 40],
+      "label": "button",
+      "confidence": 0.94,
+      "click_point": [580, 500],
+      "text_content": "Delete"
+    },
+    {
+      "id": "btn_cancel",
+      "bbox": [680, 480, 120, 40],
+      "label": "button",
+      "confidence": 0.96,
+      "click_point": [740, 500],
+      "text_content": "Cancel"
+    }
+  ],
+  "scout_note": "Destructive confirmation dialog detected. User clicked 'Remove Account' and system is requesting confirmation. This is a high-risk action that will permanently delete data. Recommend human review before confirming.",
+  "risk_tags": ["requires_confirmation", "destructive_action"],
+  "needs_local_review": false,
+  "needs_external_review": true,
+  "latency_ms": {
+    "capture_to_packet": 150,
+    "scout_inference": 85,
+    "total_pipeline": 235
+  }
+}

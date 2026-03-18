@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-vision.local/schemas/ui_packet.schema.json",
+  "title": "UI Packet",
+  "description": "Curated perception packet for UI-mode computer use. Contains structured visual evidence for external reviewers.",
+  "type": "object",
+  "required": ["packet_id", "mode", "event_type", "frame_ref", "scout_note"],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this packet"
+    },
+    "mode": {
+      "type": "string",
+      "const": "ui",
+      "description": "Always 'ui' for UI packets"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": ["ui_change", "modal_appeared", "button_detected", "form_detected", "navigation", "unknown"],
+      "description": "Classification of UI event"
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Human-readable summary of what changed"
+    },
+    "frame_ref": {
+      "type": "string",
+      "description": "Path to full screenshot reference"
+    },
+    "previous_frame_ref": {
+      "type": "string",
+      "description": "Path to previous frame for comparison (optional)"
+    },
+    "roi_refs": {
+      "type": "array",
+      "description": "Region-of-interest crops highlighting key UI elements",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "bbox", "label"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this ROI"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path to ROI image file"
+          },
+          "bbox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": { "type": "integer" },
+            "description": "Bounding box [x, y, width, height] in screen coordinates"
+          },
+          "label": {
+            "type": "string",
+            "description": "Scout-assigned label (e.g., 'modal', 'button', 'input_field')"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Scout confidence in this ROI classification"
+          }
+        }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "description": "Actionable UI elements detected",
+      "items": {
+        "type": "object",
+        "required": ["id", "bbox", "label"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Target identifier"
+          },
+          "bbox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": { "type": "integer" },
+            "description": "Bounding box [x, y, width, height]"
+          },
+          "label": {
+            "type": "string",
+            "enum": ["button", "link", "input", "checkbox", "dropdown", "tab", "icon"],
+            "description": "UI element type"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "click_point": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": { "type": "integer" },
+            "description": "Recommended click coordinates [x, y]"
+          },
+          "text_content": {
+            "type": "string",
+            "description": "Extracted or OCR'd text from element"
+          }
+        }
+      }
+    },
+    "scout_note": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Scout's assessment: what happened, why it matters, recommended action"
+    },
+    "risk_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["requires_confirmation", "destructive_action", "navigation_away", "form_change", "unknown_element", "low_confidence"]
+      },
+      "description": "Risk indicators for governor evaluation"
+    },
+    "needs_local_review": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether Qwen local review is recommended"
+    },
+    "needs_external_review": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether external reviewer (Aya/OpenClaw) should evaluate"
+    },
+    "latency_ms": {
+      "type": "object",
+      "properties": {
+        "capture_to_packet": { "type": "integer" },
+        "scout_inference": { "type": "integer" },
+        "total_pipeline": { "type": "integer" }
+      }
+    }
+  }
+}

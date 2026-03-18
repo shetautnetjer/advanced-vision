@@ -1,0 +1,1046 @@
+version: 0.2
+tags:
+- canonical_tag: governance/doctrine
+  aliases:
+  - doctrine
+  - memory-governance
+  - memory_governance
+  - mem-governance
+  category: governance
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Settled doctrine and governance law.
+- canonical_tag: governance/promotion-gate
+  aliases:
+  - gate
+  category: governance
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Arbiter promotion gate enforcement.
+- canonical_tag: layer/perception
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Perception and intake surface.
+- canonical_tag: layer/event-bus
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Event envelope bus layer.
+- canonical_tag: layer/governance
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Governance layer.
+- canonical_tag: layer/workflow-engine
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Workflow engine layer.
+- canonical_tag: layer/memory
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Memory layer.
+- canonical_tag: layer/retrieval-cortex
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Trust-aware retrieval layer.
+- canonical_tag: layer/judgment-assistance
+  aliases:
+  - ml-layer
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Advisory model layer.
+- canonical_tag: layer/episode-log
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Append-only episode logging.
+- canonical_tag: layer/skill-system
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Governed skills behavior layer.
+- canonical_tag: layer/learning
+  aliases: []
+  category: layer
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Governed learning layer.
+- canonical_tag: memory/plane-a
+  aliases: []
+  category: memory
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Plane A working store.
+- canonical_tag: memory/plane-b
+  aliases: []
+  category: memory
+  planes_allowed:
+  - plane_b
+  status: active
+  notes: Plane B canonical store.
+- canonical_tag: memory/working
+  aliases:
+  - working-memory
+  category: memory
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Working memory lane.
+- canonical_tag: memory/canonical
+  aliases:
+  - canonical-memory
+  category: memory
+  planes_allowed:
+  - plane_b
+  status: active
+  notes: Canonical memory lane.
+- canonical_tag: memory/vector-index-only
+  aliases:
+  - vector-memory
+  category: memory
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Vector index is not authored truth.
+- canonical_tag: retrieval/trust-aware
+  aliases: []
+  category: retrieval
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Retrieval partitioned by trust lanes.
+- canonical_tag: retrieval/policy-lane
+  aliases:
+  - policy-lane
+  category: retrieval
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Policy retrieval lane.
+- canonical_tag: workflow/retrieve-before-act
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Retrieve before action rule.
+- canonical_tag: workflow/validate-before-promote
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Validation before promotion.
+- canonical_tag: event/envelope
+  aliases: []
+  category: event
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Event envelope contract tag.
+- canonical_tag: event/append-only
+  aliases: []
+  category: event
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Event history is append-only.
+- canonical_tag: event/replayable
+  aliases: []
+  category: event
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Replayable event streams.
+- canonical_tag: episode/replayable
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Replayable episodes.
+- canonical_tag: skill/behavior-object
+  aliases: []
+  category: skill
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Skills are behavior objects.
+- canonical_tag: judgment/advisory
+  aliases: []
+  category: judgment
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Judgment outputs are advisory evidence.
+- canonical_tag: conversation/cross-device
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Conversation across devices.
+- canonical_tag: conversation/cross-channel
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Conversation across channels.
+- canonical_tag: comms/mailbox
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Authoritative mailbox storage subsystem.
+- canonical_tag: comms/receipt
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Delivery receipt record.
+- canonical_tag: comms/ack
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Acknowledgement record distinct from receipt.
+- canonical_tag: comms/notifier
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Derived notifier channel; never transport truth.
+- canonical_tag: comms/event-history
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Communication lifecycle history lane.
+- canonical_tag: comms/redelivery
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Redelivery workflow/event.
+- canonical_tag: comms/delivery-failure
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Delivery failure classification.
+- canonical_tag: comms/receipt-missing
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Receipt missing diagnostic condition.
+- canonical_tag: comms/agent-route
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Route envelope to agent endpoint.
+- canonical_tag: comms/work-item-link
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Link a comms record to a work/task identity.
+- canonical_tag: comms/envelope-lineage
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Envelope lineage relationship tracking.
+- canonical_tag: telemetry/gateway-log
+  aliases: []
+  category: telemetry
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Gateway telemetry log.
+- canonical_tag: telemetry/diagnostic-event
+  aliases: []
+  category: telemetry
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Diagnostic telemetry event.
+- canonical_tag: telemetry/otel-export
+  aliases: []
+  category: telemetry
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: OpenTelemetry export event.
+- canonical_tag: telemetry/transcript-jsonl
+  aliases: []
+  category: telemetry
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Transcript JSONL telemetry.
+- canonical_tag: adaptation/workflow-ranking
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Governed adaptation for workflow ranking.
+- canonical_tag: work/task
+  aliases:
+  - task
+  category: work
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Work task object or task-linked record.
+- canonical_tag: work/started
+  aliases: []
+  category: work
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Work has started.
+- canonical_tag: work/blocked
+  aliases: []
+  category: work
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Work is blocked pending dependency, review, or fix.
+- canonical_tag: work/completed
+  aliases:
+  - completed
+  category: work
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Work completed successfully.
+- canonical_tag: work/failed
+  aliases:
+  - failed
+  category: work
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Work failed.
+- canonical_tag: work/issue
+  aliases:
+  - issue
+  category: work
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Structured issue or blocker record tied to work.
+- canonical_tag: work/deadletter
+  aliases: []
+  category: work
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Work item or comms record moved to deadletter/quarantine.
+- canonical_tag: projects/config-safety
+  aliases:
+  - config-safety
+  category: projects
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Project umbrella for config safety hardening.
+- canonical_tag: projects/event-spine
+  aliases:
+  - event-spine
+  category: projects
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Project umbrella for event spine grounding and migration.
+- canonical_tag: projects/mailbox-runtime
+  aliases:
+  - mailbox-runtime
+  category: projects
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Project umbrella for communications and mailbox runtime work.
+- canonical_tag: projects/tag-governance
+  aliases:
+  - tag-governance
+  category: projects
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Project umbrella for tag atlas and validation hardening.
+- canonical_tag: projects/media-pipeline
+  aliases:
+  - media-pipeline
+  category: projects
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Project umbrella for media card and perception pipeline work.
+- canonical_tag: projects/trading-brain
+  aliases:
+  - trading-brain
+  category: projects
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Project umbrella for trading cognition, signals, and execution support.
+- canonical_tag: observations/runtime
+  aliases: []
+  category: observations
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Runtime health or operational observation.
+- canonical_tag: observations/policy-drift
+  aliases: []
+  category: observations
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Observation of doctrine or policy drift.
+- canonical_tag: media/card
+  aliases: []
+  category: media
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Media card artifact.
+- canonical_tag: media/evidence
+  aliases: []
+  category: media
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Media evidence artifact.
+- canonical_tag: trading/signal
+  aliases: []
+  category: trading
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Trading signal artifact or observation.
+- canonical_tag: trading/execution
+  aliases: []
+  category: trading
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Trading execution artifact or event.
+- canonical_tag: trading/risk
+  aliases: []
+  category: trading
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Trading risk evaluation or artifact.
+- canonical_tag: workflow-substrate/langgraph
+  aliases: []
+  category: workflow-substrate
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Future workflow substrate candidate.
+- canonical_tag: workflow-substrate/crewai
+  aliases: []
+  category: workflow-substrate
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Future workflow substrate candidate.
+- canonical_tag: workflow-substrate/lobster
+  aliases: []
+  category: workflow-substrate
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Future workflow substrate candidate.
+- canonical_tag: pending/workflow-substrate
+  aliases: []
+  category: pending
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Pending admission of workflow substrate family.
+- canonical_tag: pending/judgment-model
+  aliases: []
+  category: pending
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Pending admission of judgment model enhancements.
+- canonical_tag: pending/adaptive-learning
+  aliases: []
+  category: pending
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Pending admission of adaptive learning features.
+- canonical_tag: pending/future-cognitive-substrate
+  aliases: []
+  category: pending
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Pending admission of future cognitive substrate concepts.
+- canonical_tag: identity/main
+  aliases:
+  - main-agent
+  category: identity
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Primary runtime identity for this phase.
+- canonical_tag: identity/arbiter
+  aliases:
+  - arbiter-agent
+  category: identity
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Governance gate identity for this phase.
+- canonical_tag: role/orchestrator
+  aliases:
+  - orchestrator
+  category: role
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Orchestration role for main agent.
+- canonical_tag: role/governance
+  aliases:
+  - governance-role
+  category: role
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Governance role for arbiter agent.
+- canonical_tag: device/mobile
+  aliases:
+  - phone
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Mobile device context.
+- canonical_tag: device/android
+  aliases: []
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Android device context.
+- canonical_tag: device/web
+  aliases:
+  - browser
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Web channel context.
+- canonical_tag: device/desktop
+  aliases: []
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Desktop device context.
+- canonical_tag: device/telegram
+  aliases: []
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Telegram channel device context.
+- canonical_tag: device/cli
+  aliases:
+  - terminal
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: CLI channel context.
+- canonical_tag: device/multi-device
+  aliases: []
+  category: device
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Conversation spans multiple devices.
+- canonical_tag: retrieval/working-lane
+  aliases: []
+  category: retrieval
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Operational working retrieval lane.
+- canonical_tag: retrieval/session-lane
+  aliases: []
+  category: retrieval
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Session-local retrieval lane.
+- canonical_tag: retrieval/canonical-lane
+  aliases: []
+  category: retrieval
+  planes_allowed:
+  - plane_b
+  status: active
+  notes: Canonical retrieval lane.
+- canonical_tag: retrieval/episode-lane
+  aliases: []
+  category: retrieval
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Episode/history retrieval lane.
+- canonical_tag: retrieval/source-aware
+  aliases:
+  - source-aware-retrieval
+  category: retrieval
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Source-aware retrieval behavior.
+- canonical_tag: workflow/observe
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: observe.'
+- canonical_tag: workflow/classify
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: classify.'
+- canonical_tag: workflow/plan
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: plan.'
+- canonical_tag: workflow/act
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: act.'
+- canonical_tag: workflow/evaluate
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: evaluate.'
+- canonical_tag: workflow/retry
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: retry.'
+- canonical_tag: workflow/escalate
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: escalate.'
+- canonical_tag: workflow/handoff
+  aliases: []
+  category: workflow
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Workflow step: handoff.'
+- canonical_tag: comms/receipt
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Delivery receipt record.
+- canonical_tag: comms/delivery-attempt
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Concrete delivery attempt event.
+- canonical_tag: comms/ack
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Acknowledgement record distinct from receipt.
+- canonical_tag: comms/notifier
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Derived notifier channel; never transport truth.
+- canonical_tag: comms/notification-hint
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Notification is a hint to re-check authoritative state.
+- canonical_tag: comms/check-authoritative-state
+  aliases: []
+  category: comms
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Consumers must re-read mailbox or ledger for truth.
+- canonical_tag: policy/receipt-required
+  aliases: []
+  category: policy
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Delivery receipt is required for delivery success claims.
+- canonical_tag: policy/ack-distinct-from-receipt
+  aliases: []
+  category: policy
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Ack and receipt are distinct records.
+- canonical_tag: policy/notifier-nonauthoritative
+  aliases: []
+  category: policy
+  planes_allowed:
+  - plane_a
+  status: active
+  notes: Notification channels are derived-only.
+- canonical_tag: episode/failure
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Episode outcome or marker: failure.'
+- canonical_tag: episode/success
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Episode outcome or marker: success.'
+- canonical_tag: episode/retry
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Episode outcome or marker: retry.'
+- canonical_tag: episode/escalation
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Episode outcome or marker: escalation.'
+- canonical_tag: episode/tool-use
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Episode outcome or marker: tool-use.'
+- canonical_tag: episode/lesson
+  aliases: []
+  category: episode
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Episode outcome or marker: lesson.'
+- canonical_tag: judgment/anomaly-detection
+  aliases:
+  - anomaly
+  category: judgment
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Anomaly detection advisory signal.
+- canonical_tag: judgment/temporal-forecast
+  aliases: []
+  category: judgment
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Temporal forecasting advisory signal.
+- canonical_tag: judgment/graph-analysis
+  aliases: []
+  category: judgment
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Graph analysis advisory signal.
+- canonical_tag: judgment/promotion-support
+  aliases: []
+  category: judgment
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Promotion support scoring signal.
+- canonical_tag: judgment/retrieval-rerank
+  aliases: []
+  category: judgment
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: Retrieval re-ranking advisory signal.
+- canonical_tag: adaptation/skill-proposal
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Governed adaptation pattern: skill-proposal.'
+- canonical_tag: adaptation/retrieval-rerank
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Governed adaptation pattern: retrieval-rerank.'
+- canonical_tag: adaptation/anomaly-detection
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Governed adaptation pattern: anomaly-detection.'
+- canonical_tag: adaptation/episode-learning
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Governed adaptation pattern: episode-learning.'
+- canonical_tag: adaptation/device-pattern
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Governed adaptation pattern: device-pattern.'
+- canonical_tag: adaptation/channel-pattern
+  aliases: []
+  category: adaptation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Governed adaptation pattern: channel-pattern.'
+- canonical_tag: conversation/continuous
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Conversation state: continuous.'
+- canonical_tag: conversation/compacted
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Conversation state: compacted.'
+- canonical_tag: conversation/branched
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Conversation state: branched.'
+- canonical_tag: conversation/replayable
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Conversation state: replayable.'
+- canonical_tag: conversation/long-horizon
+  aliases: []
+  category: conversation
+  planes_allowed:
+  - plane_a
+  - plane_b
+  status: active
+  notes: 'Conversation state: long-horizon.'
+- canonical_tag: workflow-substrate/langchain
+  aliases: []
+  category: workflow-substrate
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Future workflow substrate candidate.
+- canonical_tag: workflow-substrate/llm-task
+  aliases: []
+  category: workflow-substrate
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Future workflow substrate candidate.
+- canonical_tag: pending/conversation-fabric
+  aliases: []
+  category: pending
+  planes_allowed:
+  - plane_a
+  status: pending
+  notes: Pending admission of broader conversation substrate concepts.

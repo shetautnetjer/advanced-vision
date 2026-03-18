@@ -1,0 +1,230 @@
+# Schema Registry Configuration
+# Defines metadata, versions, and compatibility for all JSON schemas
+
+registry:
+  version: "1.0.0"
+  last_updated: "2026-03-18"
+  description: "Advanced Vision Schema Registry - Event and packet schemas"
+
+# Schema metadata - one entry per schema file
+schemas:
+  # Core event envelope - wraps all events
+  event_envelope:
+    version: "1.0.0"
+    description: "Common wrapper for all events in the advanced-vision substrate"
+    file: "event_envelope.schema.json"
+    category: "core"
+    stability: "stable"
+    required_fields:
+      - event_id
+      - timestamp
+      - source
+      - mode
+      - schema_version
+      - payload
+    payload_types:
+      - ui_packet
+      - trading_packet
+      - scout_event
+      - external_review_request
+      - external_review_result
+      - artifact_manifest
+      - system_heartbeat
+      - governor_decision
+
+  # UI perception packet
+  ui_packet:
+    version: "1.0.0"
+    description: "Curated perception packet for UI-mode computer use"
+    file: "ui_packet.schema.json"
+    category: "packet"
+    stability: "stable"
+    required_fields:
+      - packet_id
+      - mode
+      - event_type
+      - frame_ref
+      - scout_note
+    event_types:
+      - ui_change
+      - modal_appeared
+      - button_detected
+      - form_detected
+      - navigation
+      - unknown
+
+  # Trading perception packet
+  trading_packet:
+    version: "1.0.0"
+    description: "Curated perception packet for trading-mode watch/review"
+    file: "trading_packet.schema.json"
+    category: "packet"
+    stability: "stable"
+    required_fields:
+      - packet_id
+      - mode
+      - event_type
+      - frame_ref
+      - scout_note
+    event_types:
+      - price_movement
+      - signal_detected
+      - ticket_state_change
+      - alert_triggered
+      - confirmation_required
+      - anomaly
+      - unknown
+
+  # Scout event - Eagle2-2B classification output
+  scout_event:
+    version: "1.0.0"
+    description: "Event emitted by Eagle2-2B scout after fast visual classification"
+    file: "scout_event.schema.json"
+    category: "event"
+    stability: "stable"
+    required_fields:
+      - event_id
+      - timestamp
+      - scout_version
+      - classification
+      - confidence
+    classifications:
+      - cursor_noise
+      - benign_ui_change
+      - meaningful_ui_change
+      - modal_dialog
+      - form_interaction
+      - chart_update
+      - ticket_update
+      - alert_condition
+      - unknown_significant
+      - requires_review
+
+  # External review request
+  external_review_request:
+    version: "1.0.0"
+    description: "Request envelope sent to external reviewer/finalizer"
+    file: "external_review_request.schema.json"
+    category: "review"
+    stability: "stable"
+    required_fields:
+      - request_id
+      - timestamp
+      - reviewer_target
+      - packet_ref
+      - context
+    decision_options:
+      - continue
+      - click
+      - type
+      - scroll
+      - wait
+      - request_fresh
+      - request_review
+      - warn
+      - block
+      - approve
+
+  # External review result
+  external_review_result:
+    version: "1.0.0"
+    description: "Response from external reviewer/finalizer"
+    file: "external_review_result.schema.json"
+    category: "review"
+    stability: "stable"
+    required_fields:
+      - result_id
+      - request_id
+      - timestamp
+      - decision
+    decisions:
+      - continue
+      - click
+      - type
+      - scroll
+      - wait
+      - request_fresh_screenshot
+      - request_deeper_review
+      - warn
+      - block
+      - approve
+      - needs_clarification
+
+  # Artifact manifest - audit trail
+  artifact_manifest:
+    version: "1.0.0"
+    description: "Append-only manifest of all artifacts for replay and audit"
+    file: "artifact_manifest.schema.json"
+    category: "audit"
+    stability: "stable"
+    required_fields:
+      - manifest_id
+      - timestamp
+      - artifact_type
+      - path
+    artifact_types:
+      - frame
+      - roi
+      - clip
+      - log
+      - packet
+      - review_result
+    retention_policies:
+      - ephemeral
+      - short_term
+      - long_term
+      - permanent
+
+# Schema relationships and dependencies
+relationships:
+  event_envelope:
+    wraps:
+      - ui_packet
+      - trading_packet
+      - scout_event
+      - external_review_request
+      - external_review_result
+      - artifact_manifest
+  
+  external_review_request:
+    references:
+      - ui_packet
+      - trading_packet
+    produces:
+      - external_review_result
+
+# Version compatibility matrix
+# Defines compatibility between schema versions
+compatibility:
+  # Schema-level compatibility notes
+  event_envelope:
+    "1.0.0": "Initial release - all events must use this envelope"
+    "0.9.0": "Beta version - migrate to 1.0.0 before production"
+  
+  ui_packet:
+    "1.0.0": "Stable release - compatible with all UI-mode operations"
+  
+  trading_packet:
+    "1.0.0": "Stable release - includes chart_regions and ticket_regions"
+  
+  scout_event:
+    "1.0.0": "Stable release - Eagle2-2B classification output"
+  
+  external_review_request:
+    "1.0.0": "Stable release - model-agnostic interface"
+  
+  external_review_result:
+    "1.0.0": "Stable release - captures all reviewer decisions"
+  
+  artifact_manifest:
+    "1.0.0": "Stable release - append-only audit trail"
+
+# Breaking changes log
+breaking_changes:
+  # List major version changes and breaking changes
+  # Format: version: description
+
+# Future deprecations
+deprecated:
+  # Fields or schemas scheduled for deprecation
+  # Format: schema_name.field_path: deprecation_date

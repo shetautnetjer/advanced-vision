@@ -1,0 +1,27 @@
+{
+  "//comment": "External Review Result Example: Aya's decision to continue without action",
+  "result_id": "c9bf9e57-1685-4c89-b6e1-b7c5f06c6c21",
+  "request_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "timestamp": "2026-03-18T12:05:42.156Z",
+  "reviewer": {
+    "agent_identity": "aya",
+    "provider": "openclaw",
+    "model": "kimi-k2.5",
+    "model_version": "2025-03"
+  },
+  "decision": "continue",
+  "reasoning": "This is a standard delete confirmation dialog that appeared after the user clicked Remove Account. The dialog is clearly presented with two options: Delete (destructive) and Cancel (safe). Since this is a confirmation step for a user-initiated action and we have no specific instruction to proceed with deletion, the safest action is to wait for further user instruction. The continue decision allows the system to keep monitoring without taking any automated action on this destructive dialog.",
+  "action_payload": {
+    "wait_duration_ms": 5000
+  },
+  "confidence": 0.91,
+  "risk_assessment": {
+    "risk_level": "high",
+    "concerns": [
+      "Destructive action dialog - account deletion is irreversible",
+      "User-initiated action but no confirmation received to proceed",
+      "Recommend explicit user confirmation before any click on Delete"
+    ]
+  },
+  "latency_ms": 6922
+}

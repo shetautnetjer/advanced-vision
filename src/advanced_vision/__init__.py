@@ -11,6 +11,9 @@ from .schemas import (
     VerificationResult,
 )
 
+# Schema Registry
+from .core import SchemaRegistry, get_registry, get_cached_schema
+
 # WSS Server components
 try:
     from .wss_server import (
@@ -38,6 +41,10 @@ __all__ = [
     "ActionProposal",
     "ActionResult",
     "VerificationResult",
+    # Schema Registry
+    "SchemaRegistry",
+    "get_registry",
+    "get_cached_schema",
 ]
 
 # Add WSS exports if available

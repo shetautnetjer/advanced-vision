@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-vision.local/schemas/external_review_result.schema.json",
+  "title": "External Review Result",
+  "description": "Response from external reviewer/finalizer. Captures decision, reasoning, and metadata for replay/audit.",
+  "type": "object",
+  "required": ["result_id", "request_id", "timestamp", "decision"],
+  "properties": {
+    "result_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique result identifier"
+    },
+    "request_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to original request"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When result was generated"
+    },
+    "reviewer": {
+      "type": "object",
+      "required": ["agent_identity"],
+      "properties": {
+        "agent_identity": {
+          "type": "string",
+          "description": "Agent that provided review (e.g., 'aya')"
+        },
+        "provider": {
+          "type": "string",
+          "description": "Provider/interface used"
+        },
+        "model": {
+          "type": "string",
+          "description": "Specific model used"
+        },
+        "model_version": {
+          "type": "string",
+          "description": "Model version if available"
+        }
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "continue",
+        "click",
+        "type",
+        "scroll",
+        "wait",
+        "request_fresh_screenshot",
+        "request_deeper_review",
+        "warn",
+        "block",
+        "approve",
+        "needs_clarification"
+      ],
+      "description": "Reviewer's decision"
+    },
+    "reasoning": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Reviewer's explanation for decision"
+    },
+    "action_payload": {
+      "type": "object",
+      "description": "Parameters for actionable decisions",
+      "properties": {
+        "click_target": {
+          "type": "object",
+          "properties": {
+            "target_id": { "type": "string" },
+            "coordinates": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "integer" }
+            }
+          }
+        },
+        "type_text": {
+          "type": "object",
+          "properties": {
+            "target_id": { "type": "string" },
+            "text": { "type": "string" }
+          }
+        },
+        "scroll_direction": {
+          "type": "string",
+          "enum": ["up", "down", "left", "right"]
+        },
+        "wait_duration_ms": {
+          "type": "integer"
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Reviewer's confidence in decision"
+    },
+    "risk_assessment": {
+      "type": "object",
+      "properties": {
+        "risk_level": {
+          "type": "string",
+          "enum": ["none", "low", "medium", "high", "critical"]
+        },
+        "concerns": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "latency_ms": {
+      "type": "integer",
+      "description": "Time from request to result"
+    }
+  }
+}

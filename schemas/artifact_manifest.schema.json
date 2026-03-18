@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-vision.local/schemas/artifact_manifest.schema.json",
+  "title": "Artifact Manifest",
+  "description": "Append-only manifest of all artifacts (frames, ROIs, clips) for replay and audit. The truth layer for visual evidence.",
+  "type": "object",
+  "required": ["manifest_id", "timestamp", "artifact_type", "path"],
+  "properties": {
+    "manifest_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique manifest entry identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When artifact was created"
+    },
+    "artifact_type": {
+      "type": "string",
+      "enum": ["frame", "roi", "clip", "log", "packet", "review_result"],
+      "description": "Type of artifact"
+    },
+    "path": {
+      "type": "string",
+      "description": "Relative path to artifact file"
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA256 checksum for integrity"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "File size in bytes"
+    },
+    "related_event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Event that produced this artifact"
+    },
+    "trace_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Trace ID for correlation"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Artifact-specific metadata",
+      "properties": {
+        "frame": {
+          "type": "object",
+          "properties": {
+            "width": { "type": "integer" },
+            "height": { "type": "integer" },
+            "format": { "type": "string", "enum": ["png", "jpg", "webp"] }
+          }
+        },
+        "roi": {
+          "type": "object",
+          "properties": {
+            "parent_frame": { "type": "string" },
+            "bbox": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": { "type": "integer" }
+            },
+            "label": { "type": "string" }
+          }
+        },
+        "clip": {
+          "type": "object",
+          "properties": {
+            "start_frame": { "type": "string" },
+            "end_frame": { "type": "string" },
+            "duration_seconds": { "type": "number" },
+            "frame_count": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "retention_policy": {
+      "type": "string",
+      "enum": ["ephemeral", "short_term", "long_term", "permanent"],
+      "description": "How long to keep this artifact"
+    },
+    "access_log": {
+      "type": "array",
+      "description": "Record of who/what accessed this artifact",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "accessor": { "type": "string" },
+          "purpose": { "type": "string" }
+        }
+      }
+    }
+  }
+}

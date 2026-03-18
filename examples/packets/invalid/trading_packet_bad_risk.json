@@ -1,0 +1,22 @@
+{
+  "//comment": "INVALID: Trading Packet with invalid risk_level enum value - This should fail validation",
+  "//expected_error": "ValidationError: 'extreme' is not one of ['none', 'low', 'medium', 'high', 'critical']",
+  "packet_id": "7f8c9d2e-3a4b-5c6d-7e8f-9a0b1c2d3e4g",
+  "mode": "trading",
+  "event_type": "price_movement",
+  "summary": "EURUSD volatile but risk_level uses invalid enum value",
+  "frame_ref": "artifacts/frames/trading_20260318_143022.png",
+  "chart_regions": [
+    {
+      "id": "chart_eurusd_main",
+      "path": "artifacts/rois/chart_eurusd_001.png",
+      "bbox": [50, 80, 900, 500],
+      "instrument": "EURUSD",
+      "timeframe": "M5"
+    }
+  ],
+  "scout_note": "Using invalid risk_level value 'extreme' instead of allowed enum values.",
+  "risk_level": "extreme",
+  "needs_local_review": true,
+  "needs_external_review": true
+}

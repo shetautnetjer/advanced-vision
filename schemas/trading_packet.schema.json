@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-vision.local/schemas/trading_packet.schema.json",
+  "title": "Trading Packet",
+  "description": "Curated perception packet for trading-mode watch/review. Contains chart analysis, ticket state, and risk indicators.",
+  "type": "object",
+  "required": ["packet_id", "mode", "event_type", "frame_ref", "scout_note"],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this packet"
+    },
+    "mode": {
+      "type": "string",
+      "const": "trading",
+      "description": "Always 'trading' for trading packets"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": ["price_movement", "signal_detected", "ticket_state_change", "alert_triggered", "confirmation_required", "anomaly", "unknown"],
+      "description": "Classification of trading event"
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Human-readable summary of trading situation"
+    },
+    "frame_ref": {
+      "type": "string",
+      "description": "Path to full screenshot reference"
+    },
+    "previous_frame_ref": {
+      "type": "string",
+      "description": "Path to previous frame for comparison"
+    },
+    "chart_regions": {
+      "type": "array",
+      "description": "Detected chart areas with price data",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "bbox", "instrument"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string", "description": "Path to chart ROI image" },
+          "bbox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": { "type": "integer" }
+          },
+          "instrument": {
+            "type": "string",
+            "description": "Detected instrument/symbol (e.g., 'EURUSD')"
+          },
+          "timeframe": {
+            "type": "string",
+            "description": "Detected chart timeframe (e.g., 'M15', 'H1')"
+          },
+          "price_snapshot": {
+            "type": "object",
+            "properties": {
+              "bid": { "type": "number" },
+              "ask": { "type": "number" },
+              "spread_pips": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "ticket_regions": {
+      "type": "array",
+      "description": "Detected order tickets or position panels",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "bbox", "ticket_type"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "bbox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": { "type": "integer" }
+          },
+          "ticket_type": {
+            "type": "string",
+            "enum": ["market_order", "pending_order", "position", "history", "alert"]
+          },
+          "extracted_fields": {
+            "type": "object",
+            "description": "OCR'd or interpreted ticket data",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "indicators": {
+      "type": "array",
+      "description": "Detected technical indicators or signals",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "signal": { "type": "string", "enum": ["buy", "sell", "neutral", "alert"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "location": { "type": "string", "description": "Where indicator appears on screen" }
+        }
+      }
+    },
+    "scout_note": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Scout's assessment of trading situation"
+    },
+    "risk_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "high_volatility",
+          "spread_spike",
+          "near_stop_loss",
+          "near_take_profit",
+          "margin_warning",
+          "correlation_risk",
+          "news_event",
+          "low_liquidity",
+          "off_hours"
+        ]
+      }
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["none", "low", "medium", "high", "critical"],
+      "description": "Scout-assessed risk level"
+    },
+    "needs_local_review": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether Qwen deep review is recommended (usually true for trading)"
+    },
+    "needs_external_review": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether external finalizer should evaluate"
+    },
+    "suggested_action": {
+      "type": "string",
+      "enum": ["monitor", "review_details", "confirm_exit", "confirm_entry", "hold", "alert_human"],
+      "description": "Scout's suggested next step"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "//comment": "External Review Request Example: Request sent to Aya for confirmation dialog decision",
+  "request_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "timestamp": "2026-03-18T12:05:35.234Z",
+  "reviewer_target": {
+    "agent_identity": "aya",
+    "provider": "openclaw",
+    "model": "kimi-k2.5"
+  },
+  "packet_ref": "550e8400-e29b-41d4-a716-446655440000",
+  "packet_type": "ui_packet",
+  "context": {
+    "mode": "ui",
+    "summary": "Delete confirmation dialog - user clicked Remove Account button",
+    "image_refs": [
+      {
+        "type": "full_frame",
+        "path": "artifacts/frames/ui_20260318_120145.png",
+        "description": "Full screen showing confirmation dialog"
+      },
+      {
+        "type": "roi",
+        "path": "artifacts/rois/modal_dialog_001.png",
+        "description": "Cropped modal dialog for closer inspection"
+      },
+      {
+        "type": "roi",
+        "path": "artifacts/rois/confirm_button_001.png",
+        "description": "Delete button target"
+      }
+    ],
+    "recent_history": [
+      {
+        "timestamp": "2026-03-18T12:05:30.100Z",
+        "event_type": "click",
+        "summary": "User clicked Remove Account button in settings"
+      },
+      {
+        "timestamp": "2026-03-18T12:05:32.000Z",
+        "event_type": "ui_change",
+        "summary": "Modal dialog appeared"
+      }
+    ],
+    "scout_note": "Destructive confirmation dialog detected. User clicked 'Remove Account' and system is requesting confirmation. This is a high-risk action that will permanently delete data.",
+    "risk_tags": ["requires_confirmation", "destructive_action"]
+  },
+  "decision_options": ["continue", "click", "wait", "warn", "block"],
+  "timeout_seconds": 30
+}

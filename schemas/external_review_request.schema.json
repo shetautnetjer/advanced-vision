@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-vision.local/schemas/external_review_request.schema.json",
+  "title": "External Review Request",
+  "description": "Request envelope sent to external reviewer/finalizer (Aya/OpenClaw, ChatGPT, Claude, etc.). Model-agnostic interface.",
+  "type": "object",
+  "required": ["request_id", "timestamp", "reviewer_target", "packet_ref", "context"],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique request identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewer_target": {
+      "type": "object",
+      "required": ["agent_identity"],
+      "properties": {
+        "agent_identity": {
+          "type": "string",
+          "description": "Target agent (e.g., 'aya', 'claude', 'chatgpt')"
+        },
+        "provider": {
+          "type": "string",
+          "description": "Provider/interface (e.g., 'openclaw', 'api', 'local')"
+        },
+        "model": {
+          "type": "string",
+          "description": "Specific model if known (e.g., 'kimi', 'claude-3-opus')"
+        }
+      }
+    },
+    "packet_ref": {
+      "type": "string",
+      "description": "Reference to UI or trading packet being reviewed"
+    },
+    "packet_type": {
+      "type": "string",
+      "enum": ["ui_packet", "trading_packet"]
+    },
+    "context": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["ui", "trading"]
+        },
+        "summary": {
+          "type": "string",
+          "description": "Brief context for reviewer"
+        },
+        "image_refs": {
+          "type": "array",
+          "description": "Paths to images for review",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["full_frame", "roi", "comparison"] },
+              "path": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "recent_history": {
+          "type": "array",
+          "description": "Recent events for context",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": { "type": "string" },
+              "event_type": { "type": "string" },
+              "summary": { "type": "string" }
+            }
+          }
+        },
+        "scout_note": {
+          "type": "string",
+          "description": "Scout's assessment to aid reviewer"
+        },
+        "risk_tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "decision_options": {
+      "type": "array",
+      "description": "Available decision types for this request",
+      "items": {
+        "type": "string",
+        "enum": ["continue", "click", "type", "scroll", "wait", "request_fresh", "request_review", "warn", "block", "approve"]
+      }
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "default": 30,
+      "description": "How long to wait for reviewer response"
+    }
+  }
+}

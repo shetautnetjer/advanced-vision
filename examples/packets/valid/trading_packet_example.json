@@ -1,0 +1,68 @@
+{
+  "//comment": "Trading Packet Example: Price spike detected + active position ticket update",
+  "packet_id": "7f8c9d2e-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
+  "mode": "trading",
+  "event_type": "price_movement",
+  "summary": "EURUSD spiked 45 pips in 2 minutes following ECB announcement. Position is 50 pips from stop-loss with spread widening to 2.5 pips.",
+  "frame_ref": "artifacts/frames/trading_20260318_143022.png",
+  "previous_frame_ref": "artifacts/frames/trading_20260318_143000.png",
+  "chart_regions": [
+    {
+      "id": "chart_eurusd_main",
+      "path": "artifacts/rois/chart_eurusd_001.png",
+      "bbox": [50, 80, 900, 500],
+      "instrument": "EURUSD",
+      "timeframe": "M5",
+      "price_snapshot": {
+        "bid": 1.0856,
+        "ask": 1.08585,
+        "spread_pips": 2.5
+      }
+    },
+    {
+      "id": "chart_eurusd_mini",
+      "path": "artifacts/rois/chart_eurusd_mini_001.png",
+      "bbox": [980, 80, 280, 180],
+      "instrument": "EURUSD",
+      "timeframe": "H1"
+    }
+  ],
+  "ticket_regions": [
+    {
+      "id": "ticket_position_001",
+      "path": "artifacts/rois/position_ticket_001.png",
+      "bbox": [1000, 300, 240, 200],
+      "ticket_type": "position",
+      "extracted_fields": {
+        "symbol": "EURUSD",
+        "direction": "buy",
+        "volume": 1.0,
+        "open_price": 1.0900,
+        "current_price": 1.0856,
+        "profit_pips": -44,
+        "stop_loss": 1.0800,
+        "take_profit": 1.1000
+      }
+    }
+  ],
+  "indicators": [
+    {
+      "name": "RSI(14)",
+      "signal": "sell",
+      "confidence": 0.78,
+      "location": "indicator_pane_top"
+    },
+    {
+      "name": "MACD",
+      "signal": "neutral",
+      "confidence": 0.55,
+      "location": "indicator_pane_bottom"
+    }
+  ],
+  "scout_note": "Significant price movement against open position. Position is approaching stop-loss zone during high volatility period. Spread has widened suggesting low liquidity. Recommend immediate review to assess whether to hold through volatility or exit early.",
+  "risk_tags": ["high_volatility", "spread_spike", "near_stop_loss", "news_event"],
+  "risk_level": "high",
+  "needs_local_review": true,
+  "needs_external_review": true,
+  "suggested_action": "review_details"
+}

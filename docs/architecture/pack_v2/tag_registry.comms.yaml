@@ -1,0 +1,257 @@
+version: 0.1
+registry: comms
+notes: Proposed communications extension registry aligned with Brain-harness canonical
+  tag style. Active tags are usable now; pending tags are migration targets and must
+  not be treated as active canon.
+tags:
+- canonical_tag: governance/doctrine
+  aliases: []
+  category: governance
+  status: active
+  notes: Settled doctrine anchor inherited from shared Brain-harness concepts.
+- canonical_tag: governance/promotion-gate
+  aliases: []
+  category: governance
+  status: active
+  notes: Arbiter-controlled promotion gate.
+- canonical_tag: memory/plane-a
+  aliases: []
+  category: memory
+  status: active
+  notes: Raw operational capture plane.
+- canonical_tag: memory/plane-b
+  aliases: []
+  category: memory
+  status: active
+  notes: Canonicalized and promoted plane.
+- canonical_tag: memory/working
+  aliases: []
+  category: memory
+  status: active
+  notes: Working lane in Plane A.
+- canonical_tag: memory/canonical
+  aliases: []
+  category: memory
+  status: active
+  notes: Canonical lane in Plane B.
+- canonical_tag: memory/vector-index-only
+  aliases: []
+  category: memory
+  status: active
+  notes: Vector database is an index and must not be authored truth.
+- canonical_tag: event/envelope
+  aliases: []
+  category: event
+  status: active
+  notes: Envelope as authoritative event transport artifact.
+- canonical_tag: event/append-only
+  aliases: []
+  category: event
+  status: active
+  notes: Event history must be append-only.
+- canonical_tag: event/replayable
+  aliases: []
+  category: event
+  status: active
+  notes: Events can reconstruct state by replay.
+- canonical_tag: workflow/handoff
+  aliases: []
+  category: workflow
+  status: active
+  notes: Agent handoff workflows.
+- canonical_tag: workflow/escalate
+  aliases: []
+  category: workflow
+  status: active
+  notes: Escalation path workflows.
+- canonical_tag: workflow/retry
+  aliases: []
+  category: workflow
+  status: active
+  notes: Retry delivery workflows.
+- canonical_tag: workflow/validate-before-promote
+  aliases: []
+  category: workflow
+  status: active
+  notes: Validation required before promotion.
+- canonical_tag: telemetry/diagnostic-event
+  aliases: []
+  category: telemetry
+  status: active
+  notes: Diagnostic telemetry event.
+- canonical_tag: telemetry/transcript-jsonl
+  aliases: []
+  category: telemetry
+  status: active
+  notes: JSONL transcript records.
+- canonical_tag: retrieval/source-aware
+  aliases: []
+  category: retrieval
+  status: active
+  notes: Retrieval includes source-awareness.
+- canonical_tag: comms/mailbox
+  aliases: []
+  category: comms
+  status: active
+  notes: Authoritative mailbox storage subsystem.
+- canonical_tag: comms/inbox
+  aliases: []
+  category: comms
+  status: active
+  notes: Inbox lane for inbound envelopes.
+- canonical_tag: comms/outbox
+  aliases: []
+  category: comms
+  status: active
+  notes: Outbox lane for outbound envelopes.
+- canonical_tag: comms/receipt
+  aliases: []
+  category: comms
+  status: active
+  notes: Delivery receipt records concrete delivery observation.
+- canonical_tag: comms/ack
+  aliases: []
+  category: comms
+  status: active
+  notes: Acknowledgement records downstream processing acceptance.
+- canonical_tag: comms/courier
+  aliases: []
+  category: comms
+  status: active
+  notes: Courier mechanism for delivery attempts.
+- canonical_tag: comms/delivery-attempt
+  aliases: []
+  category: comms
+  status: active
+  notes: Concrete delivery attempt event.
+- canonical_tag: comms/notifier
+  aliases: []
+  category: comms
+  status: active
+  notes: Derived notifier channel.
+- canonical_tag: comms/notification-hint
+  aliases: []
+  category: comms
+  status: active
+  notes: Notification is a hint to re-check authoritative state.
+- canonical_tag: comms/check-authoritative-state
+  aliases: []
+  category: comms
+  status: active
+  notes: Consumers must re-read mailbox/ledger for truth.
+- canonical_tag: comms/fs-watch
+  aliases: []
+  category: comms
+  status: active
+  notes: Filesystem watch wakeup path.
+- canonical_tag: comms/session-ping
+  aliases: []
+  category: comms
+  status: active
+  notes: Session ping wakeup path.
+- canonical_tag: comms/polling-fallback
+  aliases: []
+  category: comms
+  status: active
+  notes: Polling fallback when live wakeups fail.
+- canonical_tag: comms/event-history
+  aliases: []
+  category: comms
+  status: active
+  notes: Event history lane for communication lifecycle.
+- canonical_tag: comms/ledger-tail
+  aliases: []
+  category: comms
+  status: active
+  notes: Append-only tail reading for replay.
+- canonical_tag: comms/replay
+  aliases: []
+  category: comms
+  status: active
+  notes: Replay from append-only history.
+- canonical_tag: comms/agent-route
+  aliases: []
+  category: comms
+  status: active
+  notes: Route envelope to agent endpoint.
+- canonical_tag: comms/work-item-link
+  aliases: []
+  category: comms
+  status: active
+  notes: Link envelope to work/task identity.
+- canonical_tag: comms/envelope-lineage
+  aliases: []
+  category: comms
+  status: active
+  notes: Envelope lineage relationship tracking.
+- canonical_tag: comms/ack-timeout
+  aliases: []
+  category: comms
+  status: active
+  notes: Ack timeout handling.
+- canonical_tag: comms/redelivery
+  aliases: []
+  category: comms
+  status: active
+  notes: Redelivery workflow.
+- canonical_tag: comms/delivery-failure
+  aliases: []
+  category: comms
+  status: active
+  notes: Delivery failure event classification.
+- canonical_tag: comms/notifier-drop
+  aliases: []
+  category: comms
+  status: active
+  notes: Notifier drop diagnostic condition.
+- canonical_tag: comms/receipt-missing
+  aliases: []
+  category: comms
+  status: active
+  notes: Receipt missing diagnostic condition.
+- canonical_tag: policy/notifier-nonauthoritative
+  aliases: []
+  category: policy
+  status: active
+  notes: Notification channels are derived-only.
+- canonical_tag: policy/receipt-required
+  aliases: []
+  category: policy
+  status: active
+  notes: Delivery receipt is required for delivery success claims.
+- canonical_tag: policy/ack-distinct-from-receipt
+  aliases: []
+  category: policy
+  status: active
+  notes: Ack and receipt are distinct records.
+- canonical_tag: policy/uuid7-preferred
+  aliases: []
+  category: policy
+  status: active
+  notes: UUID7 required for concrete event objects in this scaffold.
+- canonical_tag: workflow-substrate/lobster
+  aliases: []
+  category: workflow-substrate
+  status: pending
+  notes: Pending substrate compatibility target; not ratified active doctrine for
+    comms runtime.
+- canonical_tag: comms/lobster-adapter
+  aliases: []
+  category: comms
+  status: pending
+  notes: Pending adapter concept; no active implementation in this scaffold.
+- canonical_tag: comms/sse
+  aliases: []
+  category: comms
+  status: pending
+  notes: Pending notifier transport option.
+- canonical_tag: comms/websocket
+  aliases: []
+  category: comms
+  status: pending
+  notes: Pending notifier transport option.
+- canonical_tag: comms/local-socket
+  aliases: []
+  category: comms
+  status: pending
+  notes: Pending notifier transport option.
