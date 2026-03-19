@@ -1,0 +1,131 @@
+{
+  "model": "foduucom/web-form-ui-field-detection",
+  "weights_path": "models/yolo_ui/best.pt",
+  "results": [
+    {
+      "image": "active_2026-03-17T23-16-14.128416+00-00.png",
+      "latency_ms": 565.2527809143066,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "active_2026-03-18T06-13-29.993274+00-00.png",
+      "latency_ms": 15.053987503051758,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "active_2026-03-18T06-14-19.393841+00-00.png",
+      "latency_ms": 15.861988067626953,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "active_2026-03-18T06-15-48.224521+00-00.png",
+      "latency_ms": 15.520334243774414,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T02-29-23.263488+00-00.png",
+      "latency_ms": 15.018939971923828,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T02-30-00.032215+00-00.png",
+      "latency_ms": 15.167713165283203,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T02-30-48.509499+00-00.png",
+      "latency_ms": 14.759302139282227,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T02-30-57.652948+00-00.png",
+      "latency_ms": 14.883279800415039,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-20-23.853954+00-00.png",
+      "latency_ms": 15.034914016723633,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-20-54.046014+00-00.png",
+      "latency_ms": 14.77670669555664,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-21-47.671998+00-00.png",
+      "latency_ms": 14.668941497802734,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-22-07.073978+00-00.png",
+      "latency_ms": 14.928340911865234,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-22-36.710348+00-00.png",
+      "latency_ms": 14.795064926147461,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-23-03.629397+00-00.png",
+      "latency_ms": 14.516353607177734,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-23-38.841637+00-00.png",
+      "latency_ms": 14.544248580932617,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-24-21.326677+00-00.png",
+      "latency_ms": 15.345096588134766,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-25-04.190755+00-00.png",
+      "latency_ms": 14.296770095825195,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-26-03.617575+00-00.png",
+      "latency_ms": 15.151500701904297,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-26-59.400614+00-00.png",
+      "latency_ms": 14.647960662841797,
+      "detections": 0,
+      "classes": []
+    },
+    {
+      "image": "full_2026-03-17T22-27-34.927005+00-00.png",
+      "latency_ms": 14.768600463867188,
+      "detections": 0,
+      "classes": []
+    }
+  ],
+  "summary": {
+    "avg_latency_ms": 42.44964122772217,
+    "avg_detections": 0.0,
+    "class_distribution": {}
+  }
+}
