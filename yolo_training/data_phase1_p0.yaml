@@ -1,0 +1,39 @@
+# YOLO Training Configuration — P0 Narrow Class Set (Phase 1)
+# Start small, expand later. Focus on regions the scout/reviewer loop needs.
+
+path: ../data
+train: images/train
+val: images/val
+test: images/test
+
+# P0 Classes — UI Structure Only
+# Goal: "Where is the chart? Where is the ticket? Where is the action button?"
+# Don't over-label. Just the main regions that matter for the agent loop.
+
+nc: 6
+names:
+  0: chart_panel          # Main price chart area
+  1: order_ticket         # Buy/sell order entry panel
+  2: primary_action_button # Main CTA (Buy, Sell, Close, Confirm)
+  3: confirm_modal        # Confirmation dialogs, alerts
+  4: alert_indicator      # Warning badges, notifications
+  5: position_panel       # Open positions, PnL widget
+
+# Dataset Rules (from Arbiter):
+# 1. Split by SESSION, not adjacent frames
+#    - Train: screenshots from some sessions
+#    - Val/Test: different sessions/layouts/themes
+# 2. Include NEGATIVES:
+#    - Nothing important changed
+#    - Only cursor moved
+#    - Chart moved but no actionable event
+#    - Overlapping windows
+#    - Blur/noise/compression
+
+# Phase 2 (Later): Add buy_button, sell_button, stop_loss_area, take_profit_area
+# Phase 3 (Later): Pattern detectors if still needed
+
+# Training Target:
+# - mAP@0.5 > 0.75 (not perfection, reliability)
+# - Inference < 50ms
+# - Downstream: Eagle gets better ROIs, fewer false escalations
