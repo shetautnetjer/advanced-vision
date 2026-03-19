@@ -1,0 +1,76 @@
+# YOLO Training Data Analysis - Negative Examples
+# Generated: 2026-03-18
+# Total Images: 50
+# Negative Examples: 50
+
+# NEGATIVE EXAMPLES
+# =================
+# Images without any P0 trading UI classes
+# Useful for: background class, false positive reduction
+# Format: filename | content_type | notes
+
+full_2026-03-17T02-29-23.263488+00-00.png | login_screen | Linux login - green aurora background
+full_2026-03-17T02-30-48.509499+00-00.png | login_screen | Linux login - empty password field
+full_2026-03-17T22-20-54.046014+00-00.png | login_screen | Linux login - empty password field
+full_2026-03-17T22-21-47.671998+00-00.png | login_screen | Linux login - password entered
+full_2026-03-17T22-22-07.073978+00-00.png | login_screen | Linux login - empty password field
+full_2026-03-17T22-22-36.710348+00-00.png | login_screen | Linux login - password entered
+full_2026-03-17T22-23-03.629397+00-00.png | login_screen | Linux login - password entered
+full_2026-03-17T22-23-38.841637+00-00.png | login_screen | Linux login - empty password field
+full_2026-03-17T22-25-04.190755+00-00.png | login_screen | Linux login - password with many dots
+full_2026-03-17T22-30-47.211238+00-00.png | login_screen | Linux login - password entered
+full_2026-03-17T22-31-52.875117+00-00.png | login_screen | Linux login - empty password field
+full_2026-03-17T22-37-39.670449+00-00.png | ide_intellij | IntelliJ IDEA welcome screen
+full_2026-03-17T22-40-05.853874+00-00.png | file_manager | Linux file manager - Home/bin directory
+full_2026-03-17T22-40-55.727052+00-00.png | file_manager | Linux file manager - Home directory
+full_2026-03-17T22-41-47.097702+00-00.png | file_manager | Linux file manager - Home/bin with 'ollama'
+full_2026-03-17T22-53-05.645097+00-00.png | login_screen | Linux login screen
+full_2026-03-17T22-56-38.218197+00-00.png | login_screen | Linux login - IntelliJ in background
+full_2026-03-17T22-57-33.620121+00-00.png | login_screen | Linux login screen
+full_2026-03-17T22-59-16.808468+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-02-57.178411+00-00.png | code_editor_vscode | VS Code - JSON file with delivery events
+full_2026-03-17T23-05-03.217295+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-05-03.387793+00-00.png | code_editor_vscode | VS Code - JSON file and browser error
+full_2026-03-17T23-05-03.430517+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-05-03.511610+00-00.png | code_editor_vscode | VS Code - JSON file and browser error
+full_2026-03-17T23-06-15.291509+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-06-15.662441+00-00.png | code_editor_vscode | VS Code - JSON file and browser error
+full_2026-03-17T23-15-23.574586+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-23.808626+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.172020+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.403400+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.502644+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.636090+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.734935+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.833904+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-24.963458+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-15-25.193488+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-11.540603+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-12.673563+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-12.898776+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-12.996524+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-13.224463+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-13.355871+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-13.677832+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-14.328813+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-16-14.789437+00-00.png | login_screen | Linux login screen
+full_2026-03-17T23-24-35.772643+00-00.png | lock_screen | Linux lock screen - time 16:24
+full_2026-03-17T23-25-17.561400+00-00.png | code_editor_vscode | VS Code - JSON and AI assistant panel
+full_2026-03-17T23-30-44.545696+00-00.png | code_editor_vscode | VS Code - JSON and Antigravity/Claude panel
+active_2026-03-18T06-13-29.993274+00-00.png | lock_screen | Linux lock screen - time 23:13
+active_2026-03-18T06-14-19.393841+00-00.png | login_screen | Linux login screen
+
+# USAGE NOTES
+# ===========
+# These images can be used as:
+# 1. Background/negative class for training
+# 2. To reduce false positives in trading UI detection
+# 3. As part of a 'non_trading_ui' class
+
+# CATEGORY BREAKDOWN
+# ==================
+# - Login screens: 38 images
+# - VS Code editor: 6 images  
+# - File manager: 3 images
+# - Lock screens: 2 images
+# - IntelliJ IDEA: 1 image

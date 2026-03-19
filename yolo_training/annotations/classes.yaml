@@ -1,0 +1,21 @@
+# YOLO Dataset Classes Definition
+# For Trading Platform UI Detection
+# Format: class_id: class_name
+
+names:
+  0: chart_panel
+  1: order_ticket
+  2: primary_action_button
+  3: confirm_modal
+  4: alert_indicator
+  5: position_panel
+
+# Class descriptions:
+# chart_panel - Main price chart area with candlesticks/price action
+# order_ticket - Buy/sell order entry panel/form
+# primary_action_button - Main CTA buttons (Buy, Sell, Confirm, Place Order)
+# confirm_modal - Blocking confirmation dialogs and alert modals
+# alert_indicator - Warning badges, notification icons, status indicators
+# position_panel - Open positions display with PnL information
+
+nc: 6  # number of classes

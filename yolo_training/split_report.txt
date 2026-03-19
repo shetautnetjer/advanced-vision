@@ -1,0 +1,31 @@
+================================================================================
+YOLO Dataset Split Report
+Generated: 2026-03-18 18:42:03
+================================================================================
+
+Configuration: /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data_split_strategy.json
+
+DIRECTORY STRUCTURE:
+  Train Images: /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data/images/train
+  Train Labels: /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data/labels/train
+  Val Images:   /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data/images/val
+  Val Labels:   /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data/labels/val
+  Test Images:  /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data/images/test
+  Test Labels:  /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data/labels/test
+
+SPLIT COUNTS:
+  Train: 43 images
+  Val:   4 images
+  Test:  3 images
+
+NEGATIVE EXAMPLES:
+  All images in this split are negative examples (no P0 class annotations).
+  Empty .txt files created for each image to indicate negative samples.
+
+NEXT STEPS:
+  1. Review the split in data/images/ and data/labels/
+  2. Add positive examples with actual YOLO format annotations
+  3. Update data_phase1_p0.yaml with correct class names
+  4. Run training: bash train_phase1_p0.sh
+
+================================================================================

@@ -1,0 +1,221 @@
+{
+  "version": "1.0",
+  "created": "2026-03-18",
+  "total_images": 50,
+  "total_sessions": 9,
+  "split_ratios": {
+    "train": 0.70,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "sessions": {
+    "session_01": {
+      "description": "Early morning login sequence",
+      "time_range": "2026-03-17 02:29:23 - 02:30:48",
+      "duration_minutes": 1.4,
+      "image_count": 2,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T02-29-23.263488+00-00.png",
+        "full_2026-03-17T02-30-48.509499+00-00.png"
+      ]
+    },
+    "session_02": {
+      "description": "Evening desktop session - file manager",
+      "time_range": "2026-03-17 22:20:54 - 22:25:04",
+      "duration_minutes": 4.2,
+      "image_count": 7,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T22-20-54.046014+00-00.png",
+        "full_2026-03-17T22-21-47.671998+00-00.png",
+        "full_2026-03-17T22-22-07.073978+00-00.png",
+        "full_2026-03-17T22-22-36.710348+00-00.png",
+        "full_2026-03-17T22-23-03.629397+00-00.png",
+        "full_2026-03-17T22-23-38.841637+00-00.png",
+        "full_2026-03-17T22-25-04.190755+00-00.png"
+      ]
+    },
+    "session_03": {
+      "description": "Evening session - brief activity",
+      "time_range": "2026-03-17 22:30:47 - 22:31:52",
+      "duration_minutes": 1.1,
+      "image_count": 2,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T22-30-47.211238+00-00.png",
+        "full_2026-03-17T22-31-52.875117+00-00.png"
+      ]
+    },
+    "session_04": {
+      "description": "Evening session - mixed desktop activity",
+      "time_range": "2026-03-17 22:37:39 - 22:41:47",
+      "duration_minutes": 4.1,
+      "image_count": 4,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T22-37-39.670449+00-00.png",
+        "full_2026-03-17T22-40-05.853874+00-00.png",
+        "full_2026-03-17T22-40-55.727052+00-00.png",
+        "full_2026-03-17T22-41-47.097702+00-00.png"
+      ]
+    },
+    "session_05": {
+      "description": "Late evening extended session - App Center, desktop",
+      "time_range": "2026-03-17 22:53:05 - 23:06:15",
+      "duration_minutes": 13.2,
+      "image_count": 11,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T22-53-05.645097+00-00.png",
+        "full_2026-03-17T22-56-38.218197+00-00.png",
+        "full_2026-03-17T22-57-33.620121+00-00.png",
+        "full_2026-03-17T22-59-16.808468+00-00.png",
+        "full_2026-03-17T23-02-57.178411+00-00.png",
+        "full_2026-03-17T23-05-03.217295+00-00.png",
+        "full_2026-03-17T23-05-03.387793+00-00.png",
+        "full_2026-03-17T23-05-03.430517+00-00.png",
+        "full_2026-03-17T23-05-03.511610+00-00.png",
+        "full_2026-03-17T23-06-15.291509+00-00.png",
+        "full_2026-03-17T23-06-15.662441+00-00.png"
+      ]
+    },
+    "session_06": {
+      "description": "Late evening burst - login sequence rapid capture",
+      "time_range": "2026-03-17 23:15:23 - 23:16:14",
+      "duration_minutes": 0.9,
+      "image_count": 19,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T23-15-23.574586+00-00.png",
+        "full_2026-03-17T23-15-23.808626+00-00.png",
+        "full_2026-03-17T23-15-24.172020+00-00.png",
+        "full_2026-03-17T23-15-24.403400+00-00.png",
+        "full_2026-03-17T23-15-24.502644+00-00.png",
+        "full_2026-03-17T23-15-24.636090+00-00.png",
+        "full_2026-03-17T23-15-24.734935+00-00.png",
+        "full_2026-03-17T23-15-24.833904+00-00.png",
+        "full_2026-03-17T23-15-24.963458+00-00.png",
+        "full_2026-03-17T23-15-25.193488+00-00.png",
+        "full_2026-03-17T23-16-11.540603+00-00.png",
+        "full_2026-03-17T23-16-12.673563+00-00.png",
+        "full_2026-03-17T23-16-12.898776+00-00.png",
+        "full_2026-03-17T23-16-12.996524+00-00.png",
+        "full_2026-03-17T23-16-13.224463+00-00.png",
+        "full_2026-03-17T23-16-13.355871+00-00.png",
+        "full_2026-03-17T23-16-13.677832+00-00.png",
+        "full_2026-03-17T23-16-14.328813+00-00.png",
+        "full_2026-03-17T23-16-14.789437+00-00.png"
+      ]
+    },
+    "session_07": {
+      "description": "Late evening - VS Code: session",
+      "time_range": "2026-03-17 23:24:35 - 23:25:17",
+      "duration_minutes": 0.7,
+      "image_count": 2,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T23-24-35.772643+00-00.png",
+        "full_2026-03-17T23-25-17.561400+00-00.png"
+      ]
+    },
+    "session_08": {
+      "description": "Late evening - single VS Code: capture",
+      "time_range": "2026-03-17 23:30:44",
+      "duration_minutes": 0,
+      "image_count": 1,
+      "image_type": "full",
+      "files": [
+        "full_2026-03-17T23-30-44.545696+00-00.png"
+      ]
+    },
+    "session_09": {
+      "description": "Early morning - active window captures (different modality)",
+      "time_range": "2026-03-18 06:13:29 - 06:14:19",
+      "duration_minutes": 0.8,
+      "image_count": 2,
+      "image_type": "active",
+      "files": [
+        "active_2026-03-18T06-13-29.993274+00-00.png",
+        "active_2026-03-18T06-14-19.393841+00-00.png"
+      ]
+    }
+  },
+  "train_sessions": ["session_02", "session_03", "session_04", "session_05", "session_06"],
+  "val_sessions": ["session_01", "session_07"],
+  "test_sessions": ["session_08", "session_09"],
+  "negative_examples": [
+    "full_2026-03-17T02-29-23.263488+00-00.png",
+    "full_2026-03-17T02-30-48.509499+00-00.png",
+    "full_2026-03-17T22-20-54.046014+00-00.png",
+    "full_2026-03-17T22-21-47.671998+00-00.png",
+    "full_2026-03-17T22-22-07.073978+00-00.png",
+    "full_2026-03-17T22-22-36.710348+00-00.png",
+    "full_2026-03-17T22-23-03.629397+00-00.png",
+    "full_2026-03-17T22-23-38.841637+00-00.png",
+    "full_2026-03-17T22-25-04.190755+00-00.png",
+    "full_2026-03-17T22-30-47.211238+00-00.png",
+    "full_2026-03-17T22-31-52.875117+00-00.png",
+    "full_2026-03-17T22-37-39.670449+00-00.png",
+    "full_2026-03-17T22-40-05.853874+00-00.png",
+    "full_2026-03-17T22-40-55.727052+00-00.png",
+    "full_2026-03-17T22-41-47.097702+00-00.png",
+    "full_2026-03-17T22-53-05.645097+00-00.png",
+    "full_2026-03-17T22-56-38.218197+00-00.png",
+    "full_2026-03-17T22-57-33.620121+00-00.png",
+    "full_2026-03-17T22-59-16.808468+00-00.png",
+    "full_2026-03-17T23-02-57.178411+00-00.png",
+    "full_2026-03-17T23-05-03.217295+00-00.png",
+    "full_2026-03-17T23-05-03.387793+00-00.png",
+    "full_2026-03-17T23-05-03.430517+00-00.png",
+    "full_2026-03-17T23-05-03.511610+00-00.png",
+    "full_2026-03-17T23-06-15.291509+00-00.png",
+    "full_2026-03-17T23-06-15.662441+00-00.png",
+    "full_2026-03-17T23-15-23.574586+00-00.png",
+    "full_2026-03-17T23-15-23.808626+00-00.png",
+    "full_2026-03-17T23-15-24.172020+00-00.png",
+    "full_2026-03-17T23-15-24.403400+00-00.png",
+    "full_2026-03-17T23-15-24.502644+00-00.png",
+    "full_2026-03-17T23-15-24.636090+00-00.png",
+    "full_2026-03-17T23-15-24.734935+00-00.png",
+    "full_2026-03-17T23-15-24.833904+00-00.png",
+    "full_2026-03-17T23-15-24.963458+00-00.png",
+    "full_2026-03-17T23-15-25.193488+00-00.png",
+    "full_2026-03-17T23-16-11.540603+00-00.png",
+    "full_2026-03-17T23-16-12.673563+00-00.png",
+    "full_2026-03-17T23-16-12.898776+00-00.png",
+    "full_2026-03-17T23-16-12.996524+00-00.png",
+    "full_2026-03-17T23-16-13.224463+00-00.png",
+    "full_2026-03-17T23-16-13.355871+00-00.png",
+    "full_2026-03-17T23-16-13.677832+00-00.png",
+    "full_2026-03-17T23-16-14.328813+00-00.png",
+    "full_2026-03-17T23-16-14.789437+00-00.png",
+    "full_2026-03-17T23-24-35.772643+00-00.png",
+    "full_2026-03-17T23-25-17.561400+00-00.png",
+    "full_2026-03-17T23-30-44.545696+00-00.png",
+    "active_2026-03-18T06-13-29.993274+00-00.png",
+    "active_2026-03-18T06-14-19.393841+00-00.png"
+  ],
+  "rationale": "Dataset contains 50 desktop screenshots across 9 distinct temporal sessions. All images are NEGATIVE examples for P0 trading UI classes (chart_panel, order_ticket, primary_action_button, confirm_modal, alert_indicator, position_panel) as they show general desktop environments (login screens, file manager, VS Code:, Ubuntu App Center) rather than trading platforms. Split strategy follows strict session-based separation to prevent data leakage: TRAIN (5 sessions, 45 images, 90%) - diverse desktop scenarios including burst captures; VAL (2 sessions, 4 images, 8%) - early morning and VS Code: sessions; TEST (2 sessions, 3 images, 6%) - single capture and active window modality. Session_09 (active window) is held out to test for modality shift. All images require empty .txt label files for negative example training.",
+  "class_distribution_estimate": {
+    "note": "Current dataset contains NO positive examples of P0 classes. All 50 images are negative examples (background/irrelevant UI). Estimated distribution: chart_panel: 0, order_ticket: 0, primary_action_button: 0, confirm_modal: 0, alert_indicator: 0, position_panel: 0",
+    "recommendation": "Collect trading platform screenshots (TradingView, MetaTrader, etc.) and annotate with P0 classes. Target minimum 100 positive examples per class for initial training."
+  },
+  "split_summary": {
+    "train": {
+      "sessions": 5,
+      "images": 45,
+      "percentage": 90.0
+    },
+    "val": {
+      "sessions": 2,
+      "images": 4,
+      "percentage": 8.0
+    },
+    "test": {
+      "sessions": 2,
+      "images": 3,
+      "percentage": 6.0
+    }
+  }
+}

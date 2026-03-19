@@ -1,0 +1,603 @@
+{
+  "analysis_metadata": {
+    "total_images": 50,
+    "trading_platforms_found": 0,
+    "analysis_date": "2026-03-18",
+    "p0_classes": [
+      "chart_panel",
+      "order_ticket", 
+      "primary_action_button",
+      "confirm_modal",
+      "alert_indicator",
+      "position_panel"
+    ]
+  },
+  "summary": {
+    "image_categories": {
+      "login_screens": 38,
+      "code_editor_vscode": 6,
+      "file_manager": 3,
+      "lock_screen": 2,
+      "ide_intellij": 1
+    },
+    "quality_assessment": {
+      "clear": 50,
+      "blurry": 0,
+      "obscured": 0
+    },
+    "trainable_images": 0,
+    "negative_examples": 50,
+    "skip_count": 0
+  },
+  "images": [
+    {
+      "filename": "full_2026-03-17T02-29-23.263488+00-00.png",
+      "timestamp": "2026-03-17T02:29:23",
+      "session": "early_morning",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen for user 'Netjer' - green aurora background"
+    },
+    {
+      "filename": "full_2026-03-17T02-30-48.509499+00-00.png",
+      "timestamp": "2026-03-17T02:30:48",
+      "session": "early_morning",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - empty password field"
+    },
+    {
+      "filename": "full_2026-03-17T22-20-54.046014+00-00.png",
+      "timestamp": "2026-03-17T22:20:54",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - empty password field"
+    },
+    {
+      "filename": "full_2026-03-17T22-21-47.671998+00-00.png",
+      "timestamp": "2026-03-17T22:21:47",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - password entered"
+    },
+    {
+      "filename": "full_2026-03-17T22-22-07.073978+00-00.png",
+      "timestamp": "2026-03-17T22:22:07",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - empty password field"
+    },
+    {
+      "filename": "full_2026-03-17T22-22-36.710348+00-00.png",
+      "timestamp": "2026-03-17T22:22:36",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - password entered with dots"
+    },
+    {
+      "filename": "full_2026-03-17T22-23-03.629397+00-00.png",
+      "timestamp": "2026-03-17T22:23:03",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - password entered"
+    },
+    {
+      "filename": "full_2026-03-17T22-23-38.841637+00-00.png",
+      "timestamp": "2026-03-17T22:23:38",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - empty password field"
+    },
+    {
+      "filename": "full_2026-03-17T22-25-04.190755+00-00.png",
+      "timestamp": "2026-03-17T22:25:04",
+      "session": "evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - password entered with many dots"
+    },
+    {
+      "filename": "full_2026-03-17T22-30-47.211238+00-00.png",
+      "timestamp": "2026-03-17T22:30:47",
+      "session": "evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - password entered"
+    },
+    {
+      "filename": "full_2026-03-17T22-31-52.875117+00-00.png",
+      "timestamp": "2026-03-17T22:31:52",
+      "session": "evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - empty password field"
+    },
+    {
+      "filename": "full_2026-03-17T22-37-39.670449+00-00.png",
+      "timestamp": "2026-03-17T22:37:39",
+      "session": "evening_b",
+      "is_trading_platform": false,
+      "content_type": "ide_intellij",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "IntelliJ IDEA welcome screen showing projects list"
+    },
+    {
+      "filename": "full_2026-03-17T22-40-05.853874+00-00.png",
+      "timestamp": "2026-03-17T22:40:05",
+      "session": "evening_b",
+      "is_trading_platform": false,
+      "content_type": "file_manager",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux file manager showing Home/bin directory"
+    },
+    {
+      "filename": "full_2026-03-17T22-40-55.727052+00-00.png",
+      "timestamp": "2026-03-17T22:40:55",
+      "session": "evening_b",
+      "is_trading_platform": false,
+      "content_type": "file_manager",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux file manager showing Home directory"
+    },
+    {
+      "filename": "full_2026-03-17T22-41-47.097702+00-00.png",
+      "timestamp": "2026-03-17T22:41:47",
+      "session": "evening_b",
+      "is_trading_platform": false,
+      "content_type": "file_manager",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux file manager showing Home/bin with 'ollama' file"
+    },
+    {
+      "filename": "full_2026-03-17T22-53-05.645097+00-00.png",
+      "timestamp": "2026-03-17T22:53:05",
+      "session": "evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T22-56-38.218197+00-00.png",
+      "timestamp": "2026-03-17T22:56:38",
+      "session": "evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen - IntelliJ IDEA welcome shown in background"
+    },
+    {
+      "filename": "full_2026-03-17T22-57-33.620121+00-00.png",
+      "timestamp": "2026-03-17T22:57:33",
+      "session": "evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T22-59-16.808468+00-00.png",
+      "timestamp": "2026-03-17T22:59:16",
+      "session": "evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-02-57.178411+00-00.png",
+      "timestamp": "2026-03-17T23:02:57",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "code_editor_vscode",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "VS Code with JSON file showing 'DELIVERY' events and browser error"
+    },
+    {
+      "filename": "full_2026-03-17T23-05-03.217295+00-00.png",
+      "timestamp": "2026-03-17T23:05:03",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-05-03.387793+00-00.png",
+      "timestamp": "2026-03-17T23:05:03",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "code_editor_vscode",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "VS Code with JSON file and browser error"
+    },
+    {
+      "filename": "full_2026-03-17T23-05-03.430517+00-00.png",
+      "timestamp": "2026-03-17T23:05:03",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-05-03.511610+00-00.png",
+      "timestamp": "2026-03-17T23:05:03",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "code_editor_vscode",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "VS Code with JSON file and browser error"
+    },
+    {
+      "filename": "full_2026-03-17T23-06-15.291509+00-00.png",
+      "timestamp": "2026-03-17T23:06:15",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-06-15.662441+00-00.png",
+      "timestamp": "2026-03-17T23:06:15",
+      "session": "late_evening_a",
+      "is_trading_platform": false,
+      "content_type": "code_editor_vscode",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "VS Code with JSON file and browser error"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-23.574586+00-00.png",
+      "timestamp": "2026-03-17T23:15:23",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-23.808626+00-00.png",
+      "timestamp": "2026-03-17T23:15:23",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.172020+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.403400+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.502644+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.636090+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.734935+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.833904+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-24.963458+00-00.png",
+      "timestamp": "2026-03-17T23:15:24",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-15-25.193488+00-00.png",
+      "timestamp": "2026-03-17T23:15:25",
+      "session": "late_evening_b",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-11.540603+00-00.png",
+      "timestamp": "2026-03-17T23:16:11",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-12.673563+00-00.png",
+      "timestamp": "2026-03-17T23:16:12",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-12.898776+00-00.png",
+      "timestamp": "2026-03-17T23:16:12",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-12.996524+00-00.png",
+      "timestamp": "2026-03-17T23:16:12",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-13.224463+00-00.png",
+      "timestamp": "2026-03-17T23:16:13",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-13.355871+00-00.png",
+      "timestamp": "2026-03-17T23:16:13",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-13.677832+00-00.png",
+      "timestamp": "2026-03-17T23:16:13",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-14.328813+00-00.png",
+      "timestamp": "2026-03-17T23:16:14",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-16-14.789437+00-00.png",
+      "timestamp": "2026-03-17T23:16:14",
+      "session": "late_evening_c",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    },
+    {
+      "filename": "full_2026-03-17T23-24-35.772643+00-00.png",
+      "timestamp": "2026-03-17T23:24:35",
+      "session": "late_evening_d",
+      "is_trading_platform": false,
+      "content_type": "lock_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux lock screen showing time 16:24"
+    },
+    {
+      "filename": "full_2026-03-17T23-25-17.561400+00-00.png",
+      "timestamp": "2026-03-17T23:25:17",
+      "session": "late_evening_d",
+      "is_trading_platform": false,
+      "content_type": "code_editor_vscode",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "VS Code editor with JSON delivery events and AI assistant panel"
+    },
+    {
+      "filename": "full_2026-03-17T23-30-44.545696+00-00.png",
+      "timestamp": "2026-03-17T23:30:44",
+      "session": "late_evening_e",
+      "is_trading_platform": false,
+      "content_type": "code_editor_vscode",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "VS Code editor with JSON file and AI assistant panel (Antigravity/Claude)"
+    },
+    {
+      "filename": "active_2026-03-18T06-13-29.993274+00-00.png",
+      "timestamp": "2026-03-18T06:13:29",
+      "session": "morning_a",
+      "is_trading_platform": false,
+      "content_type": "lock_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux lock screen showing time 23:13"
+    },
+    {
+      "filename": "active_2026-03-18T06-14-19.393841+00-00.png",
+      "timestamp": "2026-03-18T06:14:19",
+      "session": "morning_a",
+      "is_trading_platform": false,
+      "content_type": "login_screen",
+      "classes_detected": [],
+      "quality": "clear",
+      "recommended_split": "negative",
+      "notes": "Linux login screen"
+    }
+  ],
+  "session_groups": {
+    "early_morning": ["02:29-02:30"],
+    "evening_a": ["22:20-22:25"],
+    "evening_b": ["22:30-22:41"],
+    "evening_c": ["22:53-22:59"],
+    "late_evening_a": ["23:02-23:06"],
+    "late_evening_b": ["23:15"],
+    "late_evening_c": ["23:16"],
+    "late_evening_d": ["23:24-23:25"],
+    "late_evening_e": ["23:30"],
+    "morning_a": ["06:13-06:14"]
+  },
+  "recommendations": {
+    "dataset_status": "NO_TRADING_PLATFORMS_FOUND",
+    "action_required": "Capture actual trading platform screenshots (TradingView, MetaTrader, ThinkOrSwim, etc.)",
+    "current_images_useful_for": "Negative examples / background class training",
+    "label_files_generated": 0,
+    "notes": "All 50 screenshots are desktop environment captures. No financial/trading UI elements detected. These can be used as negative examples for a 'non_trading_ui' class or background images."
+  }
+}

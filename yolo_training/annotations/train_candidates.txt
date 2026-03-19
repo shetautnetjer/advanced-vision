@@ -1,0 +1,26 @@
+# YOLO Training Data Analysis - Categorized Lists
+# Generated: 2026-03-18
+# Total Images: 50
+# Trading Platforms: 0
+# Negative Examples: 50
+
+# TRAINING CANDIDATES
+# ===================
+# Images with clear P0 class detections suitable for training
+# Format: filename | classes | quality | notes
+
+# NONE - No trading platform screenshots found in dataset
+
+# VALIDATION CANDIDATES
+# =====================
+# Images for validation set from different time periods
+# Format: filename | classes | quality | notes
+
+# NONE - No trading platform screenshots found in dataset
+
+# TEST CANDIDATES
+# ===============
+# Images for test set from different time periods
+# Format: filename | classes | quality | notes
+
+# NONE - No trading platform screenshots found in dataset

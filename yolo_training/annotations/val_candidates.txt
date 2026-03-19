@@ -1,0 +1,19 @@
+# YOLO Training Data Analysis - Validation Candidates
+# Generated: 2026-03-18
+# Total Images: 50
+# Trading Platforms: 0
+# Validation Candidates: 0
+
+# VALIDATION CANDIDATES
+# =====================
+# Images with clear P0 class detections for validation set
+# Selected from different time periods than training
+# Format: filename | classes | quality | notes
+
+# NONE - No trading platform screenshots found in dataset
+
+# RECOMMENDATION:
+# Once trading platform screenshots are captured:
+# - Use ~15% of total for validation
+# - Select from different session groups than training
+# - Ensure diverse trading scenarios (different markets, times)
