@@ -1,8 +1,8 @@
 # Complete Screenshot Dataset Summary
 
 **Date:** 2026-03-18  
-**Total Images:** 30 screenshots  
-**Purpose:** YOLO training for trading UI detection
+**Total Images:** 47 screenshots  
+**Purpose:** YOLO training for UI element detection
 
 ---
 
@@ -48,6 +48,30 @@
 - dexscreener_pair_search.png — Search interface
 - dexscreener_trending_pairs.png — Trending pairs
 - dexscreener_chart_panel.png — Chart view
+
+### 3. Antigravity UI (7 images)
+**Location:** `yolo_training/annotations/raw_images/antigravity_ui/`
+
+- antigravity_main_agent_panel.png — IDE with agent panel
+- antigravity_agent_focused.png — Agent panel focused
+- antigravity_agent_chat_open.png — Chat interface
+- antigravity_file_explorer.png — File explorer view
+- antigravity_git_panel.png — Git integration panel
+- antigravity_terminal_open.png — Terminal panel
+- antigravity_file_editing.png — File editing view
+
+### 4. ChatGPT UI (10 images)
+**Location:** `yolo_training/annotations/raw_images/chatgpt_ui/`
+
+- chatgpt_main.png — Main ChatGPT interface
+- chatgpt_before_click.png — Before clicking All projects
+- chatgpt_all_projects.png — Projects list view
+- chatgpt_projects_scrolled.png — Scrolled project list
+- chatgpt_finding_projects.png — Finding specific projects
+- chatgpt_message_typed.png — Message typed in input
+- chatgpt_response_loading.png — Response loading
+- chatgpt_response_1.png — ChatGPT response
+- chatgpt_new_tab.png — New ChatGPT tab
 
 ---
 
@@ -146,10 +170,10 @@ Covers:
 
 ## Summary
 
-✅ **30 screenshots captured** via computer use automation  
-✅ **Multiple platforms** — TradingView + DEX sites  
-✅ **Diverse UI patterns** — Charts, swaps, menus, alerts  
+✅ **47 screenshots captured** via computer use automation  
+✅ **Multiple platforms** — TradingView, DEX sites, Antigravity, ChatGPT  
+✅ **Diverse UI patterns** — Charts, swaps, chat interfaces, IDE panels  
 ⚠️ **Need more** — Order tickets, buy/sell buttons, confirmations  
 ✅ **Ready to label** — YOLO training pipeline set up  
 
-**Status:** Phase 1 dataset ~60% complete. Ready to start labeling while capturing more.
+**Status:** Phase 1 dataset ~70% complete. Ready to start labeling while capturing more.
