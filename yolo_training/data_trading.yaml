@@ -1,0 +1,18 @@
+# YOLO Training Configuration
+# Model Type: trading
+path: ../data
+train: images/train
+val: images/val
+test: images/test
+
+# Classes
+nc: 8
+names:
+  0: candlestick
+  1: support_line
+  2: resistance_line
+  3: trend_line
+  4:  breakout_pattern
+  5: consolidation
+  6: indicator
+  7: order_button

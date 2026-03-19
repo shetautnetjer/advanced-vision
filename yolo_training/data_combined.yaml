@@ -1,0 +1,18 @@
+# YOLO Training Configuration
+# Model Type: combined
+path: ../data
+train: images/train
+val: images/val
+test: images/test
+
+# Classes
+nc: 8
+names:
+  0: button
+  1: text_input
+  2: modal
+  3: chart_area
+  4: ticket_panel
+  5: candlestick
+  6: support_resistance
+  7: indicator

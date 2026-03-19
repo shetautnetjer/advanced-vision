@@ -78,3 +78,13 @@ htmlcov/
 *.egg-info/
 dist/
 build/
+
+# YOLO Training Data (large files)
+yolo_training/annotations/raw_images/
+yolo_training/data/images/
+yolo_training/data/labels/
+yolo_training/runs/
+*.pt
+*.onnx
+*.engine
+
