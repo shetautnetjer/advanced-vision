@@ -1,0 +1,555 @@
+{
+  "timestamp": "2026-03-19T00:36:25.566039+00:00",
+  "config": {
+    "mobilesam_speed_ms": 12.0,
+    "mobilesam_accuracy": 73.0,
+    "mobilesam_vram_gb": 0.5,
+    "sam3_speed_ms": 2921.0,
+    "sam3_accuracy": 88.0,
+    "sam3_vram_gb": 3.4,
+    "num_iterations": 10,
+    "warmup_iterations": 3,
+    "iou_excellent": 0.85,
+    "iou_good": 0.7,
+    "iou_poor": 0.5
+  },
+  "results": [
+    {
+      "test_name": "button_segmentation_standard_1920x1080",
+      "category": "ui_element",
+      "iou_score": 0.684871849789391,
+      "inference_time_ms": 13.06187176293266,
+      "boundary_accuracy": 0.9025,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "style": "standard",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "button"
+      }
+    },
+    {
+      "test_name": "button_segmentation_flat_1920x1080",
+      "category": "ui_element",
+      "iou_score": 0.8133918770581778,
+      "inference_time_ms": 13.440210978792486,
+      "boundary_accuracy": 0.94625,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "style": "flat",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "button"
+      }
+    },
+    {
+      "test_name": "button_segmentation_gradient_1920x1080",
+      "category": "ui_element",
+      "iou_score": 0.7169784479692723,
+      "inference_time_ms": 10.982272790727528,
+      "boundary_accuracy": 0.9137500000000001,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "style": "gradient",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "button"
+      }
+    },
+    {
+      "test_name": "button_segmentation_standard_1280x720",
+      "category": "ui_element",
+      "iou_score": 0.7343382658000277,
+      "inference_time_ms": 12.233348278515066,
+      "boundary_accuracy": 0.9195833333333333,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "style": "standard",
+        "image_size": [
+          1280,
+          720
+        ],
+        "element_type": "button"
+      }
+    },
+    {
+      "test_name": "button_segmentation_flat_1280x720",
+      "category": "ui_element",
+      "iou_score": 0.9086666666666666,
+      "inference_time_ms": 10.54995211524943,
+      "boundary_accuracy": 0.9766666666666667,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "style": "flat",
+        "image_size": [
+          1280,
+          720
+        ],
+        "element_type": "button"
+      }
+    },
+    {
+      "test_name": "button_segmentation_gradient_1280x720",
+      "category": "ui_element",
+      "iou_score": 0.7281067556296914,
+      "inference_time_ms": 12.357694197410336,
+      "boundary_accuracy": 0.9170833333333334,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "style": "gradient",
+        "image_size": [
+          1280,
+          720
+        ],
+        "element_type": "button"
+      }
+    },
+    {
+      "test_name": "chart_panel_segmentation_simple",
+      "category": "ui_element",
+      "iou_score": 0.7547104571617035,
+      "inference_time_ms": 12.106767648263062,
+      "boundary_accuracy": 0.9283035714285715,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "complexity": "simple",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "chart_panel"
+      }
+    },
+    {
+      "test_name": "chart_panel_segmentation_medium",
+      "category": "ui_element",
+      "iou_score": 0.6544135069290449,
+      "inference_time_ms": 12.106767648263062,
+      "boundary_accuracy": 0.8913392857142857,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "complexity": "medium",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "chart_panel"
+      }
+    },
+    {
+      "test_name": "chart_panel_segmentation_complex",
+      "category": "ui_element",
+      "iou_score": 0.4296819051835263,
+      "inference_time_ms": 11.379082305921077,
+      "boundary_accuracy": 0.7648511904761904,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "complexity": "complex",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "chart_panel"
+      }
+    },
+    {
+      "test_name": "order_ticket_segmentation",
+      "category": "ui_element",
+      "iou_score": 0.6509876226777018,
+      "inference_time_ms": 11.406046010548396,
+      "boundary_accuracy": 0.88825,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "image_size": [
+          1920,
+          1080
+        ],
+        "element_type": "order_ticket_panel"
+      }
+    },
+    {
+      "test_name": "chart_region_isolation",
+      "category": "roi_extraction",
+      "iou_score": 0.4296819051835263,
+      "inference_time_ms": 11.379082305921077,
+      "boundary_accuracy": 0.7648511904761904,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "crop_path": "/tmp/tmp9ea1ez43/roi_chart_panel_1cf6c6d5.png",
+        "roi_id": "roi_chart_panel_1cf6c6d5"
+      }
+    },
+    {
+      "test_name": "ticket_panel_extraction",
+      "category": "roi_extraction",
+      "iou_score": 0.6509876226777018,
+      "inference_time_ms": 11.406046010548396,
+      "boundary_accuracy": 0.88825,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "crop_path": "/tmp/tmp550epe_z/roi_order_ticket_panel_4839d611.png"
+      }
+    },
+    {
+      "test_name": "roi_ground_truth_comparison",
+      "category": "roi_extraction",
+      "iou_score": 0.7618232451782646,
+      "inference_time_ms": 12.0,
+      "boundary_accuracy": 0.7618232451782646,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "iou_std": 0.08722725412389058,
+        "iou_samples": [
+          0.6544135069290449,
+          0.900321923399301,
+          0.8136192056358296,
+          0.7449415226697407,
+          0.6958200672574066
+        ],
+        "consistency": "medium"
+      }
+    },
+    {
+      "test_name": "mobilesam_vs_sam3_accuracy",
+      "category": "comparison",
+      "iou_score": 0.6010188701307287,
+      "inference_time_ms": 12.843903831399285,
+      "boundary_accuracy": 0.9251492793977795,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "mobilesam_iou": 0.6010188701307287,
+        "sam3_iou": 0.9251492793977795,
+        "mobilesam_time_ms": 12.843903831399285,
+        "sam3_time_ms": 2929.864968537952,
+        "speedup_factor": 228.11327513799645,
+        "accuracy_gap": 0.3241304092670507,
+        "sam3_warranted": true
+      }
+    },
+    {
+      "test_name": "speed_comparison",
+      "category": "comparison",
+      "iou_score": 0.0,
+      "inference_time_ms": 10.502981566674055,
+      "boundary_accuracy": 0.0,
+      "vram_used_mb": 0.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "mobilesam_time_ms": 10.502981566674055,
+        "sam3_time_ms": 3198.141446638575,
+        "speedup_factor": 304.4984346907999,
+        "target_speedup": 243.41666666666666
+      }
+    },
+    {
+      "test_name": "upgrade_recommendation_iou_0.7",
+      "category": "upgrade_analysis",
+      "iou_score": 0.5895528107773487,
+      "inference_time_ms": 0.0,
+      "boundary_accuracy": 0.9493890389966528,
+      "vram_used_mb": 0.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "iou_threshold": 0.7,
+        "mobilesam_passes": false,
+        "sam3_passes": true,
+        "upgrade_recommended": true,
+        "mobilesam_iou": 0.5895528107773487,
+        "sam3_iou": 0.9493890389966528
+      }
+    },
+    {
+      "test_name": "upgrade_recommendation_iou_0.75",
+      "category": "upgrade_analysis",
+      "iou_score": 0.42159377107190815,
+      "inference_time_ms": 0.0,
+      "boundary_accuracy": 0.9368759315948905,
+      "vram_used_mb": 0.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "iou_threshold": 0.75,
+        "mobilesam_passes": false,
+        "sam3_passes": true,
+        "upgrade_recommended": true,
+        "mobilesam_iou": 0.42159377107190815,
+        "sam3_iou": 0.9368759315948905
+      }
+    },
+    {
+      "test_name": "upgrade_recommendation_iou_0.8",
+      "category": "upgrade_analysis",
+      "iou_score": 0.6468496739552894,
+      "inference_time_ms": 0.0,
+      "boundary_accuracy": 0.8906743473124175,
+      "vram_used_mb": 0.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "iou_threshold": 0.8,
+        "mobilesam_passes": false,
+        "sam3_passes": true,
+        "upgrade_recommended": true,
+        "mobilesam_iou": 0.6468496739552894,
+        "sam3_iou": 0.8906743473124175
+      }
+    },
+    {
+      "test_name": "upgrade_recommendation_iou_0.85",
+      "category": "upgrade_analysis",
+      "iou_score": 0.47895388330274336,
+      "inference_time_ms": 0.0,
+      "boundary_accuracy": 0.9184084472009821,
+      "vram_used_mb": 0.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "iou_threshold": 0.85,
+        "mobilesam_passes": false,
+        "sam3_passes": true,
+        "upgrade_recommended": true,
+        "mobilesam_iou": 0.47895388330274336,
+        "sam3_iou": 0.9184084472009821
+      }
+    },
+    {
+      "test_name": "overlapping_elements",
+      "category": "failure_modes",
+      "iou_score": 0.7125531463828612,
+      "inference_time_ms": 12.404714170952056,
+      "boundary_accuracy": 0.7125531463828612,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "element_results": [
+          {
+            "element": "position_panel",
+            "iou": 0.8325605327592529,
+            "time": 12.824163285148112
+          },
+          {
+            "element": "confirm_modal",
+            "iou": 0.6608330188801999,
+            "time": 12.097476964338208
+          },
+          {
+            "element": "button",
+            "iou": 0.6442658875091307,
+            "time": 12.292502263369855
+          }
+        ],
+        "scenario": "modal_over_panel"
+      }
+    },
+    {
+      "test_name": "low_contrast",
+      "category": "failure_modes",
+      "iou_score": 0.8525,
+      "inference_time_ms": 13.22465882723337,
+      "boundary_accuracy": 0.9616666666666667,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "contrast_ratio": "low",
+        "difficulty": "hard",
+        "note": "Low contrast is a known failure mode"
+      }
+    },
+    {
+      "test_name": "small_elements",
+      "category": "failure_modes",
+      "iou_score": 0.8823529411764706,
+      "inference_time_ms": 9.669814395205833,
+      "boundary_accuracy": 0.96875,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "element_size": "16x16",
+        "difficulty": "hard",
+        "note": "Small elements are challenging"
+      }
+    },
+    {
+      "test_name": "multi_resolution",
+      "category": "failure_modes",
+      "iou_score": 0.8274066289742134,
+      "inference_time_ms": 11.976152771564582,
+      "boundary_accuracy": 0.8274066289742134,
+      "vram_used_mb": 512.0,
+      "success": false,
+      "error_message": null,
+      "metadata": {
+        "resolution_results": [
+          {
+            "resolution": "3840x2160",
+            "iou": 0.966183574879227,
+            "time_ms": 13.93996173356999
+          },
+          {
+            "resolution": "2560x1440",
+            "iou": 0.7048308150670355,
+            "time_ms": 12.586016161093793
+          },
+          {
+            "resolution": "1920x1080",
+            "iou": 0.9389671361502347,
+            "time_ms": 11.962158206781783
+          },
+          {
+            "resolution": "1280x720",
+            "iou": 0.8121269992838386,
+            "time_ms": 11.17800772938004
+          },
+          {
+            "resolution": "800x600",
+            "iou": 0.7149246194907307,
+            "time_ms": 10.214620026997308
+          }
+        ],
+        "iou_std": 0.10919275358009667,
+        "consistency": "low"
+      }
+    },
+    {
+      "test_name": "segmentation_impact_on_classification",
+      "category": "downstream_impact",
+      "iou_score": 0.7921710822165288,
+      "inference_time_ms": 12.0,
+      "boundary_accuracy": 0.8579368185251047,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "quality_results": [
+          {
+            "quality_level": "excellent",
+            "iou": 0.7547104571617035,
+            "classification_acc": 0.830181502877874
+          },
+          {
+            "quality_level": "good",
+            "iou": 0.900321923399301,
+            "classification_acc": 0.95
+          },
+          {
+            "quality_level": "poor",
+            "iou": 0.721480866088582,
+            "classification_acc": 0.7936289526974403
+          }
+        ],
+        "iou_classification_correlation": 0.9987616820941042,
+        "impact": "high"
+      }
+    },
+    {
+      "test_name": "pipeline_quality_comparison",
+      "category": "downstream_impact",
+      "iou_score": 0.7388247015769003,
+      "inference_time_ms": 12.0,
+      "boundary_accuracy": 0.5461616503212715,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "good_segmentation_iou": 0.7388247015769003,
+        "poor_segmentation_iou": 0.5461616503212715,
+        "good_pipeline_success": 0.7757659366557453,
+        "poor_pipeline_success": 0.5188535678052079,
+        "accuracy_impact": 0.2569123688505375,
+        "impact_percentage": 49.51539023568776
+      }
+    },
+    {
+      "test_name": "accuracy_impact_quantification",
+      "category": "downstream_impact",
+      "iou_score": 0.7838462107462872,
+      "inference_time_ms": 12.0,
+      "boundary_accuracy": 96.69231053731437,
+      "vram_used_mb": 512.0,
+      "success": true,
+      "error_message": null,
+      "metadata": {
+        "element_results": [
+          {
+            "element": "button",
+            "avg_iou": 0.8381589155089186,
+            "estimated_accuracy_loss": 0.5920542245540672,
+            "acceptable": true
+          },
+          {
+            "element": "chart",
+            "avg_iou": 0.7618232451782646,
+            "estimated_accuracy_loss": 4.408837741086769,
+            "acceptable": true
+          },
+          {
+            "element": "ticket",
+            "avg_iou": 0.7515564715516785,
+            "estimated_accuracy_loss": 4.922176422416075,
+            "acceptable": true
+          }
+        ],
+        "average_accuracy_loss_percent": 3.3076894626856372,
+        "acceptable_for_production": true,
+        "recommendation": "MobileSAM"
+      }
+    }
+  ],
+  "summary": {
+    "total_tests": 26,
+    "successful_tests": 25,
+    "failed_tests": 1,
+    "average_iou": 0.6935518740868852,
+    "iou_std": 0.1367869966877994,
+    "min_iou": 0.42159377107190815,
+    "max_iou": 0.9086666666666666,
+    "average_inference_time_ms": 11.86506216436917,
+    "categories": [
+      "downstream_impact",
+      "ui_element",
+      "comparison",
+      "roi_extraction",
+      "upgrade_analysis",
+      "failure_modes"
+    ]
+  }
+}

@@ -42,4 +42,9 @@ markers = [
     "performance: Performance benchmark tests",
     "slow: Slow tests that should be run selectively",
     "smoke: Quick smoke tests",
+    "hot_path: Hot path latency tests",
+    "stage_breakdown: Individual stage timing tests",
+    "load_test: Load and stress tests",
+    "memory: Memory profiling tests",
+    "governor: Governor overhead tests",
 ]

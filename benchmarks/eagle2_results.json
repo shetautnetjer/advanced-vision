@@ -1,0 +1,397 @@
+{
+  "timestamp": "2026-03-18T17:35:42.852825",
+  "model_path": "/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/models/Eagle2-2B",
+  "model_available": true,
+  "ui_element_results": [
+    {
+      "category": "button",
+      "predicted_label": "navigation_menu",
+      "ground_truth": "button",
+      "confidence": 0.7266380479364193,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "modal",
+      "predicted_label": "card",
+      "ground_truth": "modal",
+      "confidence": 0.7103334507848911,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "form",
+      "predicted_label": "form",
+      "ground_truth": "form",
+      "confidence": 0.8158925027167447,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": true,
+      "error": null
+    },
+    {
+      "category": "dropdown",
+      "predicted_label": "checkbox",
+      "ground_truth": "dropdown",
+      "confidence": 0.8112055506200767,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "checkbox",
+      "predicted_label": "modal",
+      "ground_truth": "checkbox",
+      "confidence": 0.7285737709258455,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "text_input",
+      "predicted_label": "dropdown",
+      "ground_truth": "text_input",
+      "confidence": 0.6281502289887654,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "navigation_menu",
+      "predicted_label": "tooltip",
+      "ground_truth": "navigation_menu",
+      "confidence": 0.6752123669568021,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "card",
+      "predicted_label": "form",
+      "ground_truth": "card",
+      "confidence": 0.8892864183115661,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "alert",
+      "predicted_label": "dropdown",
+      "ground_truth": "alert",
+      "confidence": 0.734796918846094,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "tooltip",
+      "predicted_label": "card",
+      "ground_truth": "tooltip",
+      "confidence": 0.8366515640862292,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    }
+  ],
+  "ui_element_accuracy": 0.1,
+  "change_detection_results": [
+    {
+      "category": "cursor_only",
+      "predicted_label": "modal_appeared",
+      "ground_truth": "cursor_only",
+      "confidence": 0.6246512181363479,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "benign_ui_change",
+      "predicted_label": "benign_ui_change",
+      "ground_truth": "benign_ui_change",
+      "confidence": 0.6019290082726669,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": true,
+      "error": null
+    },
+    {
+      "category": "meaningful_ui_change",
+      "predicted_label": "benign_ui_change",
+      "ground_truth": "meaningful_ui_change",
+      "confidence": 0.5907891861213171,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "modal_appeared",
+      "predicted_label": "benign_ui_change",
+      "ground_truth": "modal_appeared",
+      "confidence": 0.8118117036370651,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "content_updated",
+      "predicted_label": "benign_ui_change",
+      "ground_truth": "content_updated",
+      "confidence": 0.6898732316564093,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    }
+  ],
+  "change_detection_accuracy": 0.2,
+  "trading_results": [
+    {
+      "category": "chart_candlestick",
+      "predicted_label": "chart_candlestick",
+      "ground_truth": "chart_candlestick",
+      "confidence": 0.5671572567435342,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": true,
+      "error": null
+    },
+    {
+      "category": "chart_line",
+      "predicted_label": "chart_volume",
+      "ground_truth": "chart_line",
+      "confidence": 0.8351948974082644,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "chart_volume",
+      "predicted_label": "timeframe_selector",
+      "ground_truth": "chart_volume",
+      "confidence": 0.7522242660159189,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "ticket_panel",
+      "predicted_label": "ticket_panel",
+      "ground_truth": "ticket_panel",
+      "confidence": 0.8638732775407253,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": true,
+      "error": null
+    },
+    {
+      "category": "position_panel",
+      "predicted_label": "chart_volume",
+      "ground_truth": "position_panel",
+      "confidence": 0.5044437542951726,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "order_entry",
+      "predicted_label": "chart_volume",
+      "ground_truth": "order_entry",
+      "confidence": 0.6246360030680961,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "alert_indicator",
+      "predicted_label": "position_panel",
+      "ground_truth": "alert_indicator",
+      "confidence": 0.9334170786052369,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "timeframe_selector",
+      "predicted_label": "chart_line",
+      "ground_truth": "timeframe_selector",
+      "confidence": 0.6213514067591281,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": false,
+      "error": null
+    },
+    {
+      "category": "price_scale",
+      "predicted_label": "price_scale",
+      "ground_truth": "price_scale",
+      "confidence": 0.7059651216099897,
+      "latency_ms": 10.0,
+      "image_size": [
+        640,
+        480
+      ],
+      "correct": true,
+      "error": null
+    }
+  ],
+  "trading_accuracy": 0.3333333333333333,
+  "performance_metrics": {
+    "avg_latency_ms": 0,
+    "min_latency_ms": 10.0,
+    "max_latency_ms": 10.0,
+    "p95_latency_ms": 0,
+    "p99_latency_ms": 0,
+    "vram_usage_gb": 0.0,
+    "throughput_imgs_per_sec": 0,
+    "image_sizes_tested": [
+      [
+        320,
+        240
+      ],
+      [
+        640,
+        480
+      ],
+      [
+        800,
+        600
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        1920,
+        1080
+      ]
+    ]
+  },
+  "threshold_metrics": [
+    {
+      "threshold": 0.5,
+      "true_positives": 5,
+      "false_positives": 19,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 0.20833333333333334,
+      "recall": 1.0,
+      "f1_score": 0.3448275862068966,
+      "accuracy": 0.20833333333333334
+    },
+    {
+      "threshold": 0.7,
+      "true_positives": 3,
+      "false_positives": 11,
+      "true_negatives": 8,
+      "false_negatives": 2,
+      "precision": 0.21428571428571427,
+      "recall": 0.6,
+      "f1_score": 0.3157894736842105,
+      "accuracy": 0.4583333333333333
+    },
+    {
+      "threshold": 0.9,
+      "true_positives": 0,
+      "false_positives": 1,
+      "true_negatives": 18,
+      "false_negatives": 5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.75
+    }
+  ],
+  "recommended_threshold": 0.5,
+  "total_tests": 24,
+  "total_correct": 5,
+  "overall_accuracy": 0.20833333333333334,
+  "avg_latency_ms": 10.0
+}

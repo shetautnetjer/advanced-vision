@@ -1,0 +1,19 @@
+{
+  "total_screenshots": 327,
+  "real_captures": 156,
+  "placeholders": 171,
+  "recent_captures": [
+    "full_2026-03-17T23-26-10.489818+00-00.png",
+    "full_2026-03-17T23-27-09.123816+00-00.png",
+    "full_2026-03-17T23-29-15.521890+00-00.png",
+    "full_2026-03-17T23-30-44.545696+00-00.png",
+    "full_2026-03-17T23-34-33.980311+00-00.png",
+    "full_2026-03-17T23-34-34.031147+00-00.png",
+    "full_2026-03-17T23-34-34.077689+00-00.png",
+    "full_2026-03-18T06-12-55.508560+00-00.png",
+    "full_2026-03-18T06-15-19.212453+00-00.png",
+    "full_2026-03-18T06-16-53.765227+00-00.png"
+  ],
+  "status": "ready_for_yolo",
+  "note": "Install ultralytics to run actual detection"
+}
