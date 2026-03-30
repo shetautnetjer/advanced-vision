@@ -66,7 +66,7 @@ Decompose repo into parallel analysis tasks, aggregate findings into cohesive pl
 
 All agents output structured markdown to:
 ```
-~/.openclaw/workspace/plane-a/projects/advanced-vision/analysis/
+/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision/analysis/
 ├── 01-structure.md
 ├── 02-code-summary.md
 ├── 03-config.md

@@ -386,7 +386,7 @@ v2 includes ~50 tests covering:
 
 Run tests:
 ```bash
-cd /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 python -m pytest tests/test_wss_v2.py -v
 ```
 

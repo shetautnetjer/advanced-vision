@@ -1,7 +1,7 @@
 {
   "name": "advanced-vision",
   "version": "0.1.0",
-  "description": "Computer-use capability layer for AI systems - screenshots, mouse/keyboard control, and verification",
+  "description": "Computer-use capability layer for AI systems - screenshots, Linux window focus, mouse/keyboard control, OCR-backed proposals, and verification",
   "tools": [
     {
       "name": "screenshot_full",
@@ -110,55 +110,51 @@
     },
     {
       "name": "list_windows",
-      "description": "List visible top-level windows",
+      "description": "List visible top-level windows with best-effort Linux metadata",
       "parameters": {},
       "returns": {
-        "windows": "array - Window info with title, app_name, is_active"
+        "windows": "array - Window info with window_id, title, app_name, is_active"
       }
     },
     {
-      "name": "execute_and_verify",
-      "description": "Execute action, wait, capture after screenshot, verify change (Phase E3)",
+      "name": "focus_window",
+      "description": "Focus the best-matching visible window by title and optional app name",
       "parameters": {
-        "action_type": "string - 'move_mouse', 'click', 'type_text', 'press_keys', 'scroll'",
-        "x": "integer - X coordinate (for mouse actions)",
-        "y": "integer - Y coordinate (for mouse actions)",
-        "text": "string - Text to type",
-        "keys": "array - Keys to press",
-        "button": "string - Mouse button (default: 'left')",
-        "delay_seconds": "number - Wait time after action (default: 0.5)",
+        "title_query": "string - Title fragment to match against visible windows",
+        "app_name": "string - Optional app/process hint like chrome",
         "dry_run": "boolean - If true, don't execute (default: false)"
       },
       "returns": {
-        "before_screenshot": "object - Artifact before action",
-        "action_result": "object - Action execution result",
-        "after_screenshot": "object - Artifact after action",
-        "verification": "object - Change detection result"
+        "ok": "boolean - Success status",
+        "action_type": "string - 'focus_window'",
+        "message": "string - Human-readable result"
       }
     },
     {
-      "name": "record_screen_video",
-      "description": "Record screen as MP4 video (Phase E4)",
+      "name": "analyze_screenshot",
+      "description": "Analyze a screenshot and propose the safest likely action using OCR, detector, and browser heuristics",
       "parameters": {
-        "duration": "integer - Recording duration in seconds (default: 10)",
-        "fps": "integer - Frames per second (default: 5)"
+        "screenshot_path": "string - Path to screenshot artifact",
+        "task": "string - Human task such as 'Click Publish' or 'Click the address bar'"
       },
       "returns": {
-        "path": "string - Path to MP4 file",
-        "duration": "integer - Actual duration",
-        "fps": "integer - Frame rate",
-        "width": "integer - Video width",
-        "height": "integer - Video height",
-        "file_size": "integer - File size in bytes"
+        "action_type": "string - Usually 'click' or 'noop'",
+        "x": "integer - Proposed x coordinate when available",
+        "y": "integer - Proposed y coordinate when available",
+        "bbox": "array - Bounding box [x1, y1, x2, y2] when available",
+        "matched_text": "string - OCR or detector match when available",
+        "confidence": "number - Proposal confidence",
+        "source": "string - 'ocr', 'yolo', or 'browser_heuristic'",
+        "rationale": "string - Human-readable explanation"
       }
     }
   ],
   "environment": {
     "python_version": "3.11+",
-    "dependencies": ["pyautogui", "Pillow", "pydantic", "mcp"],
+    "dependencies": ["pyautogui", "Pillow", "pydantic", "mcp", "rapidocr_onnxruntime"],
     "system_requirements": {
-      "linux": "X11 display server (not Wayland)",
-      "optional": "ffmpeg for video recording"
+      "linux": "X11 display server preferred; xdotool improves Linux window focus and metadata",
+      "optional": "local YOLO weights at yolov8n.pt improve detector fallback"
     }
   },
   "safety": {

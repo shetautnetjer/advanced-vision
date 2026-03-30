@@ -1,5 +1,8 @@
 # Quick Start Guide - Advanced Vision Trading System
 
+This is a secondary, model-heavy setup guide. For the current day-to-day local
+computer-use runtime, start with `../README.md` and `../COMPUTER_USE_ENV.md`.
+
 **Last Verified:** 2026-03-17  
 **Hardware:** NVIDIA RTX 5070 Ti 16GB  
 **Status:** ✅ Working Configuration
@@ -21,7 +24,7 @@ echo $XDG_SESSION_TYPE  # Must print: x11
 ## 1. Environment Setup
 
 ```bash
-cd /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 
 # Verify Python environment

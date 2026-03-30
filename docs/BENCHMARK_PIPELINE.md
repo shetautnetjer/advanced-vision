@@ -1,5 +1,8 @@
 # Pipeline Latency Benchmark Documentation
 
+This benchmark doc is secondary to the current MCP computer-use lane. Use it
+when working on the governed trading or model-eval path.
+
 **Location:** `tests/benchmarks/test_pipeline_latency.py`  
 **Output:** `benchmarks/pipeline_latency.json`  
 **Last Updated:** 2026-03-18
@@ -50,7 +53,7 @@ pytest tests/benchmarks/test_pipeline_latency.py -v --benchmark-save=pipeline
 
 ### Run from Project Root
 ```bash
-cd /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 python -m pytest tests/benchmarks/test_pipeline_latency.py -v
 ```
 

@@ -316,11 +316,11 @@ Open positions widget, PnL display, trade list. "Positions" tab content, open tr
 
 ## References
 
-- [YOLO Training Config](/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/data_phase1_p0.yaml)
-- [Annotation Guide P0](/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/ANNOTATION_GUIDE_P0.md)
-- [Pipeline Stages](/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/src/advanced_vision/trading/pipeline_stages.py)
-- [Detector Module](/home/netjer/.openjer/.openclaw/workspace/plane-a/projects/advanced-vision/src/advanced_vision/trading/detector.py)
-- [YOLO Benchmark Methodology](/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/docs/YOLO_BENCHMARK_METHODOLOGY.md)
+- [YOLO Training Config](../yolo_training/data_phase1_p0.yaml)
+- [Annotation Guide P0](../yolo_training/ANNOTATION_GUIDE_P0.md)
+- [Pipeline Stages](../src/advanced_vision/trading/pipeline_stages.py)
+- [Detector Module](../src/advanced_vision/trading/detector.py)
+- [YOLO Benchmark Methodology](YOLO_BENCHMARK_METHODOLOGY.md)
 
 ---
 

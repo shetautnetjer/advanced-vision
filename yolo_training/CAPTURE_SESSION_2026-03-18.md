@@ -83,7 +83,9 @@ yolo_training/annotations/raw_images/
 # Unlock screen
 export DISPLAY=:1
 xdotool mousemove 100 100
-xdotool type "12345678"
+read -rsp "Password: " SCREEN_UNLOCK_PASSWORD && echo
+xdotool type "$SCREEN_UNLOCK_PASSWORD"
+unset SCREEN_UNLOCK_PASSWORD
 xdotool key Return
 
 # Open TradingView

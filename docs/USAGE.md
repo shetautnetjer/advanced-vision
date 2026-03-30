@@ -19,7 +19,7 @@ echo $XDG_SESSION_TYPE  # Should print: x11
 ### Setup
 
 ```bash
-cd ~/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 ```
 
@@ -60,6 +60,29 @@ print(result.ok)  # True
 result = type_text("Hello World", dry_run=True)
 print(result.message)
 # Output: [DRY RUN] Would type 11 chars
+```
+
+### 2b. Focus a Window on Linux
+
+```python
+from advanced_vision.tools.windows import focus_window
+
+result = focus_window("Google Chrome", dry_run=True)
+print(result.message)
+```
+
+### 2c. Ask for a Click Proposal From a Screenshot
+
+```python
+from advanced_vision.tools.screen import screenshot_full
+from advanced_vision.vision_adapter import analyze_screenshot
+
+artifact = screenshot_full()
+proposal = analyze_screenshot(artifact.path, "Click Publish")
+
+print(proposal.action_type)
+print(proposal.matched_text)
+print(proposal.source)
 ```
 
 ### 3. Verify Screen Changes
@@ -194,6 +217,12 @@ print(result.answer)
 ```bash
 # Screenshot
 mcporter call advanced-vision.screenshot_full
+
+# Focus a browser window
+mcporter call advanced-vision.focus_window title_query="Google Chrome" dry_run=true
+
+# Ask for a click proposal
+mcporter call advanced-vision.analyze_screenshot screenshot_path="artifacts/screens/full_xxx.png" task="Click Publish"
 
 # Move mouse (dry run)
 mcporter call advanced-vision.move_mouse x=100 y=200 dry_run=true
@@ -361,6 +390,6 @@ After mastering basic usage:
 ## Support
 
 - **Documentation:** `docs/` folder in repo
-- **Status:** `EXECUTION_STATUS.md`
+- **Status:** `status/execution-status.md`
 - **Tests:** `pytest tests/ -v`
 - **Diagnostics:** `python3 -m advanced_vision.diagnostics`

@@ -4,6 +4,9 @@
 **Status:** ✅ Phases E0-E5 COMPLETE | Track B Trading Intelligence COMPLETE  
 **GPU:** RTX 5070 Ti 16GB
 
+> Historical snapshot. For the current local-control lane, start with
+> `../README.md`, `../COMPUTER_USE_ENV.md`, and `../SKILL.md`.
+
 ---
 
 ## Summary
@@ -57,14 +60,14 @@
 - **test_trading.py** - 46 tests (Track B)
 
 ### Documentation
-- `EXECUTION_PLAN.md` - Dad's near-term build plan (all done)
-- `MASTER_ROADMAP.md` - Strategic roadmap
-- `TRADING_IMPLEMENTATION.md` - Track B implementation summary
-- `MODEL_SETUP_COMPLETE.md` - Model deployment status
-- `docs/USAGE.md` - Usage guide and examples
-- `docs/VRAM_USAGE.md` - VRAM budget documentation
-- `docs/SEQUENTIAL_LOADING.md` - Pipeline loading strategy
-- `skill_manifest.json` - OpenClaw skill definition
+- `../roadmap/execution-plan.md` - Dad's near-term build plan
+- `../roadmap/master-roadmap.md` - Strategic roadmap
+- `../trading/trading-implementation-summary.md` - Track B implementation summary
+- `../archive/model-setup-complete-2026-03.md` - Model deployment status
+- `../USAGE.md` - Usage guide and examples
+- `../VRAM_USAGE.md` - VRAM budget documentation
+- `../SEQUENTIAL_LOADING.md` - Pipeline loading strategy
+- `../../skill_manifest.json` - OpenClaw skill definition
 
 ---
 
@@ -83,7 +86,7 @@ All stages functional on RTX 5070 Ti with 14.3GB VRAM resident.
 
 ### Run All Tests
 ```bash
-cd ~/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 pytest tests/ -v
 ```

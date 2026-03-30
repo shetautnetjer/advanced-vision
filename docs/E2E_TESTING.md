@@ -27,8 +27,8 @@ Screenshot → YOLO Detection → Eagle Classification → Qwen Analysis → Log
 
 ```bash
 # Ensure virtual environment is set up
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .venv-computer-use
+source .venv-computer-use/bin/activate
 pip install -e ".[dev]"
 
 # Verify installation
@@ -55,16 +55,16 @@ python -c "from advanced_vision.trading import DetectionPipeline; print('✓ Imp
 
 ```bash
 # All E2E tests
-pytest tests/test_e2e_pipeline.py -v
+python -m pytest tests/test_e2e_pipeline.py -v
 
 # Specific scenario
-pytest tests/test_e2e_pipeline.py::TestBasicFlow -v
+python -m pytest tests/test_e2e_pipeline.py::TestBasicFlow -v
 
 # With live models
-pytest tests/test_e2e_pipeline.py --live -v
+python -m pytest tests/test_e2e_pipeline.py --live -v
 
 # Performance only
-pytest tests/test_e2e_pipeline.py -m performance -v
+python -m pytest tests/test_e2e_pipeline.py -m performance -v
 ```
 
 ## Test Files
@@ -317,6 +317,6 @@ rm -rf tests/__pycache__ tests/.pytest_cache
 ## References
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Pipeline architecture
-- [MODEL_SETUP_COMPLETE.md](MODEL_SETUP_COMPLETE.md) - Model installation
-- [TRADING_IMPLEMENTATION.md](TRADING_IMPLEMENTATION.md) - Trading module details
+- [Model setup archive](archive/model-setup-complete-2026-03.md) - Model installation
+- [Trading implementation summary](trading/trading-implementation-summary.md) - Trading module details
 - `pytest --help` - Pytest documentation

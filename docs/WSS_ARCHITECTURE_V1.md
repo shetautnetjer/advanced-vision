@@ -197,7 +197,7 @@ See: `docs/WSS_V2_ROADMAP.md` (to be created)
 
 ```bash
 # Terminal 1: Start WSS server
-cd ~/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 ./scripts/start_wss_server.sh
 
 # Terminal 2: Run demo

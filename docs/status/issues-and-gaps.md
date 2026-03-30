@@ -4,6 +4,10 @@
 **Agent:** Aya  
 **Status:** Post Phase 1-4 Implementation
 
+> Historical snapshot. Some items here have since moved or been partially
+> resolved. For the current local-control lane, start with `../README.md`,
+> `../COMPUTER_USE_ENV.md`, and `../SKILL.md`.
+
 ---
 
 ## ✅ RESOLVED
@@ -15,7 +19,7 @@
 
 ### 2. MCP Server Not Registered
 **Issue:** Server existed but wasn't usable as OpenClaw skill  
-**Solution:** Registered with mcporter (`~/.openclaw/workspace-aya/config/mcporter.json`)  
+**Solution:** Registered with mcporter from the workspace-root config (`../config/mcporter.json`)  
 **Status:** ✅ 10 tools available via `mcporter call`
 
 ### 3. Environment Not Operational

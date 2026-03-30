@@ -4,6 +4,9 @@
 **Status:** ✅ All planned work complete  
 **Tests:** 115 passing (69 E0-E5 + 46 Track B)
 
+> Historical snapshot. For the current local-control lane and validated
+> repo-level entrypoints, start with `../README.md` and `../COMPUTER_USE_ENV.md`.
+
 ---
 
 ## Quick Summary
@@ -73,7 +76,7 @@ This repo is a **working computer-use and trading-intelligence substrate**.
 
 ### 1. Activate Environment
 ```bash
-cd ~/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 ```
 
@@ -121,10 +124,10 @@ lane = create_reviewer_lane()
 
 ## Documentation
 
-- `docs/USAGE.md` - Usage guide
-- `EXECUTION_STATUS.md` - Detailed status
-- `MODEL_SETUP_COMPLETE.md` - Model deployment
-- `TRADING_IMPLEMENTATION.md` - Track B details
+- `../USAGE.md` - Usage guide
+- `execution-status.md` - Detailed status
+- `../archive/model-setup-complete-2026-03.md` - Model deployment
+- `../trading/trading-implementation-summary.md` - Track B details
 
 ---
 

@@ -78,7 +78,7 @@ Helper functions:
 
 ## Architecture Alignment
 
-Per Dad's findings in `dads-findings.md`:
+Per Dad's findings in [`../archive/dads-findings.md`](../archive/dads-findings.md):
 
 | Role | Implementation | File |
 |------|---------------|------|

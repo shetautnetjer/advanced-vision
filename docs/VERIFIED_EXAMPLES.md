@@ -9,7 +9,7 @@
 ## Quick Start
 
 ```bash
-cd ~/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 ```
 
