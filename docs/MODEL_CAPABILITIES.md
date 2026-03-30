@@ -218,7 +218,7 @@ logs/                          # Runtime logs
 
 # Environment
 .env                           # API keys, secrets
-.venv/                         # Virtual environment
+.venv-computer-use/            # Primary local computer-use runtime
 ```
 
 ---

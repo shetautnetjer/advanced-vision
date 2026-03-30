@@ -1,5 +1,8 @@
 # Verified Setup - Advanced Vision Trading System
 
+This is a secondary, model-oriented verification note. For the active local
+computer-use lane, prefer `../README.md` and `../COMPUTER_USE_ENV.md`.
+
 **Last Verified:** 2026-03-17  
 **Hardware:** NVIDIA RTX 5070 Ti 16GB  
 **OS:** Ubuntu 22.04+  
@@ -11,7 +14,7 @@
 
 All paths are relative to:
 ```
-/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision
+/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision
 ```
 
 ### Working Model Paths
@@ -371,7 +374,7 @@ echo $XDG_SESSION_TYPE  # Must be: x11
 ### 2. Python Environment
 
 ```bash
-cd /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 
 # Verify
@@ -398,7 +401,7 @@ pip install flash-attn --no-build-isolation  # Takes ~10 min
 Run these commands to verify setup:
 
 ```bash
-cd /home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 
 # 1. Check GPU

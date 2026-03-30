@@ -1,5 +1,12 @@
 # Service Contracts
 
+This document is a forward-looking integration reference.
+
+The repo's current first-class operating lane is still local Linux computer use
+via MCP. Use `README.md` and `COMPUTER_USE_ENV.md` first for day-to-day setup and
+runtime truth, then come here when the task is specifically about cross-service
+integration boundaries.
+
 This document defines recommended service contracts for integrating `advanced-vision` into a larger governed system.
 
 The goal is to enable:

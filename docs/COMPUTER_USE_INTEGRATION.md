@@ -600,9 +600,9 @@ logger.debug(f"Scout note: {packet['scout_note']}")
 ## Related Documents
 
 - [ARCHITECTURE.md](./ARCHITECTURE.md) - System architecture overview
-- [SERVICE_CONTRACTS.md](./SERVICE_CONTRACTS.md) - API contracts
-- [SKILL.md](./SKILL.md) - Skill configuration
-- [AGENT_SWARM_CONTRACT.md](./AGENT_SWARM_CONTRACT.md) - Multi-agent coordination
+- [Service contracts](../SERVICE_CONTRACTS.md) - API contracts
+- [Repo skill](../SKILL.md) - Skill configuration
+- [Agent swarm contract](./process/agent-swarm-contract.md) - Multi-agent coordination
 
 ---
 

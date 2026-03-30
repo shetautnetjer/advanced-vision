@@ -8,7 +8,7 @@
 
 ### Source Location
 ```
-~/.openclaw/workspace/plane-a/projects/advanced-vision/artifacts/screens/
+/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision/artifacts/screens/
 ```
 
 ### Files Generated Today

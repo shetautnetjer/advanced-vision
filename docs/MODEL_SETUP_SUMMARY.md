@@ -126,7 +126,7 @@ Available:         14.0 GB
 ## 🔧 File Structure
 
 ```
-/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/
+/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision/
 ├── config/
 │   └── vllm.yaml                    # vLLM configuration
 ├── models/
@@ -179,7 +179,7 @@ Models:
 
 ### 1. Install vLLM (Optional)
 ```bash
-source .venv/bin/activate
+source .venv-computer-use/bin/activate
 pip install vllm
 ```
 

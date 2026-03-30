@@ -25,7 +25,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TESTS_DIR="${PROJECT_ROOT}/tests"
 LOGS_DIR="${PROJECT_ROOT}/logs/e2e"
 ARTIFACTS_DIR="${PROJECT_ROOT}/artifacts/e2e"
-VENV_PATH="${PROJECT_ROOT}/.venv"
+VENV_PATH="${PROJECT_ROOT}/.venv-computer-use"
 
 # Performance targets (ms)
 YOLO_TARGET=50
@@ -115,7 +115,7 @@ check_environment() {
   
   if [[ ! -d "$VENV_PATH" ]]; then
     log_error "Virtual environment not found at $VENV_PATH"
-    log_info "Run: python3 -m venv .venv && source .venv/bin/activate && pip install -e ."
+    log_info "Run: python3 -m venv .venv-computer-use && source .venv-computer-use/bin/activate && pip install -e '.[dev]'"
     exit 1
   fi
   

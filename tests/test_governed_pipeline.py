@@ -28,9 +28,9 @@ from uuid import uuid4
 import pytest
 from PIL import Image
 
-# Ensure src is in path
 import sys
-sys.path.insert(0, "/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/src")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from advanced_vision.core.governor import Governor, ReviewerResult, PolicyContext
 from advanced_vision.core.governor_verdict import (
@@ -320,7 +320,7 @@ class TestGovernedPipeline:
         assert result.success is True
         
         # Check that events were written to TruthWriter
-        events = governed_pipeline.truth_writer.get_events_for_date(datetime.now())
+        events = governed_pipeline.truth_writer.get_events_for_date(datetime.now(timezone.utc))
         
         # Should have stage completion events plus pipeline completion
         event_types = [e.get("event_type") for e in events]
@@ -681,7 +681,7 @@ class TestWSSGovernorIntegration:
         manager._log_suppressed_packet(packet, sample_verdict_block, "blocked")
         
         # Check that event was logged
-        events = truth_writer.get_events_for_date(datetime.now())
+        events = truth_writer.get_events_for_date(datetime.now(timezone.utc))
         suppression_events = [e for e in events if e.get("event_type") == "wss_packet_suppressed"]
         
         assert len(suppression_events) >= 1

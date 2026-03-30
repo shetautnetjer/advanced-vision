@@ -28,6 +28,7 @@ venv/
 ENV/
 env/
 .venv
+.venv-computer-use/
 
 # IDE
 .vscode/
@@ -45,6 +46,7 @@ Thumbs.db
 artifacts/
 logs/
 *.log
+work_log_*.json
 
 # Models (large files - don't commit)
 models/Qwen3.5-2B/
@@ -79,12 +81,18 @@ htmlcov/
 dist/
 build/
 
+# ML scaffold outputs
+ml/experiments/**/artifacts/
+ml/experiments/**/outputs/
+ml/experiments/**/.cache/
+ml/hotpaths/**/target/
+
 # YOLO Training Data (large files)
 yolo_training/annotations/raw_images/
 yolo_training/data/images/
 yolo_training/data/labels/
 yolo_training/runs/
+tools/yolo_training/
 *.pt
 *.onnx
 *.engine
-

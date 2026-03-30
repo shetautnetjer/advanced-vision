@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Auto-login attempt script for screen unlock
-Password: 12345678
-"""
+"""Auto-login attempt script for screen unlock."""
 
 import os
 import time
@@ -42,10 +39,12 @@ def wake_screen():
 
 def try_login():
     """Attempt to type password and login."""
-    password = "12345678"
+    password = os.environ.get("SCREEN_UNLOCK_PASSWORD")
     
     print("\nAttempting login...")
-    print(f"  Password: {password}")
+    if not password:
+        print("  SCREEN_UNLOCK_PASSWORD is not set")
+        return False
     
     try:
         # Type password
