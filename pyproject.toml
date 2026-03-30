@@ -15,12 +15,14 @@ dependencies = [
   "pyautogui>=0.9.54",
   "pygetwindow>=0.0.9",
   "pywinctl>=0.4.1",
+  "rapidocr_onnxruntime>=1.4.4",
   "websockets>=12.0",
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
 ]
 
 [project.scripts]
@@ -42,6 +44,7 @@ markers = [
     "performance: Performance benchmark tests",
     "slow: Slow tests that should be run selectively",
     "smoke: Quick smoke tests",
+    "asyncio: Tests that require an asyncio event loop",
     "hot_path: Hot path latency tests",
     "stage_breakdown: Individual stage timing tests",
     "load_test: Load and stress tests",

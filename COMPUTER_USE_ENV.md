@@ -1,120 +1,68 @@
-# Computer-Use Environment Setup
+# Computer-Use Environment
 
-## Status
+This is the day-to-day operating guide for the local Linux control lane.
 
-✅ **COMPLETE** — Environment operational!
+## Current Default
 
-| Component | Status | Version |
-|-----------|--------|---------|
-| Python | ✅ | 3.11 |
-| tkinter | ✅ | 8.6.14 |
-| pyautogui | ✅ | 0.9.54 |
-| pyscreeze | ✅ | 1.0.1 |
-| Screen detection | ✅ | 1920x1080 |
-| Mouse tracking | ✅ | Working |
-
-## Environment Location
-
-```
-~/.openclaw/workspace/plane-a/projects/advanced-vision/.venv-computer-use/
-```
+- Repo: `/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision`
+- Environment: `.venv-computer-use`
+- Launch path: `scripts/run_advanced_vision_mcp.sh`
+- Direct fallback:
+  `PYTHONPATH=src .venv-computer-use/bin/python -m advanced_vision.server`
 
 ## Quick Start
 
 ```bash
-cd ~/.openclaw/workspace/plane-a/projects/advanced-vision
+cd "/home/netjer/Projects/AI Frame/optical.nerves/advanced-vision"
 source .venv-computer-use/bin/activate
 ```
 
-## Validation
+## Health Check
 
 ```bash
-source .venv-computer-use/bin/activate
-python3 -c "
+PYTHONPATH=src python -m advanced_vision.diagnostics
+```
+
+Healthy output should confirm the GUI stack is usable on this Linux machine.
+
+## Direct Validation
+
+```bash
+python - <<'PY'
 import tkinter
 import pyautogui
-print('✅ tkinter:', tkinter.Tcl().eval('info patchlevel'))
-print('✅ pyautogui:', pyautogui.__version__)
-print('✅ Screen:', pyautogui.size())
-print('✅ Mouse:', pyautogui.position())
-"
+
+print("tk:", tkinter.Tcl().eval("info patchlevel"))
+print("pyautogui:", pyautogui.__version__)
+print("screen:", pyautogui.size())
+print("mouse:", pyautogui.position())
+PY
 ```
 
-## Packages Installed
-
-| Package | Purpose | Status |
-|---------|---------|--------|
-| pyautogui | Mouse/keyboard automation | ✅ |
-| pillow | Image processing | ✅ |
-| pyscreeze | Screenshots | ✅ |
-| pygetwindow | Window management | ✅ |
-| mouseinfo | Mouse position | ✅ |
-| python3-Xlib | X11 bindings | ✅ |
-| tkinter | GUI framework | ✅ 8.6.14 |
-
-## System Dependencies (Installed)
+## Running the MCP Server
 
 ```bash
-sudo apt-get install -y python3.11-tk python3-tk scrot python3-dev
+./scripts/run_advanced_vision_mcp.sh
 ```
 
-## Architecture
+## Verifying mcporter
 
-Following Dad's recommendation:
-- ✅ **Dedicated env** for computer-use capabilities
-- ✅ **Python 3.11** (known-good for Tk/GUI)
-- ✅ **Separate from** Linuxbrew 3.14 stack
-- ✅ **Isolated** trust domain for GUI automation
-
-## What's Next
-
-1. Test screenshot functionality: `pyautogui.screenshot()`
-2. Test mouse movement: `pyautogui.moveTo(x, y)`
-3. Integrate with MCP server
-4. Document any host-specific behavior
-
-## Files
-
-- `.venv-computer-use/` — Python environment (gitignored)
-- `COMPUTER_USE_ENV.md` — This documentation
-- `src/mcp_server.py` — MCP server entry point
-
-## Trust Boundaries
-
-| Capability | Status | Notes |
-|------------|--------|-------|
-| File operations | ✅ | Standard Python |
-| Screen capture | ✅ | PyScreeze + scrot |
-| Mouse control | ✅ | PyAutoGUI |
-| Keyboard control | ✅ | PyAutoGUI |
-| Window management | ✅ | PyGetWindow |
-
-## Update: Window Management Solved
-
-**Problem:** pygetwindow fails on Linux with NotImplementedError
-
-**Solution:** PyWinCtl (cross-platform fork with Linux/X11 support)
+`mcporter` must be run from the workspace root because that is where the
+project-level config lives:
 
 ```bash
-pip install pywinctl
+cd "/home/netjer/Projects/AI Frame/optical.nerves"
+mcporter config doctor
+mcporter list
+mcporter call advanced-vision.screenshot_full
 ```
 
-**Tested:**
-- ✅ pywinctl 0.4.1 installed
-- ✅ getAllWindows() finds 4 windows
-- ✅ X11 backend working
+## Notes
 
-**Linux Note:**
-- Works on X11 (your system)
-- Limited on Wayland (getActiveWindow/getAllWindows may fail)
-
-**Migration:**
-Replace pygetwindow imports with pywinctl:
-```python
-# Old (fails on Linux)
-import pygetwindow
-
-# New (works on Linux)
-import pywinctl as pwc
-windows = pwc.getAllWindows()
-```
+- `.venv-computer-use/bin/advanced-vision-server` is not the reliable default
+  entrypoint; its shebang can go stale.
+- `artifacts/screens/` holds screenshots and frame evidence.
+- `artifacts/logs/` holds action and verification JSONL logs.
+- `logs/` is reserved for WSS and e2e runtime logs.
+- Keep this file focused on the local control lane. Future model-heavy work
+  belongs under `ml/` and deeper docs, not in the day-one operating guide.

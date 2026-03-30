@@ -114,22 +114,50 @@ from advanced_vision.trading.reviewer import (
 )
 
 # WSS Publishers (Real-time feeds)
-from advanced_vision.trading.wss_yolo_publisher import (
-    YOLOWSSPublisher,
-    create_yolo_publisher,
-)
-from advanced_vision.trading.wss_sam_publisher import (
-    MobileSAMWSSPublisher,
-    create_sam_publisher,
-)
-from advanced_vision.trading.wss_eagle_publisher import (
-    EagleWSSPublisher,
-    create_eagle_publisher,
-)
-from advanced_vision.trading.wss_analysis_publisher import (
-    AnalysisWSSPublisher,
-    create_analysis_publisher,
-)
+try:
+    from advanced_vision.trading.wss_yolo_publisher_v2 import (
+        YOLOWSSPublisherV2,
+        create_yolo_publisher_v2,
+    )
+    from advanced_vision.trading.wss_sam_publisher_v2 import (
+        MobileSAMWSSPublisherV2,
+        create_sam_publisher_v2,
+    )
+    from advanced_vision.trading.wss_eagle_publisher_v2 import (
+        EagleWSSPublisherV2,
+        create_eagle_publisher_v2,
+    )
+    from advanced_vision.trading.wss_analysis_publisher_v2 import (
+        AnalysisWSSPublisherV2,
+        create_analysis_publisher_v2,
+    )
+except ImportError:
+    from advanced_vision.trading.wss_yolo_publisher import (
+        YOLOWSSPublisher as YOLOWSSPublisherV2,
+        create_yolo_publisher as create_yolo_publisher_v2,
+    )
+    from advanced_vision.trading.wss_sam_publisher import (
+        MobileSAMWSSPublisher as MobileSAMWSSPublisherV2,
+        create_sam_publisher as create_sam_publisher_v2,
+    )
+    from advanced_vision.trading.wss_eagle_publisher import (
+        EagleWSSPublisher as EagleWSSPublisherV2,
+        create_eagle_publisher as create_eagle_publisher_v2,
+    )
+    from advanced_vision.trading.wss_analysis_publisher import (
+        AnalysisWSSPublisher as AnalysisWSSPublisherV2,
+        create_analysis_publisher as create_analysis_publisher_v2,
+    )
+
+YOLOWSSPublisher = YOLOWSSPublisherV2
+MobileSAMWSSPublisher = MobileSAMWSSPublisherV2
+EagleWSSPublisher = EagleWSSPublisherV2
+AnalysisWSSPublisher = AnalysisWSSPublisherV2
+create_yolo_publisher = create_yolo_publisher_v2
+create_sam_publisher = create_sam_publisher_v2
+create_eagle_publisher = create_eagle_publisher_v2
+create_analysis_publisher = create_analysis_publisher_v2
+
 from advanced_vision.trading.wss_manager import (
     WSSPublisherManager,
     create_wss_manager,
@@ -190,13 +218,21 @@ __all__ = [
     
     # WSS Publishers (Real-time feeds)
     "YOLOWSSPublisher",
+    "YOLOWSSPublisherV2",
     "create_yolo_publisher",
+    "create_yolo_publisher_v2",
     "MobileSAMWSSPublisher",
+    "MobileSAMWSSPublisherV2",
     "create_sam_publisher",
+    "create_sam_publisher_v2",
     "EagleWSSPublisher",
+    "EagleWSSPublisherV2",
     "create_eagle_publisher",
+    "create_eagle_publisher_v2",
     "AnalysisWSSPublisher",
+    "AnalysisWSSPublisherV2",
     "create_analysis_publisher",
+    "create_analysis_publisher_v2",
     "WSSPublisherManager",
     "create_wss_manager",
 ]

@@ -13,6 +13,7 @@ class ScreenshotArtifact(BaseModel):
 
 
 class WindowInfo(BaseModel):
+    window_id: str | None = None
     title: str
     app_name: str | None = None
     is_active: bool | None = None
@@ -22,10 +23,13 @@ class ActionProposal(BaseModel):
     action_type: str
     x: int | None = None
     y: int | None = None
+    bbox: list[int] | None = None
     text: str | None = None
     keys: list[str] | None = None
     confidence: float | None = None
+    matched_text: str | None = None
     rationale: str | None = None
+    source: str | None = None
 
 
 class ActionResult(BaseModel):
