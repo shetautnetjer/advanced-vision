@@ -320,7 +320,7 @@ class TestGovernedPipeline:
         assert result.success is True
         
         # Check that events were written to TruthWriter
-        events = governed_pipeline.truth_writer.get_events_for_date(datetime.now())
+        events = governed_pipeline.truth_writer.get_events_for_date(datetime.now(timezone.utc))
         
         # Should have stage completion events plus pipeline completion
         event_types = [e.get("event_type") for e in events]
@@ -681,7 +681,7 @@ class TestWSSGovernorIntegration:
         manager._log_suppressed_packet(packet, sample_verdict_block, "blocked")
         
         # Check that event was logged
-        events = truth_writer.get_events_for_date(datetime.now())
+        events = truth_writer.get_events_for_date(datetime.now(timezone.utc))
         suppression_events = [e for e in events if e.get("event_type") == "wss_packet_suppressed"]
         
         assert len(suppression_events) >= 1
