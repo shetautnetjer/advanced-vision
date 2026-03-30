@@ -388,8 +388,8 @@ class TestEvidenceBundler:
         """B1.8: Sensitive content is redacted in bundles."""
         bundler = EvidenceBundler()
         
-        # Use longer API key to match pattern (24+ chars after sk-)
-        sensitive_text = "API key: sk-live-123456789012345678901234 wallet: 0x1234567890abcdef1234567890abcdef12345678"
+        # Use a synthetic placeholder that still matches the redaction pattern.
+        sensitive_text = "API key: key_123456789012345678901234 wallet: 0x1234567890abcdef1234567890abcdef12345678"
         redacted = bundler._redact_sensitive_content(sensitive_text)
         
         # Should have redacted wallet address
@@ -790,7 +790,7 @@ class TestEscalationPreparer:
         """B2.15: Escalation bundle redacts sensitive content."""
         preparer = EscalationPreparer()
         
-        # Use longer API key to match pattern (20+ chars after sk-)
+        # Use a synthetic placeholder that still matches the redaction pattern.
         event = TradingEvent(
             event_id="evt_001",
             timestamp="2026-03-17T16:00:00Z",
@@ -799,7 +799,7 @@ class TestEscalationPreparer:
             confidence=0.80,
             screen_width=1920,
             screen_height=1080,
-            raw_text_extracted="API key: sk-12345678901234567890 wallet: 0x1234567890abcdef1234567890abcdef12345678",
+            raw_text_extracted="API key: key_12345678901234567890 wallet: 0x1234567890abcdef1234567890abcdef12345678",
         )
         
         bundle = preparer.prepare_escalation(event)
@@ -807,7 +807,7 @@ class TestEscalationPreparer:
         # Should be redacted
         if bundle.redacted_text:
             # API key should be redacted or contain KEY_REDACTED
-            assert "KEY_REDACTED" in bundle.redacted_text or "sk-1234567890" not in bundle.redacted_text
+            assert "KEY_REDACTED" in bundle.redacted_text or "key_1234567890" not in bundle.redacted_text
             # Wallet should be redacted
             assert "[WALLET_REDACTED]" in bundle.redacted_text
 
