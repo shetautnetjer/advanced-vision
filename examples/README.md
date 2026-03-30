@@ -1,11 +1,13 @@
-# Advanced Vision Example Packets
+# Advanced Vision Examples
 
-This directory contains example JSON packets for testing and validating the advanced-vision schema system. These examples are used for development, testing, and integration verification.
+This directory contains both packet fixtures for schema validation and runnable
+example scripts for demos, capture probes, and integration experiments.
 
 ## Directory Structure
 
 ```
 examples/
+├── *.py               # Runnable demos and experiments
 ├── packets/
 │   ├── valid/          # Valid examples that should pass schema validation
 │   │   ├── ui_packet_example.json
@@ -22,7 +24,13 @@ examples/
 └── README.md           # This file
 ```
 
-## Valid Examples
+## Runnable Script Examples
+
+The top-level Python files are secondary demos and experiments. They are useful
+for smoke checks and exploration, but they are not the repo's primary runtime
+surface.
+
+## Packet Examples
 
 These examples represent realistic, properly-formed packets that should pass full schema validation:
 

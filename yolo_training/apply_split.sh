@@ -7,7 +7,8 @@
 set -euo pipefail
 
 # Base directories
-BASE_DIR="/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR="${SCRIPT_DIR}"
 RAW_IMAGES_DIR="$BASE_DIR/annotations/raw_images"
 CONFIG_FILE="$BASE_DIR/data_split_strategy.json"
 

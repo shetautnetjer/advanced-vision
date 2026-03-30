@@ -8,10 +8,11 @@ These have different UI patterns than TradingView.
 import subprocess
 import time
 import os
+from pathlib import Path
 
 os.environ['DISPLAY'] = ':1'
 
-output_dir="/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/yolo_training/annotations/raw_images/dex_sites"
+output_dir = Path(__file__).resolve().parents[1] / "yolo_training" / "annotations" / "raw_images" / "dex_sites"
 os.makedirs(output_dir, exist_ok=True)
 
 def capture(url, name, actions=None):

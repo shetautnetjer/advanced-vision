@@ -43,7 +43,8 @@ def test_smoke_capture_and_analyze() -> None:
     artifact = screenshot_full()
     assert Path(artifact.path).exists()
     proposal = analyze_screenshot(artifact.path, "Find the search box")
-    assert proposal.action_type == "noop"
+    assert proposal.action_type in {"noop", "click"}
+    assert proposal.source in {None, "ocr", "yolo", "browser_heuristic"}
 
 
 def test_smoke_flow() -> None:

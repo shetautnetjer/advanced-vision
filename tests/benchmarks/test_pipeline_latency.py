@@ -47,8 +47,8 @@ import numpy as np
 import pytest
 from PIL import Image, ImageDraw
 
-# Ensure src is in path
-sys.path.insert(0, "/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/src")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from advanced_vision.core.governor import Governor, PolicyContext, ReviewerResult
 from advanced_vision.core.governor_verdict import (
@@ -288,7 +288,7 @@ class PipelineBenchmarkReport:
 @pytest.fixture(scope="session")
 def benchmark_output_dir():
     """Create output directory for benchmark results."""
-    output_dir = Path("/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/benchmarks")
+    output_dir = PROJECT_ROOT / "benchmarks"
     output_dir.mkdir(parents=True, exist_ok=True)
     return output_dir
 

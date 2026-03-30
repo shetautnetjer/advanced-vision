@@ -22,8 +22,8 @@ import pytest
 from datetime import datetime, timezone, timedelta
 from uuid import uuid4, UUID
 
-from src.advanced_vision.core.governor import Governor, PolicyContext, ReviewerResult
-from src.advanced_vision.core.governor_verdict import (
+from advanced_vision.core.governor import Governor, PolicyContext, ReviewerResult
+from advanced_vision.core.governor_verdict import (
     create_verdict,
     Decision,
     GovernorVerdict,
@@ -32,13 +32,13 @@ from src.advanced_vision.core.governor_verdict import (
     RiskLevel,
     validate_verdict_dict,
 )
-from src.advanced_vision.core.execution_precondition import (
+from advanced_vision.core.execution_precondition import (
     ExecutionPrecondition,
     ValidationResult,
     GateResult,
 )
-from src.advanced_vision.core.execution_gate import ExecutionGate, GateDecision
-from src.advanced_vision.core.precondition_result import PreconditionResult
+from advanced_vision.core.execution_gate import ExecutionGate, GateDecision
+from advanced_vision.core.precondition_result import PreconditionResult
 
 
 class TestReviewerCannotTriggerExecutionDirectly:

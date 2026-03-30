@@ -28,9 +28,9 @@ from uuid import uuid4
 import pytest
 from PIL import Image
 
-# Ensure src is in path
 import sys
-sys.path.insert(0, "/home/netjer/.openclaw/workspace/plane-a/projects/advanced-vision/src")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from advanced_vision.core.governor import Governor, ReviewerResult, PolicyContext
 from advanced_vision.core.governor_verdict import (

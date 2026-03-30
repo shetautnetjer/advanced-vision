@@ -10,11 +10,13 @@ from pathlib import Path
 
 import pytest
 
-# Skip if mcporter not available
+# Skip mcporter-only tests unless the binary exists and this server is actually registered.
 MCPorter_AVAILABLE = False
+ADVANCED_VISION_REGISTERED = False
 try:
-    result = subprocess.run(["mcporter", "list"], capture_output=True, timeout=5)
+    result = subprocess.run(["mcporter", "list"], capture_output=True, text=True, timeout=5)
     MCPorter_AVAILABLE = result.returncode == 0
+    ADVANCED_VISION_REGISTERED = MCPorter_AVAILABLE and "advanced-vision" in result.stdout
 except (subprocess.TimeoutExpired, FileNotFoundError):
     pass
 
@@ -24,7 +26,7 @@ except (subprocess.TimeoutExpired, FileNotFoundError):
 # =============================================================================
 
 
-@pytest.mark.skipif(not MCPorter_AVAILABLE, reason="mcporter not available")
+@pytest.mark.skipif(not ADVANCED_VISION_REGISTERED, reason="advanced-vision not registered in mcporter")
 def test_mcporter_screenshot_full():
     """E5.1: Call screenshot_full via mcporter."""
     result = subprocess.run(
@@ -43,7 +45,7 @@ def test_mcporter_screenshot_full():
     assert Path(output["path"]).exists()
 
 
-@pytest.mark.skipif(not MCPorter_AVAILABLE, reason="mcporter not available")
+@pytest.mark.skipif(not ADVANCED_VISION_REGISTERED, reason="advanced-vision not registered in mcporter")
 def test_mcporter_move_mouse_dry_run():
     """E5.2: Call move_mouse via mcporter with dry_run."""
     result = subprocess.run(
@@ -61,7 +63,7 @@ def test_mcporter_move_mouse_dry_run():
     assert "DRY RUN" in output["message"]
 
 
-@pytest.mark.skipif(not MCPorter_AVAILABLE, reason="mcporter not available")
+@pytest.mark.skipif(not ADVANCED_VISION_REGISTERED, reason="advanced-vision not registered in mcporter")
 def test_mcporter_verify_screen_change():
     """E5.3: Call verify_screen_change via mcporter."""
     # First get a screenshot
@@ -199,7 +201,7 @@ def test_skill_manifest_tool_definitions():
 # =============================================================================
 
 
-@pytest.mark.skipif(not MCPorter_AVAILABLE, reason="mcporter not available")
+@pytest.mark.skipif(not ADVANCED_VISION_REGISTERED, reason="advanced-vision not registered in mcporter")
 def test_mcporter_invalid_tool():
     """E5.9: mcporter returns error for invalid tool."""
     result = subprocess.run(
@@ -244,13 +246,13 @@ def test_usage_documentation_exists():
 
 
 def test_execution_plan_exists():
-    """E5.12: Verify EXECUTION_PLAN.md exists."""
+    """E5.12: Verify the execution plan doc exists."""
     from advanced_vision.config import get_settings
     
     settings = get_settings()
-    plan_path = settings.repo_root / "EXECUTION_PLAN.md"
+    plan_path = settings.repo_root / "docs" / "roadmap" / "execution-plan.md"
     
-    assert plan_path.exists(), "EXECUTION_PLAN.md not found"
+    assert plan_path.exists(), "docs/roadmap/execution-plan.md not found"
 
 
 # =============================================================================
@@ -258,7 +260,7 @@ def test_execution_plan_exists():
 # =============================================================================
 
 
-@pytest.mark.skipif(not MCPorter_AVAILABLE, reason="mcporter not available")
+@pytest.mark.skipif(not ADVANCED_VISION_REGISTERED, reason="advanced-vision not registered in mcporter")
 def test_end_to_end_screenshot_and_verify():
     """E5.13: Complete workflow via mcporter.
     
